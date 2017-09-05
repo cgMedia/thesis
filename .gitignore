@@ -200,6 +200,10 @@ pythontex-files-*/
 TSWLatexianTemp*
 
 ## Editors:
+
+# Vim
+*.swp
+
 # WinEdt
 *.bak
 *.sav
