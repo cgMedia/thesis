@@ -38,10 +38,32 @@
 % If the thesis office requires Times, we'll give them Times
 % You can experiment with other font packages here if you like.
 % If you are using XeLaTeX or LuaLaTeX load the Times or Times New Roman font with \setmainfont
-\usepackage{newtxtext,newtxmath} 
-%
+%\usepackage{newtxtext,newtxmath} 
+\usepackage{newpxtext,newpxmath}
+
+% Set up the drop-caps
+\usepackage{Rothdn, lettrine}
+\renewcommand\LettrineFontHook{\Rothdnfamily}
+
 % Load any extra packages here
-%
+\usepackage{amsfonts}
+\usepackage{filecontents}
+\usepackage[draft]{graphicx}
+\usepackage{import}
+\usepackage{lipsum}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{paralist}
+\usepackage{pgfplots}
+\usepackage{physics}
+\usepackage{siunitx}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\input{extra/pgf_settings}
+\input{extra/macros}
+
 % You must specify the title of your thesis, your name, the field of study (not department), and the year
 \title{The syntax and semantics of phonology}
 \author{Joe Linguist}
@@ -99,7 +121,8 @@ Your acknowledgements here.
 % May violate thesis office rules
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
-\chapter{Your first chapter}
+\import{chapters/02-quantum_dots/}{ch02}
+
 %
 % If you have pages that must appear in landscape mode, use the [lscape] documentclass option
 % and enclose the pages in a {landscape} environment.

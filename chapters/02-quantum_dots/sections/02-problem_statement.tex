@@ -1,0 +1,63 @@
+\section{\label{section:problem statement}Problem Statement}
+Consider the evolution of a set of \qds{} in response to a time-varying electric field.
+If we concern ourselves only with electric dipole transitions in a resonant (or nearly-resonant) system, we may write the time-dependence of a given \qd's density matrix, $\hat{\rho}(t)$, as
+\begin{equation}
+  \dv{\hat{\rho}}{t} = \frac{-i}{\hbar}\commutator{\hat{\mathcal{H}}(t)}{\hat{\rho}} - \hat{\mathcal{D}}\qty[\hat{\rho}].
+  \label{eq:liouville}
+\end{equation}
+Here, $\hat{\mathcal{H}}(t)$ represents a local Hamiltonian that governs the internal two-level structure of the \qd{}, as well as its interaction with an external electromagnetic field, and $\hat{\mathcal{D}}$ provides dissipation terms that account for emission effects phenomenologically.
+Formally,
+\begin{subequations}
+  \begin{align}
+    \hat{\mathcal{H}}(t) &\equiv \mqty(0 & \hbar \chi(t) \\ \hbar \chi^*(t) & \hbar \omega_0) \label{eq:hamiltonian}\\
+    \hat{\mathcal{D}}\qty[\hat{\rho}] &\equiv \mqty( \qty(\rho_{00} - 1)/{T_1} & \rho_{01}/{T_2} \\ \rho_{10}/{T_2} & \rho_{11}/T_1 ) \label{eq:dissipator}
+  \end{align}
+\end{subequations}
+where $\chi(t) \equiv \vb{d} \cdot \hat{\vb{E}}(\vb{r}, t)/\hbar$, $\vb{d} \equiv \matrixel{1}{e \hat{\vb{r}}}{0}$, and $\ket{0}$ \& $\ket{1}$ represent the highest valence and lowest conduction states of the \qd{} under consideration.
+Finally, the $T_1$ and $T_2$ constants characterize average emission and relaxation times.
+
+To account for the interactions between \qds{}, we turn to a semiclassical description of the system under the assumption of coherent fields and negligible quantum  statistics effects.
+Such an approximation preserves the discrete two-level energy structure of \emph{individual} \qds{} though electromagnetic quantities behave like their classical analogues.
+We define the total electric field at any point as $\vb{E}(\vb{r}, t) = \vb{E}_L(\vb{r}, t) + \mathfrak{F}\{ \vb{P}(\vb{r}, t) \}$
+where $\vb{E}_L(\vb{r}, t)$ describes an incident laser field, $\vb{P}(\vb{r}, t)$ a polarization distribution arising from  the off-diagonal elements (coherences) of $\hat{\rho}$, and
+\begin{equation}
+    \mathfrak{F}\{\vb{P}(\vb{r}, t)\} \equiv
+      \frac{-1}{4\pi \epsilon} \int
+      \left(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \frac{\partial_t^2 \vb{P}(\vb{r}', t_R)}{c^2 \abs{\vb{r}-\vb{r}'}} + 
+      \left(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \qty(
+        \frac{\partial_t   \vb{P}(\vb{r}', t_R)}{c \abs{\vb{r}-\vb{r}'}^2} +
+        \frac{             \vb{P}(\vb{r}', t_R)}{  \abs{\vb{r}-\vb{r}'}^3}
+      ) \dd[3]{\vb{r}}'
+  \label{eq:integral operator}
+\end{equation}
+(see \S 72 of \cite{Landau2013}).
+Here, $\tensor{\mathrm{I}}$ denotes the identity dyad, $\bar{\vb{r}} \equiv \qty(\vb{r} - \vb{r}')/\abs{\vb{r} - \vb{r}'}$, $\otimes$ represents the tensor product (i.e.\ $\qty(\outerprod{\vb{a}}{\vb{b}})_{ij} = a_i b_j$), $t_R \equiv t - \abs{\vb{r} - \vb{r}'}/c$, and $\epsilon$ gives the dielectric constant of the inter-dot medium.
+Thus, in a system composed of multiple \qds{}, \cref{eq:integral operator} couples the evolution of each \qd{} by way of the off-diagonal matrix elements appearing in \cref{eq:hamiltonian}.
+Note that this approach does not require an instantaneous dipole-dipole Coulomb term between (charge-neutral) \qds{}; the interactions between structures occur only via the electric field which propagates through space with finite velocity.
+(See {A}$_{\textsc{iv}}$  and {C}$_{\textsc{iv}}$ of~\cite{Cohen1989} for in-depth discussions of this point.)
+
+
+In the systems under consideration here, $\omega_0$ lies in the optical frequency band ($\sim \SI{1500}{\milli\eV\per\hbar}$).
+As such, na\"ively integrating \cref{eq:liouville} to resolve the Rabi dynamics that occur on the order of \SI{1}{\pico\second} becomes computationally infeasible.
+By introducing $\tilde{\rho} = \hat{U} \hat{\rho} \hat{U}^\dagger$ where $\hat{U} = \mathrm{diag}(1, e^{i \omega_L t})$, we may instead write \cref{eq:liouville} as
+\begin{equation}
+  \dv{\tilde{\rho}}{t} = \frac{-i}{\hbar} \commutator{\hat{U} \hat{\mathcal{H}} \hat{U}^\dagger - i \hbar \hat{V}}{\tilde{\rho}} - \hat{\mathcal{D}}\qty[\tilde{\rho}], \quad \hat{V} \equiv \hat{U} \dv{\hat{U}^\dagger}{t}
+  \label{eq:rotating liouville}
+\end{equation}
+which will contain only terms proportional to $e^{i (\omega_0 \pm \omega_L) t}$ if $\vb{E}(t) \sim \tilde{\vb{E}}(t)\cos(\omega_L t)$.
+Consequently, we ignore the high-frequency quantities under the assumption that such terms will integrate to zero in solving \cref{eq:rotating liouville} over appreciable timescales~\cite{Allen1975}. As the system no longer contains any optical frequencies, one can then construct efficient numerical strategies for solving \cref{eq:rotating liouville}.
+
+Due to the quantum mechanical transitions at play in producing secondary radiation, we may assume similarly monochromatic radiated fields.
+As such, a similar transformation applies to the source distribution in \cref{eq:integral operator}.
+Writing $\vb{P}(\vb{r}, t) = \tilde{\vb{P}}(\vb{r}, t)e^{i \omega_L t}$ and similarly ignoring high-frequency terms, the radiated field envelope becomes
+\begin{equation}
+  \begin{gathered}
+    \tilde{\mathfrak{F}}\{ \tilde{\vb{P}}(\vb{r}, t) \} \equiv \frac{-1}{4\pi \varepsilon} \int
+    \qty(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{\qty(\partial_t^2 \tilde{\vb{P}}(\vb{r}', t_R) + 2 i \omega_L \partial_t \tilde{\vb{P}}(\vb{r}', t_R) - \omega_L^2 \tilde{\vb{P}}(\vb{r}', t_R)) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{c^2 \abs{\vb{r}-\vb{r}'}} + \\
+    \qty(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{\qty(\partial_t \tilde{\vb{P}}(\vb{r}', t_R) + i \omega_L \tilde{\vb{P}}(\vb{r}', t_R))e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{c \abs{\vb{r}-\vb{r}'}^2} +
+    \qty(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{                \tilde{\vb{P}}(\vb{r}', t_R) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{\abs{\vb{r}-\vb{r}'}^3}
+    \, \dd[3]{\vb{r'}}.
+  \end{gathered}
+  \label{eq:radiated envelope}
+\end{equation}
+Critically, \cref{eq:radiated envelope} maintains the high-frequency phase relationship between sources oscillating at $\omega_L$ via the factors of $e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}$ that appear.
