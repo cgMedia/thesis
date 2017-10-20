@@ -6,7 +6,7 @@ As an example, consider a single sphere of density $\rho_s$ and radius $a$.
 Taking $k a \ll 1$, we may approximate \cref{eq:inc_field} as $\varphi_\text{inc}(\vb{x}, t) = v_0(t) z$ and we wish to find the response velocity of the sphere, $\vb{u}$, in terms of the field velocity $\vb{v} = \nabla \varphi_\text{inc}$. It follows that the expansion of $\varphi_\text{inc}$ contains only $\ell = 1$ terms, thus
 \begin{equation}
   \label{eq:uniform field}
-  \varphi_\text{inc} = v_0(t) \, a \cos(\theta) 
+  \varphi_\text{inc} = v_0(t) \, a \cos(\theta)
 \end{equation}
 on the surface of the sphere. Similarly, from \cref{eq:boundary_conditions},
 \begin{align}
@@ -14,7 +14,7 @@ on the surface of the sphere. Similarly, from \cref{eq:boundary_conditions},
                             &= u_z \, a \cos(\theta)
 \end{align}
 due to the symmetries present in $x$ and $y$.
-As a result, 
+As a result,
 \begin{equation}
   \begin{gathered}
     \varphi - \int \dd{S'} \varphi(\vb{x}') \, \partial_{\vu{n}'} G(\vb{x}, \vb{x}') = \\
@@ -57,7 +57,7 @@ Through this, we may compute the dynamics of each \bubble\ in the group, taking 
 \subsection{Low-order interactions}
 
 We now consider two identical \bubbles\ arranged perpendicularly to an incident waveform as in \cref{fig:perpendicular}.
-Within the Born approximation, we may take \cref{eq:uniform field} as the incident field and use it in place of the total field on the right-hand side of \cref{eq:reduced Kirchoff-Helmholtz}, assuming negligible contributions from scattering. In doing so, the field everywhere becomes 
+Within the Born approximation, we may take \cref{eq:uniform field} as the incident field and use it in place of the total field on the right-hand side of \cref{eq:reduced Kirchoff-Helmholtz}, assuming negligible contributions from scattering. In doing so, the field everywhere becomes
 \begin{equation}
   \begin{aligned}
   \varphi(\vb{x}, t) = v_0(t) z &+ \frac{a^3}{3} \frac{\cos(\theta_1)}{\abs{\vb{x} - \vb{d}_{12}/2}^2}\qty\big[v_0 - u_1] \\
@@ -72,7 +72,7 @@ By inserting this into \cref{eq:Newton} for $\vb{x}_1$, we have
     \rho_0 \int_{\Omega_1} \frac{a^5}{3} \frac{v_0 - u_2}{\abs{\vb{x} - \vb{d}_{12}}^2} \cos\theta_1 \cos\theta_2 \dd{\phi_1} \dd{\qty(\cos \theta_1)}.
   \end{gathered}
 \end{equation}
-Writing 
+Writing
 \begin{equation}
   \cos\theta_2 = \frac{a}{d_{12}} \frac{\cos\theta_1}{\sqrt{\qty(1 - \frac{a}{d_{12}}\sin\theta_1)^2 + \qty(\frac{a}{d_{12}}\cos\theta_1)^2}}
 \end{equation}
@@ -85,12 +85,12 @@ In the limit of $d_{12} \to \infty$, this becomes
 \begin{equation}
   \frac{u_s}{v_0} = \frac{4 \rho_0}{\rho_0 + 3\rho_s}.
 \end{equation}
-By considering negligible scattered fields at the surface of each \bubble, we qualitatively recover Eq. (27) with different coefficients arising only from the Born approximation. 
+By considering negligible scattered fields at the surface of each \bubble, we qualitatively recover Eq. (27) with different coefficients arising only from the Born approximation.
 Moreover, the additional interaction term in Eq. (31) scales as $\abs{\vb{d}_{ij}}^{-3}$; a behavior anticipated from the dipolar nature of \cref{eq:dipole}.
 
 \begin{figure}
   \centering
-  \input{figures/perpendicular_configuration.tex}
+  \input{figures/perpendicular_configuration}
   \caption{\label{fig:perpendicular}Perpendicular configuration.}
 \end{figure}
 

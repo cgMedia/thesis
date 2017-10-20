@@ -1,0 +1,29 @@
+\begin{tikzpicture}[scale=3, >=latex]
+
+  \coordinate (x) at (1, 0);
+  \coordinate (y) at (0, 1);
+  \coordinate (z) at (-0.1,-0.5);
+
+\def\Rone{0.5}
+\def\Rtwo{{sqrt(2)/2*\Rone}}
+
+\coordinate (A) at ({sqrt(2)/2}, 1.3);
+\coordinate (B) at ({3*sqrt(2)/2}, 0.6);
+
+\fill[ball color=white!10] (A) circle (\Rone);
+\draw[densely dashed] (A) circle (\Rone) node[right] at ($(A)+(30:\Rone)$) {$\Omega_k$};
+\fill[ball color=white!10] (B) circle (\Rtwo);
+
+\draw[->, very thick] (xyz cs:x=0) -- (xyz cs:x=1) node[above] {$\vu{y}$};
+\draw[->, very thick] (xyz cs:y=0) -- (xyz cs:y=1) node[right] {$\vu{z}$};
+\draw[->, very thick] (xyz cs:z=0) -- (xyz cs:z=1) node[left]  {$\vu{x}$};
+
+\draw [->] (0,0) -- ($(0,0)!.99!(A)$) node [midway, fill=white] {$\vb{x}_k$};
+\draw [->] (0,0) -- ($(0,0)!.99!(B)$) node [midway, fill=white] {$\vb{x}_j$};
+
+\draw [<-] ($(B)!.99!(A)$) -- ($(A)!.99!(B)$) node [midway, fill=white] {$\vb{d}_{jk}$};
+
+\draw [dashed] (A) -- ($(A)-(\Rone, 0)$) node [midway, above] {$a_{k}$};
+\draw [dashed] (B) -- ($(B)+(\Rtwo, 0)$) node [midway, above] {$a_{j}$};
+
+\end{tikzpicture}

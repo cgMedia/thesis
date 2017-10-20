@@ -1,0 +1,21 @@
+\begin{tikzpicture}[>=latex,trim axis left]
+  \begin{axis}[
+      %grid = major,
+      %major grid style = {black, opacity=0.4},
+      xlabel = $z$ (\si{\micro\meter}),
+      ylabel = $x$ (\si{\micro\meter}),
+      enlargelimits = false,
+      axis on top,
+      axis equal image
+  ]
+    \addplot graphics [
+      xmin = -3,
+      xmax = 3,
+      ymin = -3,
+      ymax = 3,
+    ] {figures/dipolefig.pdf};
+
+    \filldraw[ball color=white!10, draw=none] (axis cs:0,0) circle[radius = 100];
+    \draw[thick, ->] (axis cs:-0.618034,0) -- (axis cs:0.618034,0) node[midway,above]{$\vb{v}_s$};
+  \end{axis}
+\end{tikzpicture}

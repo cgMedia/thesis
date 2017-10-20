@@ -1,0 +1,39 @@
+\begin{tikzpicture}[>=latex]
+    \begin{axis}[
+      point meta min=-1, point meta max=1, %needed to make colorbar ticks work
+      colorbar horizontal,
+      colorbar style={
+        at={(0.5,1.03)}, anchor=south,
+        xticklabel pos=upper,
+        xtick = \empty,
+        %ylabel={Pressure Gradient $\left|\nabla P\right|$},
+        %ytick=\empty,
+        extra x ticks={-1,1},
+        %extra x tick style={yshift=-0.5cm},
+        %extra x tick labels = {$-P_0$, $P_0$},
+        title style={yshift=-0.75cm},
+        title = {Pressure gradient, $\vu{z} \cdot \nabla p$ (relative scale)},
+        ticks = none
+      },
+      colormap={}{rgb255=(42,72,239); rgb255=(56,94,240); rgb255=(71,115,241); rgb255=(85,137,242); rgb255=(99,155,243); rgb255=(113,171,244); rgb255=(127,186,245); rgb255=(141,201,247); rgb255=(153,211,248); rgb255=(165,222,249); rgb255=(178,232,250); rgb255=(190,239,251); rgb255=(201,245,252); rgb255=(212,250,252); rgb255=(223,254,250); rgb255=(233,254,238); rgb255=(242,254,226); rgb255=(252,254,213); rgb255=(253,251,201); rgb255=(252,247,188); rgb255=(251,244,175); rgb255=(249,238,163); rgb255=(247,229,150); rgb255=(244,219,137); rgb255=(241,210,124); rgb255=(237,196,111); rgb255=(234,181,99); rgb255=(230,167,86); rgb255=(227,150,75); rgb255=(223,132,66); rgb255=(219,113,58); rgb255=(216,94,49); },
+      enlargelimits=false,
+      axis on top,
+      %ytick = {-112.5, -75, -37.5, 0, 37.5, 75, 112.5},
+      %yticklabels = {$-\frac{3\lambda}{2}$, $-\lambda$, $-\frac{\lambda}{2}$, $0$, $\frac{\lambda}{2}$, $\lambda$, $\frac{3\lambda}{2}$},
+      xlabel={Time $(\si{\micro\second})$},
+      ylabel={$\vu{z}$-coordinate $(\si{\micro\meter})$},
+      %title style={yshift=0.6cm},
+      %title={Confinement of scatterers to planes},
+    ]
+      \addplot graphics[
+        xmin=0E-4,
+        xmax=1.5984E2,
+        ymin=-1.12510E2,
+        ymax=1.12510E2,
+        ]
+      {figures/banding.png};
+
+      \draw[thick, <->] (axis cs:110,0) -- (axis cs:110,37.5) node [midway,right] {$\frac{c_s}{2f_0} = \si{\num{37.5}\micro\meter}$};
+
+    \end{axis}
+\end{tikzpicture}

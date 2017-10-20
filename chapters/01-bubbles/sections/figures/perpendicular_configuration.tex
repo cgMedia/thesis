@@ -1,0 +1,30 @@
+\begin{tikzpicture}[scale=1.7, >=latex]
+  \def\radius{1}
+
+  \coordinate (b1) at (-3, 0);
+  \coordinate (surf1) at ($(b1)+(45:1)$);
+  \coordinate (b2) at ( 3, 0);
+  \coordinate (surf2) at ($(b2)+(135:1)$);
+
+  \coordinate (z1) at ($(b1)+(0,1)$);
+  \coordinate (z2) at ($(b2)+(0,2)$);
+
+  \fill[ball color=white!10] (b1) circle (\radius);
+  \fill[ball color=white!10] (b2) circle (\radius);
+
+  \draw[dashed] (b1) -- (surf1);
+  \draw[] (surf1) -- (b2) node[midway, fill=white] {$L$};
+  %\draw[dashed] (surf2) -- (b2);
+  \draw (b1) -- (b2) node [midway, fill=white] {$\vb{d}_{12}$};
+
+  \pic["$\theta_1$", <-, draw=black, angle eccentricity=1.5] {angle=surf1--b1--z1};
+  \pic["$\theta_2$", ->, draw=black, angle eccentricity=1.5] {angle=z2--b2--surf1};
+
+  \draw[->] (b1) -- +(0,3/2) node[above] {$\vb{u}_1$};
+  \draw[->] (b2) -- +(0,3/2) node[above] {$\vb{u}_2$};
+
+  \draw[thick, ->] (-9/2,-1) -- (-9/2,1) node[midway, fill=white] {$\vb{k}$};
+
+  \node[below] at (b1) {$\vb{x}_1$};
+  \node[below] at (b2) {$\vb{x}_2$};
+\end{tikzpicture}
