@@ -1,0 +1,96 @@
+\section{Analytic results}
+
+\subsection{Single \bubble\ solution}
+
+As an example, consider a single sphere of density $\rho_s$ and radius $a$.
+Taking $k a \ll 1$, we may approximate \cref{eq:inc_field} as $\varphi_\text{inc}(\vb{x}, t) = v_0(t) z$ and we wish to find the response velocity of the sphere, $\vb{u}$, in terms of the field velocity $\vb{v} = \nabla \varphi_\text{inc}$. It follows that the expansion of $\varphi_\text{inc}$ contains only $\ell = 1$ terms, thus
+\begin{equation}
+  \label{eq:uniform field}
+  \varphi_\text{inc} = v_0(t) \, a \cos(\theta) 
+\end{equation}
+on the surface of the sphere. Similarly, from \cref{eq:boundary_conditions},
+\begin{align}
+  \partial_{\vu{n}} \varphi &= \vb{u} \cdot \vu{n} \nonumber \\
+                            &= u_z \, a \cos(\theta)
+\end{align}
+due to the symmetries present in $x$ and $y$.
+As a result, 
+\begin{equation}
+  \begin{gathered}
+    \varphi - \int \dd{S'} \varphi(\vb{x}') \, \partial_{\vu{n}'} G(\vb{x}, \vb{x}') = \\
+    v_0 a \cos(\theta) - \int \dd{S}' a u_z \cos(\theta) \, G(\vb{x}, \vb{x}'),
+  \end{gathered}
+\end{equation}
+and it becomes apparent that only $\ell = 1, m = 0$ terms in \cref{eq:expansion theorem} remain after integrating.
+Consequently, the field becomes
+\begin{equation}
+  \label{eq:dipole}
+  \varphi(\vb{x}, t) = \qty(v_0(t) \abs{\vb{x}} + \frac{a^3\qty(v_0(t) - u_z)}{2\abs{\vb{x}}^2})\cos(\theta)
+\end{equation}
+outside the \bubble\ and
+\begin{equation}
+  \varphi(\vb{x} \in \Omega, t) = \qty(\frac{3}{2}v_0(t) - \frac{1}{2} u_z)a \cos(\theta)
+\end{equation}
+on its surface.
+From this we conclude the total velocity potential in the fluid arises from a surface-scattering term alongside a term describing the transfer of momentum from the moving \bubble\ to the fluid.
+
+Using \cref{eq:Newton}, we may then write the equation of motion for the system as
+\begin{equation}
+  \rho_s V \dot{u}_z = \rho_0 V \left(\frac{3}{2}\dot{v}_0 - \frac{1}{2}\dot{u}_z\right).
+\end{equation}
+where $V = 4\pi a^3/3$ gives the volume of the \bubble.
+The transfer of momentum from the moving \bubble\ to the fluid becomes a reaction force of the fluid due to the sphere.
+Landau \& Lifshitz~\cite{Landau2013} initially derived this non-dissipative \emph{drag force} by way of momentum and energy conservation.
+Note that this drag force presents only in the case of accelerated motion of the \bubble\ and we may recast its effect in the form of a \emph{virtual mass} that includes a contribution due to the mass of the displaced fluid,
+\begin{equation}
+  \qty(\rho_s + \frac{\rho_0}{2})V \dot{u}_z = \frac{3\rho_0 V}{2} \dot{v}_0.
+\end{equation}
+This expression leads to a simple relation linking $u_z(t)$ and $v_0(t)$ provided the velocity does not remain constant and that the sphere does not move in the absence of the field:
+\begin{equation}
+  \label{eq:landau result}
+  \frac{u_z}{v_0} = \frac{3\rho_0}{\rho_0 + 2\rho_s}.
+\end{equation}
+
+The idea of a virtual mass for the accelerated motion of a single sphere in an ideal fluid readily generalizes to the case of a moving collection of mutually-interacting spheres.
+Through this, we may compute the dynamics of each \bubble\ in the group, taking into account the effect of the momentum exchange between the fluid and the \bubbles, resulting in both drag and inter-particle forces in addition to the displacement caused by the driving acoustic field.
+
+\subsection{Low-order interactions}
+
+We now consider two identical \bubbles\ arranged perpendicularly to an incident waveform as in \cref{fig:perpendicular}.
+Within the Born approximation, we may take \cref{eq:uniform field} as the incident field and use it in place of the total field on the right-hand side of \cref{eq:reduced Kirchoff-Helmholtz}, assuming negligible contributions from scattering. In doing so, the field everywhere becomes 
+\begin{equation}
+  \begin{aligned}
+  \varphi(\vb{x}, t) = v_0(t) z &+ \frac{a^3}{3} \frac{\cos(\theta_1)}{\abs{\vb{x} - \vb{d}_{12}/2}^2}\qty\big[v_0 - u_1] \\
+                                &+ \frac{a^3}{3} \frac{\cos(\theta_2)}{\abs{\vb{x} + \vb{d}_{12}/2}^2}\qty\big[v_0 - u_2].
+  \end{aligned}
+\end{equation}
+By inserting this into \cref{eq:Newton} for $\vb{x}_1$, we have
+\begin{equation}
+  \label{eq:born newton}
+  \begin{gathered}
+  m_1 \vb{u}_1 \cdot \vu{z} = 2 \pi \rho_0 a^2 \int \cos^2\theta_1 a^3 \qty(\frac{4}{3}v_0 - \frac{u_1}{3}) \dd{\qty(\cos\theta_1)} + \\
+    \rho_0 \int_{\Omega_1} \frac{a^5}{3} \frac{v_0 - u_2}{\abs{\vb{x} - \vb{d}_{12}}^2} \cos\theta_1 \cos\theta_2 \dd{\phi_1} \dd{\qty(\cos \theta_1)}.
+  \end{gathered}
+\end{equation}
+Writing 
+\begin{equation}
+  \cos\theta_2 = \frac{a}{d_{12}} \frac{\cos\theta_1}{\sqrt{\qty(1 - \frac{a}{d_{12}}\sin\theta_1)^2 + \qty(\frac{a}{d_{12}}\cos\theta_1)^2}}
+\end{equation}
+and noting $\vb{u}_1 = \vb{u}_2 \equiv \vb{u}_s$ due to symmetry in the initial configuration, we may expand \cref{eq:born newton} in $a/d_{12}$ to give
+\begin{equation}
+  \label{eq:two bubble born}
+  \rho_s u_s = \rho_0\qty(\frac{4}{3}v_0 - \frac{1}{3}u_s) + \frac{\rho_0\qty(v_0 - u_s)}{3}\qty(\frac{a}{d_{12}})^3.
+\end{equation}
+In the limit of $d_{12} \to \infty$, this becomes
+\begin{equation}
+  \frac{u_s}{v_0} = \frac{4 \rho_0}{\rho_0 + 3\rho_s}.
+\end{equation}
+By considering negligible scattered fields at the surface of each \bubble, we qualitatively recover Eq. (27) with different coefficients arising only from the Born approximation. 
+Moreover, the additional interaction term in Eq. (31) scales as $\abs{\vb{d}_{ij}}^{-3}$; a behavior anticipated from the dipolar nature of \cref{eq:dipole}.
+
+\begin{figure}
+  \centering
+  \input{figures/perpendicular_configuration.tex}
+  \caption{\label{fig:perpendicular}Perpendicular configuration.}
+\end{figure}
+

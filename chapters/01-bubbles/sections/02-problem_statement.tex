@@ -1,0 +1,75 @@
+\section{Continuum problem statement}
+
+Consider a collection of $N$ rigid, non-intersecting spherical scatterers (\bubbles), each having radius $a_k$, position $\vb{x}_k$, and enclosing volume $V_k \subset \mathbb{R}^3$.
+The \bubbles\ move in a homogeneous exterior fluid occupying $V_E$, where we denote the boundary of each \bubble\ as $\Omega_k = \partial V_k$ and thus may ascribe  to each an outward-pointing normal $\vu{n}_k\qty(\theta, \phi)$,
+where $\theta$ and $\phi$ represent colatitude and azimuthal angles with respect to the local origin (\bubble\ center).
+We wish to investigate the reaction of the system to an incident acoustic pulse, thus the fluid carries a prescribed (band-limited) waveform through the \bubble\ system in which it interacts with each of the $\partial \Omega_k$ according to the ``sound-hard'' regime presented in~\cite{Li2014}. 
+The incident acoustic pulse, in combination with the acoustic field scattered from each \bubble\ and the hydrodynamic field induced by the relative velocity of each \bubble, acts as a perturbation to the initially at-rest uniform ideal fluid~\cite{Myers1992, Landau2013}.
+We consider here the linear regime, in which the perturbation induced by the acoustic and aerodynamic contribution remain sufficiently small so that the velocity field $\vb{v}(\vb{x}, t)$ satisfies the condition $\abs{\vb{v}(\vb{x}, t)} \ll c_s $, where $c_s$ represents the speed of sound in the fluid.
+In this limit, the velocity potential, defined by $\vb{v}(\vb{x}, t) = \nabla \varphi\qty(\vb{x}, t)$, satisfies the scalar wave equation:
+\begin{equation}
+    \left(\frac{1}{c_s^2} \frac{\partial^2}{\partial t^2}-\nabla^2\right) \varphi\qty(\vb{x}, t) = 0,
+  \label{eq:Helmholtz}
+\end{equation}
+and we may express the pressure perturbation at any point in the exterior medium as
+\begin{equation} \label{eq:Bernoulli}
+  p\qty(\vb{x}, t) = - \rho_0\pdv{\varphi\qty(\vb{x}, t)}{t},
+\end{equation}
+where $\rho_0$ denotes the equilibrium density of the fluid.
+Rigidity of the $\Omega_k$ necessarily prescribes boundary conditions on the normal velocity components at each interface, namely,
+\begin{equation}
+  \left.\pdv{\varphi(\vb{x},t)}{\vu{n}_k}\right|_{\vb{x} \in \Omega_k} \mkern-30mu = \dv{\vb{x}_k}{t} \cdot \vu{n}_k.
+  \label{eq:boundary_conditions}
+\end{equation}
+where $\vb{x}_k$ represents the center-of-mass coordinate for the $k^\text{th}$ \bubble.
+
+Using these relations, we apply the Kirchoff-Helmholtz theorem to define the following system of integral equations,
+\begin{equation}
+  \varphi(\vb{x}, t) = \varphi_\text{inc}(\vb{x}, t) + \sum_{i = 0}^{N - 1}
+  \int \dd{t'} \int_{\Omega_k(t')} \mkern-30mu \dd{A}
+\qty(
+\varphi(\vb{x}',t') \pdv{\GF}{\vu{n}_k} - \GF \pdv{\varphi(\vb{x}',t')}{\vu{n}_k}),
+  \label{eq:Kirchoff-Helmholtz}
+\end{equation}
+where $\GF$ denotes the Green's function for a retarded potential, 
+\begin{equation}
+  \GF = \frac{\delta\qty(t - t' - \abs{\vb{x}-\vb{x}'}/c_s)}{4\pi \abs{\vb{x}-\vb{x}'}}.
+  \label{eq:retarded green's function}
+\end{equation}
+If the system remains localized to a region with small dimensions when compared to the wavelength of sound, retardation effects become negligible and we may instead use the Laplace-kernel Green's function,
+\begin{equation}
+  G\qty(\vb{x}, \vb{x}') = \frac{1}{4\pi\abs{\vb{x} - \vb{x}'}}.
+  \label{eq:green's function}
+\end{equation}
+To ease notation, we define the following two integral operators,
+\begin{subequations}
+\begin{align}
+  \hat{\mathcal{S}}_k\qty[\varphi(\vb{x} \in \Omega_k(t), t)] &= \int_{\Omega_k(t)} \mkern-30mu \dd{A} G(\vb{x}, \vb{x}') \; \partial_{\vu{n}_k} \varphi(\vb{x}',t) 
+  \label{eq:single layer}\\
+  \hat{\mathcal{D}}_k\qty[\varphi(\vb{x} \in \Omega_k(t), t)] &= \int_{\Omega_k(t)} \mkern-30mu \dd{A} \varphi(\vb{x}',t) \; \partial_{\vu{n}_k} G(\vb{x}, \vb{x}'), \label{eq:double layer}
+\end{align}
+  \label{eq:operator_kirchoff}
+\end{subequations}
+reducing \cref{eq:Kirchoff-Helmholtz} to
+\begin{equation}
+  \varphi(\vb{x},t) = \varphi_\text{inc} + \sum_{k = 0}^{N - 1} \qty(\hat{\mathcal{D}}_k - \hat{\mathcal{S}}_k)\qty[\varphi(\vb{x} \in \Omega_k(t), t)].
+  \label{eq:reduced Kirchoff-Helmholtz}
+\end{equation}
+
+In solving \cref{eq:reduced Kirchoff-Helmholtz}, we obtain the velocity potential everywhere for a given time without retarded scattered fields.
+For the incident pulse, $\varphi_\text{inc}$, we consider superpositions of wave packets of the form
+\begin{equation}
+  \varphi_\text{inc}(\vb{x}, t) = P_0\cos(\omega_0 t - \vb{k}\cdot\vb{x})e^{-{(c_s t - \vu{k}\cdot\vb{x})}^2/(2 \sigma^2)}.
+  \label{eq:inc_field}
+\end{equation}
+Finally, the variation in pressure (and thus $\varphi$) over each of the $\Omega_k$ necessarily propels each \bubble\ according to the equation of motion
+\begin{equation}
+  m_k \dv[2]{\vb{x}_k}{t} = \rho_0 \! \int_{\Omega_k(t)} \mkern-30mu \dd{\vb{S}} \pdv{\varphi\qty(\vb{x}, t)}{t}.
+  \label{eq:Newton}
+\end{equation}
+
+\begin{figure}[t]
+  \centering
+  \input{figures/coordinate_notation.tex}
+  \caption{\label{fig:diagram}Coordinate notation.}
+\end{figure}
