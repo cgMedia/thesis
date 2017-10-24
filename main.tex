@@ -22,7 +22,7 @@
 % This template has everything in the right order.
 % Just add real content and you're done!
 %
-\documentclass[mixedtoc]{msu-thesis}
+\documentclass[mixedtoc]{msu-thesis-custom}
 %
 % for a prettier, but possibly non-compliant table of contents use the [mixedtoc] option
 % for a plain table of contents use the [plaintoc] option
@@ -124,8 +124,8 @@ Your acknowledgements here.
 % May violate thesis office rules
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
-\import{chapters/01-bubbles/}{ch01}
-\import{chapters/02-quantum_dots/}{ch02}
+%\import{chapters/01-bubbles/}{ch01}
+%\import{chapters/02-quantum_dots/}{ch02}
 
 %
 % If you have pages that must appear in landscape mode, use the [lscape] documentclass option
@@ -147,9 +147,14 @@ Your acknowledgements here.
 %   \chapter{Second appendix}
 %   \end{appendices}
 %
-\appendix
-\chapter{Your appendix}
-%
+%\appendix
+%\chapter{Your appendix}
+
+\begin{appendices}
+  \import{chapters/appendices/}{A1-units}
+\end{appendices}
+
+
 \backmatter
 % The next lines add the dots back into the References/Bibliography heading
 % of the TOC.  Only uncomment this if you need to put the dots back in having removed them for Chapter headings.

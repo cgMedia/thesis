@@ -1,0 +1,94 @@
+\chapter{Conventions}
+
+\section{Fourier Transforms\label{sec:general transform}}
+
+The definition of the Fourier transform leaves some room to adopt conventions.
+I write the fully-generalized Fourier transform $f(t) \leftrightarrow F(\omega)$ pair as
+\begin{subequations}
+  \begin{align}
+    F(\omega) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1-s_1}}} \int_{-\infty}^{\infty} f(t) e^{i s_2 \omega t} \dd{t} \label{eq:forward transform} \\
+    f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
+  \end{align}
+\end{subequations}
+where the $s_1, s_2$ parameters allow for different normalization and frequency conventions. 
+Consequently, \cref{eq:backward transform} implies
+\begin{equation}
+  \partial_t f(t) \leftrightarrow -i \omega s_2 F(\omega).
+\end{equation}
+
+\section{Maxwell's Equations}
+
+\subsection{Time-domain}
+An unfortunate ambiguity in the prescription of electromagnetic units allows for unit systems that differ by more than simple scaling factors.
+In a unit-independant format, the time-domain Maxwell's equations become
+\begin{subequations}
+  \begin{align}
+    \div{\vb{E}} &= 4 \pi k_1 \rho \label{eq:gauss} \\
+    \curl{\vb{B}} &= 4 \pi k_2 \alpha \vb{J} + \frac{k_2 \alpha}{k_1} \pdv{\vb{E}}{t} \label{eq:ampere}\\
+    \div{\vb{B}} &= 0 \label{eq:no monopoles} \\
+    \curl{\vb{E}} &= - k_3 \pdv{\vb{B}}{t} \label{eq:faraday}
+  \end{align}
+  \label{eq:time-domain maxwell equations}
+\end{subequations}
+with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants (though one need only specify two of the four constants to pin down the unit system).
+
+From \cref{eq:no monopoles}, $\vb{B} = \curl{\vb{A}}$. 
+Then, using \cref{eq:faraday}, it becomes apparent that
+\begin{equation*}
+  \curl{\qty(\vb{E} + k_3 \pdv{\vb{A}}{t})} = 0
+\end{equation*}
+so I may take
+\begin{equation*}
+  \vb{E} = -\grad{V} - k_3 \pdv{\vb{A}}{t}.
+\end{equation*}
+Thus, in electorstatic systems, $\vb{E} = -\grad{V}$ regardless of units.
+By \cref{eq:gauss}, then,
+\begin{equation*}
+  \laplacian V = -4 \pi k_1 \rho
+\end{equation*}
+and thus
+\begin{equation*}
+  V(\vb{r}) = \int \frac{1}{k_1 \abs{\vb{r} - \vb{r}'}} \rho(\vb{r}') \dd[3]{\vb{r}'}
+\end{equation*}
+as
+\begin{equation*}
+  \laplacian \qty(\frac{1}{\abs{\vb{r} - \vb{r}'}}) = -4 \pi \delta(\vb{r} - \vb{r}').
+\end{equation*}
+This defines the \emph{scalar Green's function},
+\begin{equation}
+  g(\vb{r}, \vb{r}') \equiv \frac{1}{k_1 \abs{\vb{r} - \vb{r}'}},
+  \label{eq:scalar green}
+\end{equation}
+that relates charge to electric potential.
+
+\subsection{Frequency-domain}
+Suitably, the generalized Fourier transform of \cref{sec:general transform} means the frequency-domain analogues of \cref{eq:time-domain maxwell equations}
+become
+\begin{subequations}
+  \begin{align}
+    \div{\vb{E}} &= 4 \pi k_1 \rho \\
+    \curl{\vb{B}} &= 4 \pi k_2 \alpha \vb{J} - i \omega s_2 \frac{k_2 \alpha}{k_1} \vb{E} \\
+    \div{\vb{B}} &= 0 \\
+    \curl{\vb{E}} &= i \omega s_2 k_3 \vb{B}
+  \end{align}
+  \label{eq:frequency-domain maxwell equations}
+\end{subequations}
+
+Since \cref{eq:no monopoles} holds for any unit system,
+\begin{equation}
+  \vb{B} = \curl{\vb{A}}
+  \label{eq:vector potential}
+\end{equation}
+always.
+Combining \cref{eq:faraday,eq:vector potential} then gives
+\begin{equation}
+  \vb{E} = -\grad{V} - k_3 \pdv{\vb{A}}{t}.
+\end{equation}
+
+Ignoring dynamics so as to take $\vb{E} = -\grad{V}$, \cref{eq:gauss} gives
+\begin{equation}
+  \laplacian V = -4 \pi k_1 \rho
+\end{equation}
+in three dimensions.
+
+
