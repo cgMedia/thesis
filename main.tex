@@ -42,11 +42,14 @@
 \usepackage{newpxtext,newpxmath}
 
 % Set up the drop-caps
-\usepackage{Rothdn, lettrine}
-\renewcommand\LettrineFontHook{\Rothdnfamily}
+\usepackage{GoudyIn, Rothdn}
+\usepackage{lettrine}
+%\renewcommand\LettrineFontHook{\Rothdnfamily}
+\renewcommand\LettrineFontHook{\GoudyInfamily}
 
 % Load any extra packages here
 \usepackage{amsfonts}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{filecontents}
 \usepackage[draft]{graphicx}
 \usepackage{import}
