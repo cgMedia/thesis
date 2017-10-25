@@ -30,7 +30,11 @@ In a unit-independant format, the time-domain Maxwell's equations become
   \end{align}
   \label{eq:time-domain maxwell equations}
 \end{subequations}
-with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants (though one need only specify two of the four constants to pin down the unit system).
+with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants. 
+One need only specify two of the four constants to pin down the unit system, however; in particular 
+\begin{equation}
+  \frac{k_1}{k_2 k_3 \alpha} = c^2 \qquad \text{and} \qquad  k_3 = \frac{1}{\alpha}.
+\end{equation}
 
 From \cref{eq:no monopoles}, $\vb{B} = \curl{\vb{A}}$. 
 Then, using \cref{eq:faraday}, it becomes apparent that
@@ -48,7 +52,7 @@ By \cref{eq:gauss}, then,
 \end{equation*}
 and thus
 \begin{equation*}
-  V(\vb{r}) = \int \frac{1}{k_1 \abs{\vb{r} - \vb{r}'}} \rho(\vb{r}') \dd[3]{\vb{r}'}
+  V(\vb{r}) = \int \frac{1}{\abs{\vb{r} - \vb{r}'}} \frac{\rho(\vb{r}')}{k_1} \dd[3]{\vb{r}'}
 \end{equation*}
 as
 \begin{equation*}
@@ -56,7 +60,7 @@ as
 \end{equation*}
 This defines the \emph{scalar Green's function},
 \begin{equation}
-  g(\vb{r}, \vb{r}') \equiv \frac{1}{k_1 \abs{\vb{r} - \vb{r}'}},
+  g(\vb{r}, \vb{r}') \equiv \frac{1}{\abs{\vb{r} - \vb{r}'}},
   \label{eq:scalar green}
 \end{equation}
 that relates charge to electric potential.
@@ -73,22 +77,8 @@ become
   \end{align}
   \label{eq:frequency-domain maxwell equations}
 \end{subequations}
-
-Since \cref{eq:no monopoles} holds for any unit system,
+Combining the two curl equations gives
 \begin{equation}
-  \vb{B} = \curl{\vb{A}}
-  \label{eq:vector potential}
+  \curl{\curl{\vb{E}}} - k^2 s_2^2 \vb{E} = 4 \pi i \omega s_2 k_2 \vb{J}
 \end{equation}
-always.
-Combining \cref{eq:faraday,eq:vector potential} then gives
-\begin{equation}
-  \vb{E} = -\grad{V} - k_3 \pdv{\vb{A}}{t}.
-\end{equation}
-
-Ignoring dynamics so as to take $\vb{E} = -\grad{V}$, \cref{eq:gauss} gives
-\begin{equation}
-  \laplacian V = -4 \pi k_1 \rho
-\end{equation}
-in three dimensions.
-
-
+where $k^2 = \omega^2/c^2 = \omega^2 k_2/k_1$.
