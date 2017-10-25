@@ -6,8 +6,8 @@ The definition of the Fourier transform leaves some room to adopt conventions.
 I write the fully-generalized Fourier transform $f(t) \leftrightarrow F(\omega)$ pair as
 \begin{subequations}
   \begin{align}
-    F(\omega) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1-s_1}}} \int\limits_{-\infty}^{\infty} f(t) e^{i s_2 \omega t} \dd{t} \label{eq:forward transform} \\
-    f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int\limits_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
+    F(\omega) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1-s_1}}} \int_{-\infty}^{\infty} f(t) e^{i s_2 \omega t} \dd{t} \label{eq:forward transform} \\
+    f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
   \end{align}
 \end{subequations}
 where the $s_1, s_2$ parameters allow for different normalization and frequency conventions. 
@@ -82,7 +82,7 @@ therefore
 \begin{equation*}
   \grad^2 \pdv{\vb{E}}{t} - \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = 4\pi k_2 \qty(\pdv[2]{\vb{J}}{t} - c^2 \grad \div{\vb{J}}).
 \end{equation*}
-Immediately, the left-hand side gives the wave equation for $\partial_t \vb{E}$ and thus
+Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_t \vb{E}$ and thus
 \begin{equation}
   \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad_{\vb{r}'} \grad_{\vb{r}'}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
 \end{equation}

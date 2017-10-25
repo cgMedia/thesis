@@ -16,10 +16,7 @@ on the surface of the sphere. Similarly, from \cref{eq:boundary_conditions},
 due to the symmetries present in $x$ and $y$.
 As a result,
 \begin{equation}
-  \begin{gathered}
-    \varphi - \int \dd{S'} \varphi(\vb{x}') \, \partial_{\vu{n}'} G(\vb{x}, \vb{x}') = \\
-    v_0 a \cos(\theta) - \int \dd{S}' a u_z \cos(\theta) \, G(\vb{x}, \vb{x}'),
-  \end{gathered}
+    \varphi - \int \dd{S'} \varphi(\vb{x}') \, \partial_{\vu{n}'} G(\vb{x}, \vb{x}') = v_0 a \cos(\theta) - \int \dd{S}' a u_z \cos(\theta) \, G(\vb{x}, \vb{x}'),
 \end{equation}
 and it becomes apparent that only $\ell = 1, m = 0$ terms in \cref{eq:expansion theorem} remain after integrating.
 Consequently, the field becomes
@@ -59,10 +56,8 @@ Through this, we may compute the dynamics of each \bubble\ in the group, taking 
 We now consider two identical \bubbles\ arranged perpendicularly to an incident waveform as in \cref{fig:perpendicular}.
 Within the Born approximation, we may take \cref{eq:uniform field} as the incident field and use it in place of the total field on the right-hand side of \cref{eq:reduced Kirchoff-Helmholtz}, assuming negligible contributions from scattering. In doing so, the field everywhere becomes
 \begin{equation}
-  \begin{aligned}
-  \varphi(\vb{x}, t) = v_0(t) z &+ \frac{a^3}{3} \frac{\cos(\theta_1)}{\abs{\vb{x} - \vb{d}_{12}/2}^2}\qty\big[v_0 - u_1] \\
-                                &+ \frac{a^3}{3} \frac{\cos(\theta_2)}{\abs{\vb{x} + \vb{d}_{12}/2}^2}\qty\big[v_0 - u_2].
-  \end{aligned}
+  \varphi(\vb{x}, t) = v_0(t) z + \frac{a^3}{3} \frac{\cos(\theta_1)}{\abs{\vb{x} - \vb{d}_{12}/2}^2}\qty\big[v_0 - u_1]
+                                + \frac{a^3}{3} \frac{\cos(\theta_2)}{\abs{\vb{x} + \vb{d}_{12}/2}^2}\qty\big[v_0 - u_2].
 \end{equation}
 By inserting this into \cref{eq:Newton} for $\vb{x}_1$, we have
 \begin{equation}
