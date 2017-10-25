@@ -6,21 +6,20 @@ The definition of the Fourier transform leaves some room to adopt conventions.
 I write the fully-generalized Fourier transform $f(t) \leftrightarrow F(\omega)$ pair as
 \begin{subequations}
   \begin{align}
-    F(\omega) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1-s_1}}} \int_{-\infty}^{\infty} f(t) e^{i s_2 \omega t} \dd{t} \label{eq:forward transform} \\
-    f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
+    F(\omega) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1-s_1}}} \int\limits_{-\infty}^{\infty} f(t) e^{i s_2 \omega t} \dd{t} \label{eq:forward transform} \\
+    f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int\limits_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
   \end{align}
 \end{subequations}
 where the $s_1, s_2$ parameters allow for different normalization and frequency conventions. 
-Consequently, \cref{eq:backward transform} implies
+Of principal importance, \cref{eq:backward transform} implies
 \begin{equation}
   \partial_t f(t) \leftrightarrow -i \omega s_2 F(\omega).
 \end{equation}
 
 \section{Maxwell's Equations}
 
-\subsection{Time-domain}
 An unfortunate ambiguity in the prescription of electromagnetic units allows for unit systems that differ by more than simple scaling factors.
-In a unit-independant format, the time-domain Maxwell's equations become
+In a unit-independant format, Maxwell's equations become~\cite{jackson2007classical}
 \begin{subequations}
   \begin{align}
     \div{\vb{E}} &= 4 \pi k_1 \rho \label{eq:gauss} \\
@@ -33,7 +32,7 @@ In a unit-independant format, the time-domain Maxwell's equations become
 with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants. 
 One need only specify two of the four constants to pin down the unit system, however; in particular 
 \begin{equation}
-  \frac{k_1}{k_2 k_3 \alpha} = c^2 \qquad \text{and} \qquad  k_3 = \frac{1}{\alpha}.
+  \frac{k_1}{k_2 k_3 \alpha} = c^2 \qq{and} k_3 = \frac{1}{\alpha}.
 \end{equation}
 
 From \cref{eq:no monopoles}, $\vb{B} = \curl{\vb{A}}$. 
@@ -43,42 +42,49 @@ Then, using \cref{eq:faraday}, it becomes apparent that
 \end{equation*}
 so I may take
 \begin{equation*}
-  \vb{E} = -\grad{V} - k_3 \pdv{\vb{A}}{t}.
+  \vb{E} = -\grad{\varphi} - k_3 \pdv{\vb{A}}{t}.
 \end{equation*}
-Thus, in electorstatic systems, $\vb{E} = -\grad{V}$ regardless of units.
+Thus, in electorstatic systems, $\vb{E} = -\grad{\varphi}$ regardless of units.
 By \cref{eq:gauss}, then,
 \begin{equation*}
-  \laplacian V = -4 \pi k_1 \rho
+  \laplacian \varphi = -4 \pi k_1 \rho
 \end{equation*}
 and thus
 \begin{equation*}
-  V(\vb{r}) = \int \frac{1}{\abs{\vb{r} - \vb{r}'}} \frac{\rho(\vb{r}')}{k_1} \dd[3]{\vb{r}'}
+  \varphi(\vb{r}) = \int \frac{1}{\abs{\vb{r} - \vb{r}'}} \frac{\rho(\vb{r}')}{k_1} \dd[3]{\vb{r}'}
 \end{equation*}
 as
 \begin{equation*}
   \laplacian \qty(\frac{1}{\abs{\vb{r} - \vb{r}'}}) = -4 \pi \delta(\vb{r} - \vb{r}').
 \end{equation*}
-This defines the \emph{scalar Green's function},
+This defines the \emph{Laplace-kernel scalar Green's function} as
 \begin{equation}
-  g(\vb{r}, \vb{r}') \equiv \frac{1}{\abs{\vb{r} - \vb{r}'}},
+  g(\vb{r}, \vb{r}') \equiv \frac{1}{\abs{\vb{r} - \vb{r}'}}.
   \label{eq:scalar green}
 \end{equation}
-that relates charge to electric potential.
 
-\subsection{Frequency-domain}
-Suitably, the generalized Fourier transform of \cref{sec:general transform} means the frequency-domain analogues of \cref{eq:time-domain maxwell equations}
-become
-\begin{subequations}
-  \begin{align}
-    \div{\vb{E}} &= 4 \pi k_1 \rho \\
-    \curl{\vb{B}} &= 4 \pi k_2 \alpha \vb{J} - i \omega s_2 \frac{k_2 \alpha}{k_1} \vb{E} \\
-    \div{\vb{B}} &= 0 \\
-    \curl{\vb{E}} &= i \omega s_2 k_3 \vb{B}
-  \end{align}
-  \label{eq:frequency-domain maxwell equations}
-\end{subequations}
-Combining the two curl equations gives
+\subsection{Vector wave equation}
+
+From \cref{eq:faraday,eq:ampere},
 \begin{equation}
-  \curl{\curl{\vb{E}}} - k^2 s_2^2 \vb{E} = 4 \pi i \omega s_2 k_2 \vb{J}
+  \curl{\curl{\vb{E}}} + \frac{1}{c^2} \pdv[2]{\vb{E}}{t} = -4\pi k_2 \pdv{\vb{J}}{t}.
+  \label{eq:vector wave equation}
 \end{equation}
-where $k^2 = \omega^2/c^2 = \omega^2 k_2/k_1$.
+Taking the divergence of both sides and removing one time derivative,
+\begin{equation*}
+  \frac{1}{c^2} \div{\pdv{\vb{E}}{t}} = -4 \pi k_2 \div{\vb{J}}.
+\end{equation*}
+As $\curl{\curl{\vb{A}}} = \grad{\qty(\div{\vb{A}})} - \grad^2{\vb{A}}$, the time derivative of \cref{eq:vector wave equation} becomes
+\begin{equation*}
+  \grad{\qty(\div{\pdv{\vb{E}}{t}})} - \grad^2 \pdv{\vb{E}}{t} + \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = -4\pi k_2 \pdv[2]{\vb{J}}{t}
+\end{equation*}
+therefore
+\begin{equation*}
+  \grad^2 \pdv{\vb{E}}{t} - \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = 4\pi k_2 \qty(\pdv[2]{\vb{J}}{t} - c^2 \grad \div{\vb{J}}).
+\end{equation*}
+Immediately, the left-hand side gives the wave equation for $\partial_t \vb{E}$ and thus
+\begin{equation}
+  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad_{\vb{r}'} \grad_{\vb{r}'}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+\end{equation}
+where $t'_R \equiv t' - \abs{\vb{r} - \vb{r}'}/c$ and $\partial_t \vb{P} \equiv \vb{J}$.
+
