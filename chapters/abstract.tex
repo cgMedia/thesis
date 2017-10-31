@@ -1,16 +1,18 @@
 \begin{abstract}
-  \dropcap{T}{his} work offers the interested reader a tour of multiphysics models in the context of radiative systems.
-  \Cref{ch:intro} gives an introduction to the idea of multiphysics modeling at-scale, including continuum prescriptions, where they excel, and the conditions under which they break down thereby motivating the remainder of this thesis.
+  \dropcap{T}{his} work offers the interested reader a tour of multiphysics simulations in the context of radiative systems at the level of individual particles.
+  As such, these models afford an extremely high degree of fidelity in the underlying physics without recourse to continuum or spatially-averaged approximations.
 
-  \cref{ch:bubbles} develops some of the machinery for radiative modeling by way of acoustic (scalar) waves impinging upon light \bubbles.
-  By considering \bubbles{} with a radius much smaller than the wavelength of the incident sound, the problem reduces to one of Laplace-kernel scattering (i.e.\ scattering without retardation effects).
-  The incident and scattered fields produce pressure variations over the surface of each \bubble{} that sets each \bubble{} into motion according to Newton's second law.
+  First, I explore the dynamics of \bubbles{} set into motion by ambient acoustic radiation in a fluid described by potential flow in the long-wavelength limit.
+  Variations in the local surface pressure caused by scattering events from each \bubble{} sets each \bubble{} into motion in accordance with Newton's second law.
+  By expanding this pressure in terms of spherical harmonics---natural eigenfunctions of the unretarded radiation kernel---we recover an analytic description of the force on each \bubble{} due to an incident waveform with high-order numerical integrations relating the radiation incident on one \bubble{} to the surface pressure on another.
+  These simulations predict a dominant translational effect along the direction of propagation of the incident waveform, though they also reveal largely dipolar interactions between \bubbles{} that produce secondary expansions and contractions of the collective \bubble{} system.
 
-  \Cref{ch:quantum dots} extends the idea of ODE\nomenclature{ODE}{Ordinary differential equation\nomrefpage}-coupled radiation to electromagnetic systems with internal degrees of freedom.
-  The optical Bloch equations give the evolution of a two-level quantum system (a ``quantum dot'') under the influence of an external electromagnetic field---this evolution then produces secondary radiation that couples a collection of \qds{} together.
-  By treating the secondary radiation semiclassically (i.e.\ having no quantum degrees of freedom), we may compute the radiated field as a pairwise interaction between point particles.
-  Thus, the overall simulation proceeds as an iteration of two steps: determining the electric field at the location of every \qd{} and solving $n$ implicitly-coupled ODEs to advance the system by one timestep.
-  By applying a rotating-frame transformation and subsequently ignoring high-frequency terms, we effect simulations with orders of magnitude fewer timesteps than in a fixed-frame simulation with demonstrably similar accuracy.
+  Extending the idea of radiative effects coupling to a system driven by an ordinary differential equation, the optical Bloch equations give the evolution of a quantum dot under the influence of an external electromagnetic field.
+  This evolution then produces secondary radiation that couples a collection of \qds{} together.
+  In a semiclassical model, radiated fields become a pairwise calculation between \qds{} (without need for a radiation grid or mesh) that subsequently drive the evolution of a set of (implicitly-coupled) Bloch equations.
+  In ensembles of up to $10^4$ \qds{}, this model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
+
+
 
   \Cref{ch:aim} inherits the same physical system from \cref{ch:quantum dots} with a vastly accelerated computational scheme as the quadratic cost (in both time and space) of evaluating radiated fields between particles severely hampers calculations involving more than $\num{10000}$ \qds{}.
   To remedy this, we consider the interactions between distant particles as occuring on a superimposed spatial grid.
