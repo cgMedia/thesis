@@ -1,3 +1,19 @@
 \begin{abstract}
-  \lipsum
+  \dropcap{T}{his} work offers the interested reader a tour of multiphysics models in the context of radiative systems.
+  \Cref{ch:intro} gives an introduction to the idea of multiphysics modeling at-scale, including continuum prescriptions, where they excel, and the conditions under which they break down thereby motivating the remainder of this thesis.
+
+  \cref{ch:bubbles} develops some of the machinery for radiative modeling by way of acoustic (scalar) waves impinging upon light \bubbles.
+  By considering \bubbles{} with a radius much smaller than the wavelength of the incident sound, the problem reduces to one of Laplace-kernel scattering (i.e.\ scattering without retardation effects).
+  The incident and scattered fields produce pressure variations over the surface of each \bubble{} that sets each \bubble{} into motion according to Newton's second law.
+
+  \Cref{ch:quantum dots} extends the idea of ODE\nomenclature{ODE}{Ordinary differential equation\nomrefpage}-coupled radiation to electromagnetic systems with internal degrees of freedom.
+  The optical Bloch equations give the evolution of a two-level quantum system (a ``quantum dot'') under the influence of an external electromagnetic field---this evolution then produces secondary radiation that couples a collection of \qds{} together.
+  By treating the secondary radiation semiclassically (i.e.\ having no quantum degrees of freedom), we may compute the radiated field as a pairwise interaction between point particles.
+  Thus, the overall simulation proceeds as an iteration of two steps: determining the electric field at the location of every \qd{} and solving $n$ implicitly-coupled ODEs to advance the system by one timestep.
+  By applying a rotating-frame transformation and subsequently ignoring high-frequency terms, we effect simulations with orders of magnitude fewer timesteps than in a fixed-frame simulation with demonstrably similar accuracy.
+
+  \Cref{ch:aim} inherits the same physical system from \cref{ch:quantum dots} with a vastly accelerated computational scheme as the quadratic cost (in both time and space) of evaluating radiated fields between particles severely hampers calculations involving more than $\num{10000}$ \qds{}.
+  To remedy this, we consider the interactions between distant particles as occuring on a superimposed spatial grid.
+  The translational symmetries of this grid then facillitate rapid field evaluations by exploiting the circulant structure of the resulting operator.
+
 \end{abstract}

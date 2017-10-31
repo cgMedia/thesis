@@ -38,7 +38,7 @@
 % If the thesis office requires Times, we'll give them Times
 % You can experiment with other font packages here if you like.
 % If you are using XeLaTeX or LuaLaTeX load the Times or Times New Roman font with \setmainfont
-%\usepackage{newtxtext,newtxmath} 
+%\usepackage{newtxtext,newtxmath}
 \usepackage{newpxtext,newpxmath}
 
 % Set up the drop-caps
@@ -56,6 +56,7 @@
 \usepackage{lipsum}
 \usepackage{mathtools}
 \usepackage{microtype}
+\usepackage[intoc]{nomencl}
 \usepackage{paralist}
 \usepackage{pgfplots}
 \usepackage{physics}
@@ -68,7 +69,7 @@
 \input{extra/macros}
 
 % You must specify the title of your thesis, your name, the field of study (not department), and the year
-\title{Some sort of thesis-like document}
+\title{The QuEST for active media models}
 \author{Connor A.\ Glosser}
 \fieldofstudy{Physics \& Electrical Engineering} % This should be in sentence case
 \date{\today}
@@ -114,18 +115,21 @@ Your acknowledgements here.
 \listoffigures % comment this out if you have no figures
 %
 % If you have a list of abbreviations/symbols it would go here preceded by a \clearpage
-% See the class documentation and the Memoir manual for how to create other lists 
+% See the class documentation and the Memoir manual for how to create other lists
 %
+\makenomenclature
+\import{extra/}{abbreviations}
+
 \mainmatter
 %
 % The next line removes the dots in chapter headings in the TOC
 % May violate thesis office rules
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
+\import{chapters/00-intro/}{ch00}
 \import{chapters/01-bubbles/}{ch01}
 \import{chapters/02-quantum_dots/}{ch02}
 
-%
 % If you have pages that must appear in landscape mode, use the [lscape] documentclass option
 % and enclose the pages in a {landscape} environment.
 %\clearpage\pagestyle{lscape} % first clear the page and change the pagestyle
@@ -137,9 +141,9 @@ Your acknowledgements here.
 %\pagestyle{plain} % remember to change the pagestyle back to plain
 %
 %
-% If you have appendices, they would go here.  
+% If you have appendices, they would go here.
 % Comment these lines out if you don't
-% If you have more than one appendix, you need to use 
+% If you have more than one appendix, you need to use
 %   \begin{appendices}
 %   \chapter{First appendix}
 %   \chapter{Second appendix}
