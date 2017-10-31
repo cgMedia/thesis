@@ -8,11 +8,11 @@ As we have restricted our particles to completely spherical geometries, the sphe
 give simple eigenfunctions of the operators in \cref{eq:operator_kirchoff}.
 As a result, they lend themselves well to an expansion of $\varphi$ on the surface of each \bubble\ with respect to the \bubble's center,
 \begin{equation} \label{eq:potential_expansion}
-  \varphi(\vb{x}\in\Omega_k, t) = \sum_{\ell \ge 0} \sum_{\abs{m} \le \ell} C^k_{\ell m}(t) \; Y_{\ell m}\qty(\theta, \phi).
+  \varphi(\vb{r}\in\Omega_k, t) = \sum_{\ell \ge 0} \sum_{\abs{m} \le \ell} C^k_{\ell m}(t) \; Y_{\ell m}\qty(\theta, \phi).
 \end{equation}
 By considering \cref{eq:Bernoulli} and expressing the local velocity potential at each of the $\Omega_k$ as a linear combination of spherical harmonics, we have a complete representation of the body force acting on each \bubble,
 \begin{align}
-  \vb{F}_\text{body}^k(t) &= - \int_{\Omega_k(t)} \mkern-30mu \dd{\vb{S}} p(\vb{x}\in \Omega_k, t) \nonumber \\
+  \vb{F}_\text{body}^k(t) &= - \int_{\Omega_k(t)} p(\vb{r}, t) \dd{\vb{S}} \nonumber \\
   &= \rho_0 \sqrt{\frac{2\pi}{3}}r^2 \Big(\qty[\dot{C}^k_{11}(t) - \dot{C}^k_{1\, -1}(t)]\vu{x} + i\qty[\dot{C}^k_{11}(t) + \dot{C}^k_{1\,-1}(t)]\vu{y} - \sqrt{2}\dot{C}^k_{10}(t)\vu{z}\Big)
 \end{align}
 due to the orthogonality of dipole terms with the rest of the multipoles.
@@ -25,7 +25,7 @@ The problem then becomes one of solving a system of linear equations that we may
 with the overbar denoting a matrix quantity.
 We define the elements of $\boldsymbol{\mathcal{F}}$ as projections of the incident field onto local spherical harmonics,
 \begin{equation}
-  \mathcal{F}_{\ell m}^k = \int_{\Omega_k(t)} \mkern-30mu \dd{A} Y^*_{\ell m}(\theta, \phi) \varphi_\text{inc}(\vb{x}, t),
+  \mathcal{F}_{\ell m}^k = \int_{\Omega_k(t)} \mkern-30mu \dd{A} Y^*_{\ell m}(\theta, \phi) \varphi_\text{inc}(\vb{r}, t),
   \label{eq:forcing projection}
 \end{equation}
 and detail $\mathcal{Z}^{jk}_{\ell m, \ell' m'}$ for two cases: $j = k$ and $j \not = k$.
@@ -36,10 +36,10 @@ In the instances where $j = k$, \cref{eq:operator_kirchoff} propagates effects o
 \end{equation}
 after exploiting the well-known expansion theorem for \cref{eq:green's function},
 \begin{equation}
-  G(\vb{x}, \vb{x}') = \sum_{\ell, m}\frac{1}{2\ell + 1}\frac{r_<^\ell}{r_>^{\ell + 1}}Y_{\ell m}\qty(\theta, \phi)Y^*_{\ell, m}\qty(\theta', \phi')
+  g(\vb{r}, \vb{r}') = \sum_{\ell, m}\frac{1}{2\ell + 1}\frac{r_<^\ell}{r_>^{\ell + 1}}Y_{\ell m}\qty(\theta, \phi)Y^*_{\ell, m}\qty(\theta', \phi')
   \label{eq:expansion theorem}
 \end{equation}
-where $r_< = \mathrm{min}\qty(\abs{\vb{x}},\abs{\vb{x}'})$ and $r_> = \mathrm{max}\qty(\abs{\vb{x}}, \abs{\vb{x}'})$.
+where $r_< = \mathrm{min}\qty(\abs{\vb{r}},\abs{\vb{r}'})$ and $r_> = \mathrm{max}\qty(\abs{\vb{r}}, \abs{\vb{r}'})$.
 A description of the off-diagonal terms where $j \not = k$ proceeds much the same way, though the surface expansions no longer share a local origin, complicating the projections.
 Translation operators for the spherical harmonics~\cite{Caola1978,Greengard1987} allow analytic expressions for these matrix elements, though we eschew such operators in favor of numerical integration for speed.
 
@@ -55,8 +55,8 @@ For rigid \bubbles\ only $\ell = 1$ terms contribute to center-of-mass motion, t
 The inversion in step (ii) above requires some care; by simply inverting the entire propagation operator, $\hat{\mathcal{D}} - \hat{\mathcal{S}}$, to give a single surface pressure, \cref{eq:Newton} reduces to a differential equation of the form
 \begin{equation}
   \label{eq:malformed}
-  \dot{\vb{x}}_k = f(t, \vb{x}_k, \dot{\vb{x}}_k).
+  \dot{\vb{r}}_k = f(t, \vb{r}_k, \dot{\vb{r}}_k).
 \end{equation}
-This presents a number of irregularities with conventional integration schemes and will rapidly diverge towards $\pm \infty$ due to the additional $\dot{\vb{x}}_k$ on the right if implemented \naive ly.
+This presents a number of irregularities with conventional integration schemes and will rapidly diverge towards $\pm \infty$ due to the additional $\dot{\vb{r}}_k$ on the right if implemented \naive ly.
 To remedy this, we note that $\hat{\mathcal{S}}$ serves to produce \emph{only} a reaction or drag term on each \bubble\ that impedes motion.
-By maintaining quantities for the inversion of $\hat{\mathcal{D}}$ and $\hat{\mathcal{S}}$ separately, we remove the explicit dependence on $\dot{\vb{x}}_k$ by introducing a linear coefficient in the form of an additional mass term---given by the $\dot{\vb{x}}_k$-dependent contribution in the single-layer $\hat{\mathcal{S}}$ operator---when solving \cref{eq:Newton}. 
+By maintaining quantities for the inversion of $\hat{\mathcal{D}}$ and $\hat{\mathcal{S}}$ separately, we remove the explicit dependence on $\dot{\vb{r}}_k$ by introducing a linear coefficient in the form of an additional mass term---given by the $\dot{\vb{r}}_k$-dependent contribution in the single-layer $\hat{\mathcal{S}}$ operator---when solving \cref{eq:Newton}. 
