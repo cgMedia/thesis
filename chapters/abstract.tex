@@ -1,14 +1,14 @@
 \begin{abstract}
-  \dropcap{T}{his} work offers the interested reader a tour of multiphysics simulations in the context of radiative systems at the level of individual particles.
-  As such, these models afford an extremely high degree of fidelity in the underlying physics without recourse to continuum or spatially-averaged approximations.
+  \dropcap{T}{his} work presents new approaches to simulations of active media at the level of individual particles.
+  Active systems contain internal, nonlinear, degrees of freedom beyond those of simple scattering systems, thus these new models afford an extremely high degree of fidelity in the underlying physics without recourse to continuum or spatially-averaged approximations.
 
   First, I explore the dynamics of \bubbles{} set into motion by ambient acoustic radiation in a fluid described by potential flow in the long-wavelength limit.
-  Variations in the local surface pressure caused by scattering events from each \bubble{} sets each \bubble{} into motion in accordance with Newton's second law.
-  By expanding this pressure in terms of spherical harmonics---natural eigenfunctions of the unretarded radiation kernel---we recover an analytic description of the force on each \bubble{} due to an incident waveform with high-order numerical integrations relating the radiation incident on one \bubble{} to the surface pressure on another.
+  Variations in the local surface pressure caused by scattering from each \bubble{} sets each \bubble{} into motion in accordance with Newton's second law.
+  By expanding this pressure in terms of spherical harmonics---natural eigenfunctions of the unretarded radiation kernel---I recover an analytic description of the force on individual \bubbles{} due to an incident waveform. with high-order numerical integrations relating the radiation incident on one \bubble{} to the surface pressure on another.
   These simulations predict a dominant translational effect along the direction of propagation of the incident waveform, though they also reveal largely dipolar interactions between \bubbles{} that produce secondary expansions and contractions of the collective \bubble{} system.
 
-  Extending the idea of radiative effects coupling to a system driven by an ordinary differential equation, the optical Bloch equations give the evolution of a quantum dot under the influence of an external electromagnetic field.
-  This evolution then produces secondary radiation that couples a collection of \qds{} together.
+  Extending my approach from acoustic to electromagnetic systems, I apply apply it to a collection of quantum dots: ``artifical'' two-level atoms with a tuneable energy structure.
+  The optical Maxwell-Bloch equations give the evolution of quantum dots under the influence of electromagnetic fields; this evolution then produces secondary radiation that couples a collection of \qds{} together.
   In a semiclassical model, radiated fields become a pairwise calculation between \qds{} (without need for a radiation grid or mesh) that subsequently drive the evolution of a set of (implicitly-coupled) Bloch equations.
   In ensembles of up to $10^4$ \qds{}, this model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
 
