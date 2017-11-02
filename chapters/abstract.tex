@@ -10,12 +10,11 @@
   Extending my approach from acoustic to electromagnetic systems, I apply apply it to a collection of quantum dots: ``artifical'' two-level atoms with a tuneable energy structure.
   The optical Maxwell-Bloch equations give the evolution of quantum dots under the influence of electromagnetic fields; this evolution then produces secondary radiation that couples a collection of \qds{} together.
   In a semiclassical model, radiated fields become a pairwise calculation between \qds{} (without need for a radiation grid or mesh) that subsequently drive the evolution of a set of (implicitly-coupled) Bloch equations.
-  In ensembles of up to $10^4$ \qds{}, this model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
+  In ensembles of up to $\num{10000}$ \qds{}, this model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
 
-
-
-  \Cref{ch:aim} inherits the same physical system from \cref{ch:quantum dots} with a vastly accelerated computational scheme as the quadratic cost (in both time and space) of evaluating radiated fields between particles severely hampers calculations involving more than $\num{10000}$ \qds{}.
-  To remedy this, we consider the interactions between distant particles as occuring on a superimposed spatial grid.
-  The translational symmetries of this grid then facillitate rapid field evaluations by exploiting the circulant structure of the resulting operator.
-
+  The remainder of the work uses the same physical \qd{} system with a nod towards computational device design.
+  I detail an improved propagation algorithm  to reduce the time and space complexity of the simulation dramatically, thereby facilitating rapid analysis of promising device structures.
+  The algorithm makes use of physical and numerical approximations to effect large-scale calculations in reasonable CPU time.
+  A rotating-frame approximation removes high frequency components in the evolution of the system while simultaneously preserving accurate interference phenomena in space, thereby affording far larger simulation timesteps.
+  Additionally, projecting the source current distribution onto a regular spatial grid makes use of a low-rank approximation to the field propagator to communicate radiation information between distant groups of particles via fast Fourier transforms in a manner reminiscent of fast multipole methods.
 \end{abstract}
