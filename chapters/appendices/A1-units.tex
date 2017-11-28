@@ -57,10 +57,15 @@ as
 \begin{equation*}
   \laplacian \qty(\frac{1}{\abs{\vb{r} - \vb{r}'}}) = -4 \pi \delta(\vb{r} - \vb{r}').
 \end{equation*}
-This defines the \emph{Laplace-kernel scalar Green's function} as
+This defines the \emph{Laplace-kernel Green's function} as
 \begin{equation}
-  g(\vb{r}, \vb{r}') \equiv \frac{1}{\abs{\vb{r} - \vb{r}'}}.
+  g_L(\vb{r}) \equiv \frac{1}{\abs{\vb{r}}}.
   \label{eq:scalar green}
+\end{equation}
+Analogously, the \emph{Helmholtz-kernel} and \emph{Wave-kernel} Green's functions become
+\begin{equation}
+  g_H(\vb{r}, k) \equiv \frac{e^{-i k \abs{\vb{r}}}}{\abs{\vb{r}}} \qquad
+  g_W(\vb{r}, t) \equiv \frac{\delta(t - \abs{\vb{r}}/c)}{\abs{\vb{r}}}
 \end{equation}
 
 \subsection{Vector wave equation}
@@ -83,8 +88,12 @@ therefore
   \grad^2 \pdv{\vb{E}}{t} - \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = 4\pi k_2 \qty(\pdv[2]{\vb{J}}{t} - c^2 \grad \div{\vb{J}}).
 \end{equation*}
 Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_t \vb{E}$ and thus
+\begin{equation*}
+  \pdv{t} \vb{E}(\vb{r}, t) = g_W(\vb{r}, t) \ast -k_2\qty(\pdv[2]{t} - c^2 \grad \div) \vb{J}(\vb{r}, t)
+\end{equation*}
+from which it follows
 \begin{equation}
-  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad_{\vb{r}'} \grad_{\vb{r}'}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
 \end{equation}
 where $t'_R \equiv t' - \abs{\vb{r} - \vb{r}'}/c$ and $\partial_t \vb{P} \equiv \vb{J}$.
 
