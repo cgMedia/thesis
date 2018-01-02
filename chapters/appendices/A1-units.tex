@@ -59,13 +59,13 @@ as
 \end{equation*}
 This defines the \emph{Laplace-kernel Green's function} as
 \begin{equation}
-  g_L(\vb{r}) \equiv \frac{1}{\abs{\vb{r}}}.
+  g(\vb{r}) \equiv \frac{1}{\abs{\vb{r}}}.
   \label{eq:scalar green}
 \end{equation}
 Analogously, the \emph{Helmholtz-kernel} and \emph{Wave-kernel} Green's functions become
 \begin{equation}
-  g_H(\vb{r}, k) \equiv \frac{e^{-i k \abs{\vb{r}}}}{\abs{\vb{r}}} \qquad
-  g_W(\vb{r}, t) \equiv \frac{\delta(t - \abs{\vb{r}}/c)}{\abs{\vb{r}}}
+  g(\vb{r}; k) \equiv \frac{e^{-i k \abs{\vb{r}}}}{\abs{\vb{r}}} \qquad
+  g(\vb{r}; t) \equiv \frac{\delta(t - \abs{\vb{r}}/c)}{\abs{\vb{r}}}
 \end{equation}
 
 \subsection{Vector wave equation}
@@ -89,7 +89,7 @@ therefore
 \end{equation*}
 Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_t \vb{E}$ and thus
 \begin{equation*}
-  \pdv{t} \vb{E}(\vb{r}, t) = g_W(\vb{r}, t) \ast -k_2\qty(\pdv[2]{t} - c^2 \grad \div) \vb{J}(\vb{r}, t)
+  \pdv{t} \vb{E}(\vb{r}, t) = g(\vb{r}; t) \ast -k_2\qty(\pdv[2]{t} - c^2 \grad \div) \vb{J}(\vb{r}, t)
 \end{equation*}
 from which it follows
 \begin{equation}
