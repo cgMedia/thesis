@@ -1,3 +1,18 @@
-\section{Introduction}
+%\section{Problem statement}
+\section{Scribbles and ravings}
 
-\dropcap{H}{aving} described a framework for simulating the evolution of pointlike \qds{} in \cref{ch:quantum dots}, I now turn to details of an improved algorithm for simulating large quantities of particles with dramatically reduced space and time complexities.
+An incident, time-dependent, electric field---denoted $\vb{E}_\text{inc}(\vb{r}, t)$---illuminates a collection of $N_s$ \qds{}, each in posession of an independent density matrix $\hat{\rho}$.
+Each \qd{} evolves according to the Liouville equation,
+\begin{equation}
+  \dv{\hat{\rho}}{t} = \frac{-i}{\hbar} \commutator{\hat{\mathcal{H}}(t)}{\hat{\rho}} - \hat{\mathcal{D}}\qty[\hat{\rho}], 
+\end{equation}
+where the off-diagonal terms of $\hat{\mathcal{H}}$ couple $\hat{\rho}$ to the local electric field through internal absorption dynamics and $\hat{\mathcal{D}}\qty[\hat{\rho}]$ describes emission effects phenomenologically.
+
+\noindent\rule{\textwidth}{1pt}
+
+\begin{equation}
+  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R)}{\abs{\vb{r} - \vb{r}'}} \qty( \pdv[2]{t} - c^2 \grad \div{} ) \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \label{eq:propagator}
+\end{equation}
+
+The cost of evaluating \cref{eq:propagator} pairwise between the $N_s$ discrete elements of $\vb{P}$ quickly 
