@@ -1,18 +1,21 @@
-%\section{Problem statement}
-\section{Scribbles and ravings}
+\section{Introduction}
 
-An incident, time-dependent, electric field---denoted $\vb{E}_\text{inc}(\vb{r}, t)$---illuminates a collection of $N_s$ \qds{}, each in posession of an independent density matrix $\hat{\rho}$.
-Each \qd{} evolves according to the Liouville equation,
+We wish to accelerate the (discrete) calculation of 
 \begin{equation}
-  \dv{\hat{\rho}}{t} = \frac{-i}{\hbar} \commutator{\hat{\mathcal{H}}(t)}{\hat{\rho}} - \hat{\mathcal{D}}\qty[\hat{\rho}], 
+  F(\vb{r}, t) = \iint_{} g(\vb{r} - \vb{r}'; t - t') J(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \label{eq:general integral equation}
 \end{equation}
-where the off-diagonal terms of $\hat{\mathcal{H}}$ couple $\hat{\rho}$ to the local electric field through internal absorption dynamics and $\hat{\mathcal{D}}\qty[\hat{\rho}]$ describes emission effects phenomenologically.
+between a set of source and observation points (often---but not necessarily---coincident).
+Here, $F$, $g$, and $J$ represent a field, propagator, and source distribution and each can have a number of different properties (such as bandlimitedness or a dyadic structure) depending on the physics under consideration.
+Tree algorithms---such as the fast-multipole (FMM)~\cite{Greengard1987} and plane-wave time-domain (PWTD)~\cite{Ergin1999} methods---work well for ``standard'' interactions where one can find an expansion theorem for $g(\vb{r} - \vb{r}')$ (i.e. $g(\vb{r} - \vb{r}') \approx \sum_i a_i(\vb{r}) b_i(\vb{r}')$).
+The frequency-shifting (rotating-wave) arguments made in \cref{ch:quantum dots} make this decidedly more complicated, however: by ignoring high-frequency quantities in favor of assumed spatial phase factors, rotating-frame propagators do not arise as solutions to any (known) differential equation (unlike conventional Green's functions) making it all but completely impossible to exploit their mathematical structure.
+Consequently, acceleration techniques that hinge upon alternative representations of $J(\vb{r}, t)$---not $g(\vb{r} - \vb{r}')$---in \cref{eq:general integral equation} have significant advantages in the systems under consideration here.
 
-\noindent\rule{\textwidth}{1pt}
+The space-time translational invariance of $\vb{g}(\vb{r} - \vb{r}'; t - t')$ in \cref{eq:general integral equation} imposes 1
 
-\begin{equation}
-  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R)}{\abs{\vb{r} - \vb{r}'}} \qty( \pdv[2]{t} - c^2 \grad \div{} ) \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
-  \label{eq:propagator}
-\end{equation}
-
-The cost of evaluating \cref{eq:propagator} pairwise between the $N_s$ discrete elements of $\vb{P}$ quickly 
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/toeplitz_matrix}
+  \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ propagation kernel on a $5 \times 5 \times 5$ grid.
+  As all of the unique elements lie along the first column, an FFT efficiently diagonalizes the ``circulant augmentation'' (formed by mirroring appropriate elements/blocks).}
+\end{figure}

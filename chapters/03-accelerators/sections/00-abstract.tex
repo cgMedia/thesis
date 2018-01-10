@@ -1,3 +1,6 @@
-\section{Introduction}
+\section{Abstract}
 
-\dropcap{H}{aving} described a framework for simulating the evolution of pointlike \qds{} in \cref{ch:quantum dots}, I now turn to details of an improved algorithm for simulating large quantities of particles with dramatically reduced space and time complexities.
+\dropcap{T}he Maxwell-Bloch algorithm of \cref{ch:quantum dots} scales poorly for large numbers of quantum dots due to an implicit $\mathcal{O}(n^2)$ spatial complexity in the propagation calculation (\cref{eq:zmatrix,eq:projections}).
+As many physical systems have the same mathematical structure, numerous techniques exist to reduce the poor scaling of these convolutions with fully controllable error.
+This chapter will explain this bottleneck, several acceleration schemes that one might use to alleviate it, and, why we feel one particular variety of accelerator works best.
+Additionally, I will detail the mathematics of such an acceleration technique, offer a reference implementation online, and give physical results found through simulating extended systems.
