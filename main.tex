@@ -21,9 +21,9 @@
 %
 % This template has everything in the right order.
 % Just add real content and you're done!
-%
+
 \documentclass[mixedtoc]{msu-thesis-custom}
-%
+
 % for a prettier, but possibly non-compliant table of contents use the [mixedtoc] option
 % for a plain table of contents use the [plaintoc] option
 % for a horrendous looking, but possibly required table of contents, use the [boldtoc] option
@@ -68,6 +68,8 @@
 \input{extra/pgf_settings}
 \input{extra/macros}
 
+\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
+
 
 \setcounter{chapter}{-1} % Zero-index the chapters, just to be cheeky.
 
@@ -76,7 +78,6 @@
 \author{Connor A.\ Glosser}
 \fieldofstudy{Physics \& Electrical Engineering} % This should be in sentence case
 \date{\today}
-
 
 % If you want a dedication page, specify the text of the dedication here and uncomment the next command.
 %
@@ -117,7 +118,7 @@ Your acknowledgements here.
 \listoftables % comment this out if you have no tables
 \clearpage
 \listoffigures % comment this out if you have no figures
-%
+
 % If you have a list of abbreviations/symbols it would go here preceded by a \clearpage
 % See the class documentation and the Memoir manual for how to create other lists
 %
@@ -130,9 +131,9 @@ Your acknowledgements here.
 % May violate thesis office rules
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
-%\import{chapters/00-intro/}{ch00}
-%\import{chapters/01-bubbles/}{ch01}
-%\import{chapters/02-quantum_dots/}{ch02}
+\import{chapters/00-intro/}{ch00}
+\import{chapters/01-bubbles/}{ch01}
+\import{chapters/02-quantum_dots/}{ch02}
 \import{chapters/03-accelerators/}{ch03}
 
 % If you have pages that must appear in landscape mode, use the [lscape] documentclass option

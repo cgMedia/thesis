@@ -24,7 +24,7 @@
 
 \begin{figure}
   \centering
-  \input{figures/frame_comparison}
+  \conditionalFigureInput{figures/frame_comparison}
   \caption{
     Comparison of $\rho_{00}(t)$ using both fixed (59959 timesteps) and rotating (160 timesteps) reference frames for interacting quantum dots.
     Both frames produce largely the same trajectory, however the inset spy reveals the fixed frame contains a minute oscilliatory term that the rotating frame does not.
@@ -44,7 +44,7 @@ We perform simulations of systems of \qds{} randomly distributed throughout a si
 
 \begin{figure}
   \centering
-  \input{figures/density_stats}
+  \conditionalFigureInput{figures/density_stats}
   \caption{\label{fig:density stats}Population dynamics of adjacent \qds{} (top, shown with the trajectory of a \qd{} driven exclusively by the external laser in black) and a 1024-particle neighborhood (dots (1) and (2) maintain their separation and orientation between simulations).
     The interaction between particles gives a greatly diminished response to the external pulse through a dynamical detuning of the two-dot system.
     The majority of the neighboring particles in the 1024-dot system follow trajectories nearly identical to that prescribed by the laser (omitted for clarity); many-dot effects, however, produce significant oscillatory modes in the evolution of selected \qds{} (shown in gray).
@@ -65,7 +65,7 @@ Specifically, the two ``original'' \qds{} acquire an out-of-phase oscillation wi
 
 \begin{figure}
   \centering
-  \input{figures/visit}
+  \conditionalFigureInput{figures/visit}
   \caption{\label{fig:nearfield box}Spatial distribution of $\abs{\tilde{\rho}_{01}}$ for 1024 \qds{} as an indicator of polarization.
     Recorded at $t = \SI{2}{\pico\second}$ relative to the peak of a \SI{1}{\pico\second}-wide $\pi$-pulse, the color and size of each sphere indicates the location of each \qd{} and its polarization.
     Following a $\pi$-pulse, a single \qd{} would have no remnant polarization; here, due to the near-field interactions between particles, clusters of \qds{} remain in highly-polarized states depending on their separation.
@@ -74,7 +74,7 @@ Specifically, the two ``original'' \qds{} acquire an out-of-phase oscillation wi
 
 \begin{figure}
   \centering
-  \input{figures/visit_ipr}
+  \conditionalFigureInput{figures/visit_ipr}
   \caption{\label{fig:ipr}Inverse participation ratio (IPR) for the system shown in \cref{fig:nearfield box}. The dashed line indicates the sample time for \cref{fig:nearfield box}.}
 \end{figure}
 

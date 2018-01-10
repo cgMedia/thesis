@@ -11,6 +11,13 @@
 \newcommand{\ie}{\emph{i.e.}}     % that is
 \newcommand{\eg}{\emph{e.g.}}     % for example
 
+\newif\ifmakeplots
+\makeplotstrue
+\newcommand{\conditionalFigureInput}[1]{\ifmakeplots%
+  \input{#1}%
+\fi%
+}
+
 % --- Chapter 02
 \newcommand{\bubble}{microsphere}
 \newcommand{\Bubble}{Microsphere}
