@@ -2,20 +2,32 @@
 
 We wish to accelerate the (discrete) calculation of 
 \begin{equation}
-  F(\vb{r}, t) = \iint_{} g(\vb{r} - \vb{r}'; t - t') J(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \vb{E}(\vb{r}, t) = \iint_{} g(\vb{r} - \vb{r}'; t - t') \vb{J}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
   \label{eq:general integral equation}
 \end{equation}
 between a set of source and observation points (often---but not necessarily---coincident).
-Here, $F$, $g$, and $J$ represent a field, propagator, and source distribution and each can have a number of different properties (such as bandlimitedness or a dyadic structure) depending on the physics under consideration.
+Here, $\vb{E}$, $g$, and $\vb{J}$ represent a field, propagator, and source distribution and each can have a number of different properties (such as bandlimitedness or a dyadic structure) depending on the physics under consideration.
 Tree algorithms---such as the fast-multipole (FMM)~\cite{Greengard1987} and plane-wave time-domain (PWTD)~\cite{Ergin1999} methods---work well for ``standard'' interactions where one can find an expansion theorem for $g(\vb{r} - \vb{r}')$ (i.e. $g(\vb{r} - \vb{r}') \approx \sum_i a_i(\vb{r}) b_i(\vb{r}')$).
 The frequency-shifting (rotating-wave) arguments made in \cref{ch:quantum dots} make this decidedly more complicated, however: by ignoring high-frequency quantities in favor of assumed spatial phase factors, rotating-frame propagators do not arise as solutions to any (known) differential equation (unlike conventional Green's functions) making it all but completely impossible to exploit their mathematical structure.
 Consequently, acceleration techniques that hinge upon alternative representations of $J(\vb{r}, t)$---not $g(\vb{r} - \vb{r}')$---in \cref{eq:general integral equation} have significant advantages in the systems under consideration here.
 
-The space-time translational invariance of $\vb{g}(\vb{r} - \vb{r}'; t - t')$ in \cref{eq:general integral equation} imposes 1
+For discrete, causal systems, the translational invariance (in time) of \cref{eq:general integral equation} implies $\vb{E} = G \cdot \vb{J}$, or
+\begin{equation}
+  \mqty(\vb{E}_0 \\ \vb{E}_1 \\ \vb{E}_2 \\ \vb{E}_3 \\ \vdots \\ \vb{E}_{N_t - 1}) = 
+  \mqty(G_0 \\ G_1 & G_0 \\ G_2 & G_1 & G_0 \\ G_3 & G_2 & G_1 & G_0 \\ \vdots & \ddots & \ddots  & \ddots & \ddots \\ G_{N_t - 1} & \dots & G_3 & G_2 & G_1 & G_0) \cdot
+  \mqty(\vb{J}_0 \\ \vb{J}_1 \\ \vb{J}_2 \\ \vb{J}_3 \\ \vdots \\ \vb{J}_{N_t - 1})
+  \label{eq:matrix system}
+\end{equation}
+Here, the numerical index represents the evolution of time and thus the $G_i$ denote block matrices that govern the spatial interactions of the basis functions.
+(For electromagnetic systems of finite size, the $G_{i' > i} = 0$ for some $i$ due to the retarded nature of $g(\vb{r} - \vb{r}'; t - t')$.)
+
+The accelerated method---derived from ``Adaptive Integral Method'' (AIM) techniques in both frequency~\cite{Bleszynski1996} and time-domain~\cite{Yilmaz2004} applications---proceeds by decomposing $G$ into terms describing near and far-field effects (i.e. $G = G_\text{near} + G_\text{far}$).
+As each source has a limited number of near-field neighbors independent of the size of the system, $G_\text{near} \cdot \vb{J}$ proceeds exactly as in \cref{ch:quantum dots} and needs no (mathematical) acceleration.
+Evaluation of the far-field, however, uses a compressed representation of $G_\text{far}$ alongside a fast matrix-vector multiplication to achieve an $\mathcal{O}(n \log n)$ spatial complexity (as compared with the na\"ive $\mathcal{O}(n^2)$ strategy).
 
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/toeplitz_matrix}
   \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ propagation kernel on a $5 \times 5 \times 5$ grid.
-  As all of the unique elements lie along the first column, an FFT efficiently diagonalizes the ``circulant augmentation'' (formed by mirroring appropriate elements/blocks).}
+  As all of the unique elements lie along the first column, an FFT diagonalizes the ``circulant equivalent'' matrix (formed by mirroring appropriate elements/blocks) in $\mathcal{O}(n \log n)$ time.}
 \end{figure}

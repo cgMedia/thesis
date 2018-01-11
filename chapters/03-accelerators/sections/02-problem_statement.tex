@@ -1,0 +1,16 @@
+\section{Formulation}
+
+The underlying mechanics remain effectively unchanged from \cref{ch:quantum dots}: a collection of $N_s$ pointlike \qds{} evolve due to incident electric field via \cref{eq:liouville}, implicitly coupled by way of secondary radiated fields.
+Under the rotating-wave approximation~\cref{Allen1975}, the off-diagonal elements of a given \qd's density matrix, $\tilde{\rho}$, directly characterize the (complex-valued) polarization density of the \qd ($\tilde{\vb{P}}$).
+This polarization density, then, acts as a source in Maxwell's equations to produce
+\begin{equation}
+  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)} = -\frac{\mu_0}{4\pi} \int \qty(\pdv[2]{t} - c^2 \grad' \grad'\boldsymbol{\cdot}) \frac{\tilde{\vb{P}}(\vb{r}', t_R) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{\abs{\vb{r} - \vb{r}'}} \dd[3]{\vb{r}'}
+\end{equation}
+(see \cref{appendix:vector wave equation}).
+This form of \cref{eq:radiated envelope} has several advantages in developing accelerated calculation schemes which we shall detail later.
+Representing $\tilde{\vb{P}}(\vb{r}, t)$ as a collection of spatio-temporal basis functions,
+\begin{equation}
+  \tilde{\vb{P}}(\vb{r}, t) = \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \tilde{\mathcal{A}}_\ell^{(m)} \vb{S}_\ell(\vb{r}) T(t - m \, \Delta t),
+\end{equation}
+we have again chosen $\vb{S}_\ell(\vb{r}) = \vb{d}_\ell \delta(\vb{r} - \vb{r}_\ell)$ and $T(t)$ as the standard Lagrange polynomial basis set.
+Additionally, AIM embeds $\tilde{\vb{P}}(\vb{r}, t)$ within an auxilliary cartesian grid with spacings chosen to sufficiently resolve the interference phenomena of \emph{unshifted}, fixed-frame sources.
