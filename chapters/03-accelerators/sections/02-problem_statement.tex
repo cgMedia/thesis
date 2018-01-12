@@ -4,7 +4,8 @@ The underlying mechanics remain effectively unchanged from \cref{ch:quantum dots
 Under the rotating-wave approximation~\cref{Allen1975}, the off-diagonal elements of a given \qd's density matrix, $\tilde{\rho}$, directly characterize the (complex-valued) polarization density of the \qd{} ($\tilde{\vb{P}}$).
 This polarization density, then, acts as a source in Maxwell's equations to produce
 \begin{equation}
-  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)} = -\frac{\mu_0}{4\pi} \int \qty(\pdv[2]{t} - c^2 \grad' \grad'\boldsymbol{\cdot}) \frac{\tilde{\vb{P}}(\vb{r}', t_R) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{\abs{\vb{r} - \vb{r}'}} \dd[3]{\vb{r}'}
+  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)} = -\frac{\mu_0}{4\pi} \int_{} \qty(\pdv[2]{t} - c^2 \grad' \grad'\boldsymbol{\cdot}) \frac{\tilde{\vb{P}}(\vb{r}', t_R) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{\abs{\vb{r} - \vb{r}'}} \dd[3]{\vb{r}'}
+  \label{eq:envelope propagator}
 \end{equation}
 (see \cref{appendix:vector wave equation}).
 This form of \cref{eq:radiated envelope} has several advantages in developing accelerated calculation schemes which we shall detail later.
@@ -16,6 +17,12 @@ we have again chosen $\vb{S}_\ell(\vb{r}) = \vb{d}_\ell \delta(\vb{r} - \vb{r}_\
 Additionally, AIM embeds $\tilde{\vb{P}}(\vb{r}, t)$ within a cartesian grid with spacings chosen to sufficiently resolve the interference phenomena of \emph{unshifted}, fixed-frame sources.
 This grid allows for the construction of auxilliary sources at each gridpoint, chosen so as to accurately reproduce fields eminating from the primary source at large distances.
 As a result, interactions between gridpoints have a Toeplitz matrix structure due to the translational invariance in $g(\vb{r} - \vb{r}')$ which facilitates rapid diagonalization via $n$-dimensional fast Fourier transforms.
+In total, the accelerated far-field calculation then proceeds via
+\begin{inparaenum}[(i)]
+  \item projecting the primary sources onto a collection of auxilliary point sources located at nodes of a regular cartesian grid,
+  \item propagating fields between gridpoints with an accelerated matrix-vector product (done through multidimensional FFTs),
+  \item projecting the auxilliary sources back onto the primary sources.
+\end{inparaenum}
 
 \subsection{Building auxilliary sources}
 
@@ -23,7 +30,7 @@ As a result, interactions between gridpoints have a Toeplitz matrix structure du
   \centering
   \conditionalFigureInput{figures/expansion-grid}
   \caption{\label{fig:expansion grid}Spatial expansion pattern for a two-dimensional system.
-    Increasing the expansion order incorporates new grid points in such a way as to keep the original primary point as close to the center of the box as possible.
+    Increasing the expansion order incorporates new grid points in such a way as to keep $\vb{S}_\ell(\vb{r})$ as close to the center of the box as possible.
   }
 \end{figure}
 
@@ -36,7 +43,7 @@ Here, $\psi_\ell(\vb{r}) \in \qty{\vb{S}_\ell(\vb{r})\cdot \vu{x}, \vb{S}_\ell(\
 For an expansion of order\footnote{In principle, one could expand to different orders in different cartesian directions, though this involves considerably more bookkeeping for relatively little benefit. Thus, for convenience, we take ``the expansion order'' to mean the expansion order in every direction.} $M$, this sum contains $(M + 1)^3$ terms corresponding to the $(M + 1)^3$ grid points nearest to $\vb{S}_\ell(\vb{r})$.
 Consequently, the $\Lambda_{\ell \vb{u}}$ matrices contain few nonzero elements and we have elected to use a moment-matching scheme to capture the $(M + 1)^3$ multipole moments of $\vb{S}_\ell(\vb{r})$ according to
 \begin{equation}
-  \int (x - x_0)^{m_x}(y - y_0)^{m_y}(z - z_0)^{m_z} \qty[\psi_\ell(\vb{r}) - \sum_{\vb{u} \in C_\ell}\Lambda_{\ell\vb{u}}\delta(\vb{r} - \vb{u})] \dd[3]{\vb{r}} = 0.
+  \int_{} (x - x_0)^{m_x}(y - y_0)^{m_y}(z - z_0)^{m_z} \qty[\psi_\ell(\vb{r}) - \sum_{\vb{u} \in C_\ell}\Lambda_{\ell\vb{u}}\delta(\vb{r} - \vb{u})] \dd[3]{\vb{r}} = 0.
   \label{eq:moment matching}
 \end{equation}
 In this expression, $0 \le m_x, m_y, m_z \le M$ and $\vb{r}_0 \equiv x_0 \vu{x} + y_0 \vu{y} + z_0\vu{z}$ denotes the origin about which we compute the multipoles.
@@ -48,9 +55,18 @@ Thus, to calculate the $\Lambda_{\ell \vb{u}}$, we solve the least-squares syste
 where
 \begin{subequations}
   \begin{align}
-    Q_{\ell \vb{m}} &= \int \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}\\
+    Q_{\ell \vb{m}} &= \int_{} \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}\\
     W_{\vb{m}\vb{u}} &= (u_x - x_0)^{m_x} (u_y - y_0)^{m_y} (u_z - z_0)^{m_z} \label{eq:w matrix}.
   \end{align}
 \end{subequations}
 With infinite precision, the choice of $\vb{r}_0$ merely sets a reference point for the multipole coordinate system; to minimize numerical issues, however, we take $\vb{r}_0 = \vb{r}$.
 As the primary basis functions consist entirely of $\delta$-functions, $Q_{\ell\vb{m}} = 0$ everywhere except for $Q_{\ell \vb{0}} \equiv 1$.
+
+\textcolor{red}{Not sure how to link basis functions to derivatives yet---probably needs some description of matrix elements.}
+
+Additionally, these expansions prove useful in calculating the $\grad' \grad' \boldsymbol{\cdot}$ terms of \cref{eq:envelope propagator}.
+Using the definition of \cref{eq:q vector} we may compute additional collections of expansion coefficients corresponding to arbitrary derivatives in $x$, $y$, and $z$.
+In doing so, we need only propagate $\tilde{\vb{P}}(\vb{r}, t)e^{-i \omega_L \abs{\vb{r} - \vb{r}'}}/\abs{\vb{r} - \vb{r}'}$ between gridpoints; the final projection operation off the auxilliary grid reconstructs the total field.
+Moreover, we use the time history of the auxilliary sources alongside \cref{eq:q vector} (with familliar derivatives of Lagrange interpolants) to reconstruct the time-differentiated component of \cref{eq:envelope propagator}.
+Because the inter-grid communication step bottlenecks the whole process, this expansion scheme requires propagation of only three quantities corresponding to the cartesian components of the vector sources in the expensive step of the calculation instead of having to propagate the three components of $\partial_t^2 \tilde{\vb{P}}$ and nine components of $\grad \grad \boldsymbol{\cdot} \tilde{\vb{P}}$ independently.
+
