@@ -3,7 +3,7 @@
 Consider a collection of $N$ rigid, non-intersecting spherical scatterers (\bubbles), each having radius $a_k$, position $\vb{r}_k$, and enclosing volume $V_k \subset \mathbb{R}^3$.
 The \bubbles\ move in a homogeneous exterior fluid occupying $V_E$, where we denote the boundary of each \bubble\ as $\Omega_k = \partial V_k$ and thus may ascribe  to each an outward-pointing normal $\vu{n}_k\qty(\theta, \phi)$,
 where $\theta$ and $\phi$ represent colatitude and azimuthal angles with respect to the local origin (\bubble\ center).
-We wish to investigate the reaction of the system to an incident acoustic pulse, thus the fluid carries a prescribed (band-limited) waveform through the \bubble\ system in which it interacts with each of the $\partial \Omega_k$ according to the ``sound-hard'' regime presented in~\cite{Li2014}. 
+We wish to investigate the reaction of the system to an incident acoustic pulse, thus the fluid carries a prescribed (band-limited) waveform through the \bubble\ system in which it interacts with each of the $\partial \Omega_k$ according to the ``sound-hard'' regime presented in~\cite{Li2014}.
 The incident acoustic pulse, in combination with the acoustic field scattered from each \bubble\ and the hydrodynamic field induced by the relative velocity of each \bubble, acts as a perturbation to the initially at-rest uniform ideal fluid~\cite{Myers1992, Landau2013}.
 We consider here the linear regime, in which the perturbation induced by the acoustic and aerodynamic contribution remain sufficiently small so that the velocity field $\vb{v}(\vb{r}, t)$ satisfies the condition $\abs{\vb{v}(\vb{r}, t)} \ll c_s $, where $c_s$ represents the speed of sound in the fluid.
 In this limit, the velocity potential, defined by $\vb{v}(\vb{r}, t) = \nabla \varphi\qty(\vb{r}, t)$, satisfies the scalar wave equation:
@@ -25,13 +25,11 @@ where $\vb{r}_k$ represents the center-of-mass coordinate for the $k^\text{th}$ 
 
 Using these relations, we apply the Kirchoff-Helmholtz theorem to define the following system of integral equations,
 \begin{equation}
-  \varphi(\vb{r}, t) = \varphi_\text{inc}(\vb{r}, t) + \sum_{i = 0}^{N - 1}
-  \int \dd{t'} \int_{\Omega_k(t')} \mkern-30mu \dd{A}
-\qty(
-\varphi(\vb{r}',t') \pdv{\GF}{\vu{n}_k} - \GF \pdv{\varphi(\vb{r}',t')}{\vu{n}_k}),
+  \varphi(\vb{r}, t) = \varphi_\text{inc}(\vb{r}, t) + \sum_{i = 0}^{N - 1} \iint_{}
+  \qty( \varphi(\vb{r}',t') \pdv{\GF}{\vu{n}_k} - \GF \pdv{\varphi(\vb{r}',t')}{\vu{n}_k} ) \dd{A'} \dd{t'},
   \label{eq:Kirchoff-Helmholtz}
 \end{equation}
-where $\GF$ denotes the Green's function for a retarded potential, 
+where $A' \in \Omega_k(t')$ and $\GF$ denotes the Green's function for a retarded potential,
 \begin{equation}
   \GF = \frac{\delta\qty(t - t' - \abs{\vb{r}-\vb{r}'}/c_s)}{4\pi \abs{\vb{r}-\vb{r}'}}.
   \label{eq:retarded green's function}
@@ -44,9 +42,9 @@ If the system remains localized to a region with small dimensions when compared 
 To ease notation, we define the following two integral operators,
 \begin{subequations}
 \begin{align}
-  \hat{\mathcal{S}}_k\qty[\varphi(\vb{r} \in \Omega_k(t), t)] &= \int_{\Omega_k(t)} \mkern-30mu \dd{A} G(\vb{r}, \vb{r}') \; \partial_{\vu{n}_k} \varphi(\vb{r}',t) 
+  \hat{\mathcal{S}}_k\qty[\varphi(\vb{r} \in \Omega_k(t), t)] &= \int_{} G(\vb{r}, \vb{r}') \; \partial_{\vu{n}_k} \varphi(\vb{r}',t) \dd{A}
   \label{eq:single layer}\\
-  \hat{\mathcal{D}}_k\qty[\varphi(\vb{r} \in \Omega_k(t), t)] &= \int_{\Omega_k(t)} \mkern-30mu \dd{A} \varphi(\vb{r}',t) \; \partial_{\vu{n}_k} G(\vb{r}, \vb{r}'), \label{eq:double layer}
+  \hat{\mathcal{D}}_k\qty[\varphi(\vb{r} \in \Omega_k(t), t)] &= \int_{} \varphi(\vb{r}',t) \; \partial_{\vu{n}_k} G(\vb{r}, \vb{r}') \dd{A}, \label{eq:double layer}
 \end{align}
   \label{eq:operator_kirchoff}
 \end{subequations}
@@ -62,11 +60,12 @@ For the incident pulse, $\varphi_\text{inc}$, we consider superpositions of wave
   \varphi_\text{inc}(\vb{r}, t) = P_0\cos(\omega_0 t - \vb{k}\cdot\vb{r})e^{-{(c_s t - \vu{k}\cdot\vb{r})}^2/(2 \sigma^2)}.
   \label{eq:inc_field}
 \end{equation}
-Finally, the variation in pressure (and thus $\varphi$) over each of the $\Omega_k$ necessarily propels each \bubble\ according to the equation of motion
+Finally, the variation in pressure (and thus $\varphi$) over each of the $\Omega_k$ necessarily propels each \bubble\ according to
 \begin{equation}
-  m_k \dv[2]{\vb{r}_k}{t} = \rho_0 \! \int_{\Omega_k(t)} \mkern-30mu \dd{\vb{S}} \pdv{\varphi\qty(\vb{r}, t)}{t}.
+  m_k \dv[2]{\vb{r}_k}{t} = \rho_0 \! \int_{} \pdv{\varphi\qty(\vb{r}, t)}{t} \dd{\vb{S}}
   \label{eq:Newton}
 \end{equation}
+where $\vb{S}$ denotes the outward-pointing normal of $\Omega_k(t)$.
 
 \begin{figure}[t]
   \centering

@@ -12,7 +12,7 @@ As a result, they lend themselves well to an expansion of $\varphi$ on the surfa
 \end{equation}
 By considering \cref{eq:Bernoulli} and expressing the local velocity potential at each of the $\Omega_k$ as a linear combination of spherical harmonics, we have a complete representation of the body force acting on each \bubble,
 \begin{align}
-  \vb{F}_\text{body}^k(t) &= - \int_{\Omega_k(t)} p(\vb{r}, t) \dd{\vb{S}} \nonumber \\
+  \vb{F}_\text{body}^k(t) &= - \int_{} p(\vb{r}, t) \dd{\vb{S}} \nonumber \\
   &= \rho_0 \sqrt{\frac{2\pi}{3}}r^2 \Big(\qty[\dot{C}^k_{11}(t) - \dot{C}^k_{1\, -1}(t)]\vu{x} + i\qty[\dot{C}^k_{11}(t) + \dot{C}^k_{1\,-1}(t)]\vu{y} - \sqrt{2}\dot{C}^k_{10}(t)\vu{z}\Big)
 \end{align}
 due to the orthogonality of dipole terms with the rest of the multipoles.
@@ -25,7 +25,7 @@ The problem then becomes one of solving a system of linear equations that we may
 with the overbar denoting a matrix quantity.
 We define the elements of $\boldsymbol{\mathcal{F}}$ as projections of the incident field onto local spherical harmonics,
 \begin{equation}
-  \mathcal{F}_{\ell m}^k = \int_{\Omega_k(t)} \mkern-30mu \dd{A} Y^*_{\ell m}(\theta, \phi) \varphi_\text{inc}(\vb{r}, t),
+  \mathcal{F}_{\ell m}^k = \int_{} Y^*_{\ell m}(\theta, \phi) \varphi_\text{inc}(\vb{r}, t) \dd{A},
   \label{eq:forcing projection}
 \end{equation}
 and detail $\mathcal{Z}^{jk}_{\ell m, \ell' m'}$ for two cases: $j = k$ and $j \not = k$.
@@ -36,7 +36,7 @@ In the instances where $j = k$, \cref{eq:operator_kirchoff} propagates effects o
 \end{equation}
 after exploiting the well-known expansion theorem for \cref{eq:green's function},
 \begin{equation}
-  g(\vb{r}, \vb{r}') = \sum_{\ell, m}\frac{1}{2\ell + 1}\frac{r_<^\ell}{r_>^{\ell + 1}}Y_{\ell m}\qty(\theta, \phi)Y^*_{\ell, m}\qty(\theta', \phi')
+  g(\vb{r}, \vb{r}') = \sum_{\ell, m}\frac{1}{2\ell + 1}\frac{r_<^\ell}{r_>^{\ell + 1}}Y_{\ell m}\qty(\theta, \phi)Y^*_{\ell m}\qty(\theta', \phi')
   \label{eq:expansion theorem}
 \end{equation}
 where $r_< = \mathrm{min}\qty(\abs{\vb{r}},\abs{\vb{r}'})$ and $r_> = \mathrm{max}\qty(\abs{\vb{r}}, \abs{\vb{r}'})$.
@@ -59,4 +59,4 @@ The inversion in step (ii) above requires some care; by simply inverting the ent
 \end{equation}
 This presents a number of irregularities with conventional integration schemes and will rapidly diverge towards $\pm \infty$ due to the additional $\dot{\vb{r}}_k$ on the right if implemented \naive ly.
 To remedy this, we note that $\hat{\mathcal{S}}$ serves to produce \emph{only} a reaction or drag term on each \bubble\ that impedes motion.
-By maintaining quantities for the inversion of $\hat{\mathcal{D}}$ and $\hat{\mathcal{S}}$ separately, we remove the explicit dependence on $\dot{\vb{r}}_k$ by introducing a linear coefficient in the form of an additional mass term---given by the $\dot{\vb{r}}_k$-dependent contribution in the single-layer $\hat{\mathcal{S}}$ operator---when solving \cref{eq:Newton}. 
+By maintaining quantities for the inversion of $\hat{\mathcal{D}}$ and $\hat{\mathcal{S}}$ separately, we remove the explicit dependence on $\dot{\vb{r}}_k$ by introducing a linear coefficient in the form of an additional mass term---given by the $\dot{\vb{r}}_k$-dependent contribution in the single-layer $\hat{\mathcal{S}}$ operator---when solving \cref{eq:Newton}.

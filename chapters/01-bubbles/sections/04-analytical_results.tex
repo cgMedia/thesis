@@ -16,7 +16,7 @@ on the surface of the sphere. Similarly, from \cref{eq:boundary_conditions},
 due to the symmetries present in $x$ and $y$.
 As a result,
 \begin{equation}
-    \varphi - \int \dd{S'} \varphi(\vb{r}') \, \partial_{\vu{n}'} G(\vb{r}, \vb{r}') = v_0 a \cos(\theta) - \int \dd{S}' a u_z \cos(\theta) \, G(\vb{r}, \vb{r}'),
+  \varphi - \int_{} \varphi(\vb{r}') \, \partial_{\vu{n}'} G(\vb{r}, \vb{r}') \dd{S'} = v_0 a \cos(\theta) - \int_{} a u_z \cos(\theta) \, G(\vb{r}, \vb{r}') \dd{S}',
 \end{equation}
 and it becomes apparent that only $\ell = 1, m = 0$ terms in \cref{eq:expansion theorem} remain after integrating.
 Consequently, the field becomes
@@ -63,7 +63,7 @@ By inserting this into \cref{eq:Newton} for $\vb{r}_1$, we have
 \begin{equation}
   \label{eq:born newton}
   \begin{gathered}
-  m_1 \vb{u}_1 \cdot \vu{z} = 2 \pi \rho_0 a^2 \int \cos^2\theta_1 a^3 \qty(\frac{4}{3}v_0 - \frac{u_1}{3}) \dd{\qty(\cos\theta_1)} + \\
+    m_1 \vb{u}_1 \cdot \vu{z} = 2 \pi \rho_0 a^2 \int_{} \cos^2\theta_1 a^3 \qty(\frac{4}{3}v_0 - \frac{u_1}{3}) \dd{\qty(\cos\theta_1)} + \\
     \rho_0 \int_{\Omega_1} \frac{a^5}{3} \frac{v_0 - u_2}{\abs{\vb{r} - \vb{d}_{12}}^2} \cos\theta_1 \cos\theta_2 \dd{\phi_1} \dd{\qty(\cos \theta_1)}.
   \end{gathered}
 \end{equation}
