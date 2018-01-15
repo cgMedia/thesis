@@ -1,0 +1,75 @@
+\chapter{QuEST Manual}
+
+\section{Design philosophy}
+
+\begin{figure}
+  \centering
+  \input{figures/hierarchy}
+  \caption{\label{fig:hierarchy}Hierarchy of the major pieces of \QuEST{}.
+  These blocks \emph{roughly} indicate the interdependence of the program pieces that form \QuEST{}, akin to a class hierarchy (though avid software developers should not take this literally).}
+\end{figure}
+
+The collection of formulae and algorithms in this thesis provide a mathematical foundation upon which one can implement a simulation tool. This section gives some details on the \textbf{Qu}antum \textbf{E}lectromagnetics \textbf{S}imulation \textbf{T}oolbox (\QuEST{}) reference implementation~\cite{github}. Written in C++, \QuEST{} has minimal external dependencies, using only the Boost Multiarray and Program Options libraries~\cite{boost}, the Eigen linear algebra library~\cite{eigen}, and FFTW~\cite{fftw}.
+
+As a scientific endeavor, \QuEST{} largely emphasizes reproducibility, ease of extension, and execution speed.
+Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experimens.
+Thus the main functionality of \QuEST{} resides within a library of independently-constructed objects.
+These objects have appropriate constructors to set the parameters of the simulation and slot together to build an executable.
+For example, to isolate the ODE solver's behavior from the tricky numerics of the propagation code, the ODE solver only reqires "an RHS" (see \cref{sec:quest descriptions} below).
+Coding an RHS with a well-known solution, such as $f'(x) = - \lambda f(x)$, can thus validate the numerics of the integration step independent of the propagation calculations.
+
+Similarly, making \QuEST{} easy to extend necessitates encapsulating mathematical statements as tightly as possible with these objects.
+As the project grows to encapsulate new phenomena/models, only the pieces that directly represent the mathematics need to change and not how they fit into the rest of the simulation framework.
+
+Unfortunately, these factors often lead to seemingly-unintelligible code. What follows contains a brief discussion of the major pieces of \QuEST{} and why I designed them the way I did.
+
+\section{\label{sec:quest descriptions}Descriptions}
+
+\begin{description}
+  \item[\texttt{cmplx}] Alias for \lstinline!std::complex<double>!. Bit-compatible with FFTW's \lstinline!fftw_complex! type.
+  \item[\texttt{Configuration}] Struct to contain effectively ``global'' simulation parameters---the speed of light, number of particles, etc.
+    Most objects do not read these values directly, prefering instead to have a copy/have them in their constructor to enhance modularity (can test objects independently without running all of the \lstinline!Configuration! code).
+  \item[\texttt{QuantumDot}] Collection of parameters necessary to define a quantum dot (position, transition frequency, decay times, and dipole moment).
+    Also provides a method to calculate the right-hand side of \cref{eq:rotating liouville} given an input density matrix and electric field.
+  \item[\texttt{Pulse}] Mathematical description of a Gaussian pulse.
+    Provides a method to evaluate a pulse at a given spacetime coordinate, as well as methods to read/record \lstinline!Pulse! objects from/to a file.
+  \item[\texttt{UniformLagrangeSet}] Tool to evaluate Lagrange polynomials and their derivatives.
+    Upon construction, each instance allocates a workspace table (to avoid reallocation overhead) to contain the evaluated interpolants and their derivatives.
+    This object uses the definition of Lagrange polynomials and logarithmic derivatives, $\dv{x} \log f(x) = f'(x)/f(x)$, to efficiently fill each column (the interpolant and two derivatives) of the table simultaneously.
+  \item[\texttt{TransformPair}] Struct to manage FFTW plans (pointers). Constructed with a \lstinline!forward! and \lstinline!backward! plan and automatically deallocates both in its destructor to avoid memory leaks.
+  \item[\texttt{Interaction}] Abstract base-class to provide an interface for calculating an interaction for each \lstinline!QuantumDot! in an array.
+    Each \lstinline!Interaction! contains a shared pointer to a \lstinline!std::vector<QuantumDot>! and allocates a complex-valued Eigen row-vector (once, to avoid reallocation overhead) upon construction.
+    This row-vector serves as a workspace in which to place interaction values in the \lstinline!evaluate! method before returning.
+    Ultimately subclasses into \lstinline!PulseInteraction!, \lstinline!DirectInteraction!, and \lstinline!AimInteraction!.
+    \begin{description}
+      \item[\texttt{PulseInteraction}] Calculates and returns $\vb{d} \cdot \vb{E}_\text{inc}/\hbar$ at the location of each \lstinline!QuantumDot! at a specified time.
+      \item[\texttt{DirectInteraction}] (subclass of \lstinline!HistoryInteraction!).
+        Calculates and returns $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ at the location of each \lstinline!QuantumDot! (where $\vb{E}_\text{rad}$ depends on the history of every other \lstinline!QuantumDot! due to retardation effects).
+        This object stores the space/time interaction matrix elements between each \lstinline!QuantumDot! directly, assuming reciprocity and no self interactions (effectively the lower triangle of the matrix).
+        Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
+      \item[\texttt{AIMInteraction}] (subclass of \lstinline!HistoryInteraction!).
+        Calculates $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ between well-separated \lstinline!QuantumDot!s (so as to avoid incurring undue approximation error).
+        Uses the vastly more efficient AIM (FFT) framework to reduce the storage and accelerate the matrix-vector products.
+        Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
+
+        \textcolor{Red!90!black}{Warning:} you \emph{must} call \lstinline!AIMInteraction.evaluate! with sequential arguments (starting at zero, corresponding to sequential timesteps) due to the way this object fills internal tables.
+        This keeps the indexing correct as later calls to \lstinline!evaluate! depend on the results of previous calculations.
+        \begin{description}
+          \item[\texttt{Grid}] Class to construct and manage a representation of the auxilliary AIM grid.
+            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at 0), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in 3d space).
+          \item[\texttt{ExpansionFunction}] Complicated black magic sorcery. Stay away.
+          \item[\texttt{LeastSquaresExpansionSolver}] Utility class to build and solve the least-squares system in \cref{eq:moment matching}.
+            Uses a named constructor to avoid creating a persistent instance that implicitly depends on a non-\lstinline!const Grid! (only the static \lstinline!get_expansions! function can instantiate a \lstinline!LeastSquaresExpansionSolver! and thus will call its destructor when the function returns).
+        \end{description}
+    \end{description}
+  \item[\texttt{PredictorCorrector}] Implementation of the exponentially-fitted predictor/corrector scheme in~\cite{Rokhlin}.
+    Implemented as a template class so as to allow solution of arbitrary ODEs (scalar/vector, real/complex, etc.).
+    \begin{description}
+      \item[\texttt{Weights}] Assistance class for solving the matrix equation that determines the predictor/corrector weights.
+        Putting the code for these matrices into its own object automatically frees the resources used to store them (by automatically calling the object's destructor when it goes out of scope) after calculating the required values.
+    \end{description}
+  \item[\texttt{History}] Wrapper around a three-dimensional \lstinline!Boost::multi_array! to store data for coupled first-order ODEs at fixed solution points (timesteps).
+    Stores both a solution and its derivative (the ``RHS'') for each of $N_s$ ODEs at $N_t$ solution points, indexed by [equation index][time index][derivative index].
+    Provides integer-equivalent \lstinline!typedef!s to assist with indexing.
+    As the predictor/corrector integration scheme requires a history to solve for any timepoint (including the first), these arrays extend the time axis backwards to negative indices so as to always start at $t = 0$.
+\end{description}

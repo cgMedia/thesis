@@ -1,0 +1,40 @@
+\begin{tikzpicture}[node distance=0.8cm, >=latex]
+  \tikzstyle{physics} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=blue!10]
+  \tikzstyle{engineering} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!10]
+  \tikzstyle{both} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=Fuchsia!20]
+  \tikzstyle{arrow} = [thick,->,>=stealth]
+
+  \node (quest) [both] {\textbf{QuEST}};
+  \node (ode) [physics, below= of quest] {ODE};
+  \node (radiation) [engineering, right= of quest] {Radiation};
+
+  \draw [arrow] (ode) -- (quest);
+  \draw [arrow] (radiation) -- (quest);
+
+  \node (interactions) [engineering, below= of radiation] {Interactions};
+  \node (integration) [physics, below= of ode] {Integration};
+  \node (rhs) [physics, below= of integration] {RHS functions};
+  \node (history) [both, right= of rhs] {History};
+
+  \draw [arrow] (interactions) -- (radiation);
+  \draw [arrow] (integration) -- (ode);
+  \draw [arrow] (history) -- (integration);
+  \draw [arrow] (rhs) -- (integration);
+
+  \node (pulse) [engineering, right= of radiation] {Pulse};
+
+  \draw [arrow](pulse) -- (interactions);
+
+  \node (direct) [engineering, right= of interactions] {Direct};
+  \node (interpolation) [engineering, below= of interactions] {Interpolation};
+  \node (aim) [engineering, below= of direct] {AIM};
+
+  \node (fft) [engineering, below= of aim] {FFT};
+
+  \draw [arrow] (history) -- (interpolation);
+  \draw [arrow] (interpolation) -- (interactions);
+  \draw [arrow] (direct) -- (interpolation);
+  \draw [arrow] (aim) -- (interpolation);
+  \draw [arrow] (fft) -- (aim);
+
+\end{tikzpicture}

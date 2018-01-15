@@ -38,6 +38,7 @@
 % If the thesis office requires Times, we'll give them Times
 % You can experiment with other font packages here if you like.
 % If you are using XeLaTeX or LuaLaTeX load the Times or Times New Roman font with \setmainfont
+%\usepackage{newtxtext,newtxmath}
 \usepackage{newpxtext,newpxmath}
 
 % Set up the drop-caps
@@ -47,12 +48,14 @@
 \renewcommand\LettrineFontHook{\GoudyInfamily}
 
 % Load any extra packages here
-\usepackage{amsfonts}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[scaled=0.85]{DejaVuSansMono}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{filecontents}
 \usepackage[]{graphicx}
 \usepackage{import}
 \usepackage{lipsum}
+\usepackage{listings}
 \usepackage{mathtools}
 \usepackage{microtype}
 \usepackage[intoc]{nomencl}
@@ -64,13 +67,15 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 
+\lstset{language=C++, basicstyle=\ttfamily, backgroundcolor=\color{lightgray}}
+
 \input{extra/pgf_settings}
 \input{extra/macros}
 
 %\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
 
-
-\setcounter{chapter}{-1} % Zero-index the chapters, just to be cheeky.
+% Zero-index the chapters and sections, just to be cheeky.
+\setcounter{chapter}{-1}
 
 % You must specify the title of your thesis, your name, the field of study (not department), and the year
 \title{The QuEST for active media models: a self-consistent framework for simulating wave propagation in nonlinear systems}
@@ -131,6 +136,7 @@ Your acknowledgements here.
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
 \import{chapters/00-intro/}{ch00}
+
 \import{chapters/01-bubbles/}{ch01}
 \import{chapters/02-quantum_dots/}{ch02}
 \import{chapters/03-accelerators/}{ch03}
@@ -158,6 +164,7 @@ Your acknowledgements here.
 %\chapter{Your appendix}
 
 \begin{appendices}
+  \import{chapters/appendices/}{A0-QuEST_manual}
   \import{chapters/appendices/}{A1-units}
 \end{appendices}
 
