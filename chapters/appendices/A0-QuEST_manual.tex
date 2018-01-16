@@ -12,8 +12,7 @@
 The collection of formulae and algorithms in this thesis provide a mathematical foundation upon which one can implement a simulation tool. This section gives some details on the \textbf{Qu}antum \textbf{E}lectromagnetics \textbf{S}imulation \textbf{T}oolbox (\QuEST{}) reference implementation~\cite{github}. Written in C++, \QuEST{} has minimal external dependencies, using only the Boost Multiarray and Program Options libraries~\cite{boost}, the Eigen linear algebra library~\cite{eigen}, and FFTW~\cite{fftw}.
 
 As a scientific endeavor, \QuEST{} largely emphasizes reproducibility, ease of extension, and execution speed.
-Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experimens.
-Thus the main functionality of \QuEST{} resides within a library of independently-constructed objects.
+Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experimens, thus the main functionality of \QuEST{} resides within a library of independently-constructed objects.
 These objects have appropriate constructors to set the parameters of the simulation and slot together to build an executable.
 For example, to isolate the ODE solver's behavior from the tricky numerics of the propagation code, the ODE solver only reqires "an RHS" (see \cref{sec:quest descriptions} below).
 Coding an RHS with a well-known solution, such as $f'(x) = - \lambda f(x)$, can thus validate the numerics of the integration step independent of the propagation calculations.
@@ -26,11 +25,12 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
 \section{\label{sec:quest descriptions}Descriptions}
 
 \begin{description}
-  \item[\texttt{cmplx}] Alias for \lstinline!std::complex<double>!. Bit-compatible with FFTW's \lstinline!fftw_complex! type.
+  \item[\texttt{cmplx}] Alias for \lstinline!std::complex<double>!. Bit-compatible with FFTW's \lstinline!fftw_complex! type (hence the use of \lstinline!static_cast! when interfacing with FFTW).
   \item[\texttt{Configuration}] Struct to contain effectively ``global'' simulation parameters---the speed of light, number of particles, etc.
-    Most objects do not read these values directly, prefering instead to have a copy/have them in their constructor to enhance modularity (can test objects independently without running all of the \lstinline!Configuration! code).
+    Most objects do not read these values directly, instead prefering to have them as a parameter in their constructor to enhance modularity (can test objects independently without running all of the \lstinline!Configuration! code).
   \item[\texttt{QuantumDot}] Collection of parameters necessary to define a quantum dot (position, transition frequency, decay times, and dipole moment).
     Also provides a method to calculate the right-hand side of \cref{eq:rotating liouville} given an input density matrix and electric field.
+    Because these right-hand sides have instance-dependent parameters (transition frequency, $T_1$ and $T_2$, etc.), \lstinline!std::bind! produces the appropriate functors for constructing \lstinline!Integrator::RHS! instances.
   \item[\texttt{Pulse}] Mathematical description of a Gaussian pulse.
     Provides a method to evaluate a pulse at a given spacetime coordinate, as well as methods to read/record \lstinline!Pulse! objects from/to a file.
   \item[\texttt{UniformLagrangeSet}] Tool to evaluate Lagrange polynomials and their derivatives.
@@ -48,16 +48,16 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
         This object stores the space/time interaction matrix elements between each \lstinline!QuantumDot! directly, assuming reciprocity and no self interactions (effectively the lower triangle of the matrix).
         Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
       \item[\texttt{AIMInteraction}] (subclass of \lstinline!HistoryInteraction!).
-        Calculates $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ between well-separated \lstinline!QuantumDot!s (so as to avoid incurring undue approximation error).
+        Calculates $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ between well-separated sources (so as to avoid incurring undue approximation error).
         Uses the vastly more efficient AIM (FFT) framework to reduce the storage and accelerate the matrix-vector products.
         Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
-
         \textcolor{Red!90!black}{Warning:} you \emph{must} call \lstinline!AIMInteraction.evaluate! with sequential arguments (starting at zero, corresponding to sequential timesteps) due to the way this object fills internal tables.
         This keeps the indexing correct as later calls to \lstinline!evaluate! depend on the results of previous calculations.
         \begin{description}
           \item[\texttt{Grid}] Class to construct and manage a representation of the auxilliary AIM grid.
-            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at 0), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in 3d space).
+            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at zero), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in 3d space).
           \item[\texttt{ExpansionFunction}] Complicated black magic sorcery. Stay away.
+          \item[\texttt{ExpansionTable}] Table of dimension [number of sources][number of points each source expands into] containing the thirteen ($\partial_0$, $\partial_x$, \ldots, $\partial_{yz}$, $\partial_{zz}$) expansion weights relating each source to its immediate (i.e. not trivially zero) auxilliary grid points.
           \item[\texttt{LeastSquaresExpansionSolver}] Utility class to build and solve the least-squares system in \cref{eq:moment matching}.
             Uses a named constructor to avoid creating a persistent instance that implicitly depends on a non-\lstinline!const Grid! (only the static \lstinline!get_expansions! function can instantiate a \lstinline!LeastSquaresExpansionSolver! and thus will call its destructor when the function returns).
         \end{description}
