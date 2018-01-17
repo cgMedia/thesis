@@ -1,26 +1,25 @@
 \section{PWTD}
 
-We wish to evaluate quantities of the form
+In constructing an efficient computational scheme for evaluating potentials of the form
 \begin{equation}
-  u(\vb{r}, t) = \iint_{} \frac{\delta(t - t' - \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} q(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}.
+  u(\vb{r}, t) = \siint \frac{\delta(t - t' - \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} q(\vb{r}', t') \dd{t'} \dd[3]{\vb{r}'},
 \end{equation}
-Writing
-\begin{equation}
-  u_\ell^\star(\vb{r}, t) = - \frac{\partial_t}{4\pi c} \iint_{} \delta\qty(t - \vu{k} \cdot \frac{\vb{r} - \vb{r}'}{c}) * q_\ell(\vb{r}', t) \dd[3]{\vb{r}'} \sin\theta \dd[2]{\vu{k}},
-\end{equation}
-where $\vu{k} = \sin\theta \cos\phi \vu{x} + \sin\theta \sin\phi \vu{y} + \cos\theta \vu{z}$ and $*$ represents a convolution with respect to $t$, the integral over $\dd[3]{\vb{r}'}$ projects $q_\ell(\vb{r}, t)$ onto a plane wave traveling in the $\vu{k}$ direction.
-Consequently, $u_\ell^\star(\vb{r}, t)$ necessarily arises as a superposition of these waves traveling in all directions.
-Introducing a spherical coordinate system $(\rho_p, \theta_p, \phi_p)$ where the polar axis aligns with $\vb{r} - \vb{r}'$, it becomes apparent that $\vu{k} \cdot (\vb{r} - \vb{r}') = \abs{\vb{r} - \vb{r}'}\cos \theta_p \equiv c \tau$.
-Then,
+\cite{PWTD} establishes 
 \begin{align}
-  u_\ell^\star(\vb{r}, t) &= -\frac{\partial_t}{4 \pi c} \siint \delta\qty(t - \frac{\abs{\vb{r} - \vb{r}'}\cos\theta_p}{c}) * q_\ell(\vb{r}', t) \dd[3]{\vb{r}'} \sin\theta_p \dd[2]{\vu{k}} \\
-  &= -\siint \frac{\partial_t \delta(t - \tau)}{\abs{\vb{r} - \vb{r}'}} * q_\ell(\vb{r}', t) \dd{\tau} \dd[3]{\vb{r}'}; \qquad \abs{\tau} \leqslant \abs{\vb{r} - \vb{r}'}/c \\
-  &= \sint \frac{\delta(t - \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} * q_\ell(\vb{r}', t) \dd[3]{\vb{r}'} - \sint \frac{\delta(t + \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} * q_\ell(\vb{r}', t) \dd[3]{\vb{r}'} \\
-  &= u_\ell(\vb{r}, t) - \sint \frac{\delta(t + \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} * q_\ell(\vb{r}', t) \dd[3]{\vb{r}'}
+  u^\star(\vb{r}, t) &\equiv -\frac{\partial_t}{4 \pi c} \int_S \integralspace \qty( \siint \delta(t - t' - \vu{k}(\Omega) \cdot (\vb{r} - \vb{r}')/c) q(\vb{r}', t') \dd{t'} \dd[3]{\vb{r}'} ) \dd{\Omega} \label{eq:u star} \\
+  &= u(\vb{r}, t) - \siint \frac{\delta(t - t' + \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} q(\vb{r}', t') \dd{t'} \dd[3]{\vb{r}'}
+\end{align}
+where $\vu{k}(\Omega) = \vu{x} \sin\theta \cos\phi + \vu{y} \sin\theta \sin\phi + \vu{z}\cos\theta$, $\dd{\Omega} = \sin\theta \dd{\theta}\dd{\phi}$.
+Noting that $\vb{r} - \vb{r}'$ decomposes into $\vb{r} - \vb{r}' = \qty(\vb{r} - \vb{r}_o) + \qty(\vb{r}_o - \vb{r}_s) + \qty(\vb{r}_s - \vb{r}')$, \cref{eq:u star} equivalently becomes
+\begin{equation}
+  u^\star(\vb{r}, t) = \int_S \delta(t - \vu{k}(\Omega) \cdot (\vb{r} - \vb{r}_o)/c) \ast \mathcal{T}\qty(\vu{k}(\Omega), \vb{r}_o - \vb{r}_s, t) \ast \qty(\int_{} \delta(t - \vu{k}(\Omega) \cdot \qty(\vb{r}_s - \vb{r}')/c) \ast q(\vb{r}', t) \dd[3]{\vb{r}'}) \dd{\Omega}
   \label{<+label+>}
-\end{align}<++>
-
-
+\end{equation}
+where $\ast$ denotes a convolution with respect to $t$ and
+\begin{equation}
+  \mathcal{T}\qty(\vu{k}(\Omega), \vb{r}_o - \vb{r}_s, t) = -\frac{\partial_t}{4\pi c} \delta(t - \vu{k}(\Omega) \cdot (\vb{r}_o - \vb{r}_s)/c)
+  \label{eq:translation operator}
+\end{equation}
 
 \section{Formulation}
 
