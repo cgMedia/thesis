@@ -2,14 +2,12 @@
 
 \begin{figure}
   \centering
-  \ifmakeplots
-    \input{figures/time_basis_function}
-  \fi
+  \conditionalFigureInput{figures/time_basis_function}
   \caption{\label{fig:interpolation basis} Nonorthogonal and $C^0$-continuous temporal basis function $T(t/\Delta t)$ constructed from intervals of third-order Lagrange polynomials.}
 \end{figure}
 To solve \cref{eq:rotating liouville,eq:radiated envelope} for each of $N_s$ \qds{} at $N_t$ equally-spaced timesteps, we begin with a suitable representation of $\tilde{\vb{P}}(\vb{r}, t)$ in terms of spatial and temporal basis functions, i.e.~
 \begin{equation}
-  \tilde{\vb{P}}(\vb{r}, t) = \sum_{\ell=0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_{\ell}^{(m)} \vb{S}_\ell(\vb{r}) T(t - m \, \Delta t).
+  \tilde{\vb{P}}(\vb{r}, t) = \sum_{\ell=0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \tilde{\mathcal{A}}_{\ell}^{(m)} \vb{S}_\ell(\vb{r}) T(t - m \, \Delta t).
   \label{eq:basis function representation}
 \end{equation}
 As the wavelength of any radiation in the system far exceeds the dimensions of the \qds{} under consideration, we take $\vb{S}_\ell(\vb{r}) \equiv \vb{d}_\ell \delta(\vb{r} - \vb{r}_\ell)$ where $\vb{d}_\ell$ and $\vb{r}_\ell$ denote the dipole moment and position of dot $\ell$.
@@ -34,27 +32,27 @@ These functions  reliably interpolate smooth functions with controllable error a
 
 Combining \cref{eq:radiated envelope,eq:basis function representation} and projecting the resulting field onto the spatiotemporal basis functions produces a marching-on-in-time system of the form
 \begin{equation}
-  \mathcal{L}^{(m)} + \sum_{k = 0}^{m} \mathcal{Z}^{(k)} \mathcal{A}^{(m - k)} = \mathcal{F}^{(m)}.
+  \tilde{\mathcal{L}}^{(m)} + \sum_{k = 0}^{m} \tilde{\mathcal{Z}}^{(k)} \tilde{\mathcal{A}}^{(m - k)} = \tilde{\mathcal{F}}^{(m)}.
   \label{eq:zmatrix}
 \end{equation}
 In this (block $N_s \times N_s$) matrix equation
 \begin{subequations}
   \begin{align}
-    \mathcal{L}^{(m)}_{\ell} &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\vb{E}}_L(\vb{r}, m \, \Delta t) \big\rangle \\
-    \mathcal{Z}^{(k)}_{\ell \ell'} &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\mathfrak{F}}\{ \mathbf{S}_{\ell'}(\mathbf{r}) T(k \, \Delta t) \} \big\rangle \\
-    \mathcal{F}^{(m)}_\ell &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\mathbf{E}}(\vb{r}, m \, \Delta t) \big\rangle
+    \tilde{\mathcal{L}}^{(m)}_{\ell} &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\vb{E}}_L(\vb{r}, m \, \Delta t) \big\rangle \\
+    \tilde{\mathcal{Z}}^{(k)}_{\ell \ell'} &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\mathfrak{F}}\{ \mathbf{S}_{\ell'}(\mathbf{r}) T(k \, \Delta t) \} \big\rangle \\
+    \tilde{\mathcal{F}}^{(m)}_\ell &= \big\langle \mathbf{S}_\ell(\vb{r}), \tilde{\mathbf{E}}(\vb{r}, m \, \Delta t) \big\rangle
   \end{align}
   \label{eq:projections}
 \end{subequations}
 where $\langle \cdot, \cdot \rangle$ denotes the scalar product of two functions.
-As we have elected to use a uniform $\Delta t$, the summation in \cref{eq:zmatrix} represents a discrete convolution that will produce $\mathcal{F}^{(m)}$ given only $\mathcal{A}^{(m' \leqslant m)}$.
-To link $\mathcal{A}^{(m)}$ with the density matrix in \cref{eq:rotating liouville}, we take
+As we have elected to use a uniform $\Delta t$, the summation in \cref{eq:zmatrix} represents a discrete convolution that will produce $\tilde{\mathcal{F}}^{(m)}$ given only $\tilde{\mathcal{A}}^{(m' \leqslant m)}$.
+To link $\tilde{\mathcal{A}}^{(m)}$ with the density matrix in \cref{eq:rotating liouville}, we take
 \begin{equation}
-  \mathcal{A}^{(m)}_\ell \equiv \tilde{\rho}_{\ell, 01}(t = m \, \Delta t)
+  \tilde{\mathcal{A}}^{(m)}_\ell \equiv \tilde{\rho}_{\ell, 01}(t = m \, \Delta t)
   \label{eq:polarization definition}
 \end{equation}
 as the off-diagonal matrix elements (coherences) of $\tilde{\rho}_{\ell}$ directly characterize the dipole radiating at $\vb{r}_\ell$ under the rotating-wave approximation.
-Consequently, determining $\mathcal{A}^{(m + 1)}$ amounts to integrating \cref{eq:rotating liouville} from $t_i = m \, \Delta t$ to $t_f = \qty(m + 1) \, \Delta t$ for every \qd{} in the system.
+Consequently, determining $\tilde{\mathcal{A}}^{(m + 1)}$ amounts to integrating \cref{eq:rotating liouville} from $t_i = m \, \Delta t$ to $t_f = \qty(m + 1) \, \Delta t$ for every \qd{} in the system.
 For this, we make use of the predictor/corrector scheme detailed in~\cite{Glaser2009}.
 Defining $t_m \equiv m \, \Delta t$ and approximating $\tilde{\rho}(t)$ as a weighted sum of complex exponentials, the predictor/corrector scheme proceeds with an extrapolation predictor step,
 \begin{equation}
@@ -71,11 +69,11 @@ Such an integrator has significantly better convergence properties than Runge-Ku
 
 To summarize, one timestep of our solution strategy proceeds as follows:
 \begin{enumerate}
-  \item At timestep $m$, use \cref{eq:predictor,eq:polarization definition} to predict $\mathcal{A}^{(m + 1)}$.
+  \item At timestep $m$, use \cref{eq:predictor,eq:polarization definition} to predict $\tilde{\mathcal{A}}^{(m + 1)}$.
     This prediction depends only on the known history of the system and does not require the calculation of any electromagnetic interactions.
-  \item Use \cref{eq:zmatrix} to calculate $\mathcal{F}^{(m + 1)}$.
-    Having extrapolated $\mathcal{A}^{(m + 1)}$ in step 1, $\mathcal{F}^{(m + 1)}$ will contain information from \qds{} within $c \, \Delta t$ of each other.
-  \item Produce $\partial_t \tilde{\rho}(t_{m + 1})$ (and thus $\partial_t \mathcal{A}^{(m + 1)}$) by evaluating \cref{eq:rotating liouville} with the $\mathcal{F}^{(m+1)}$ found in step 2.
-  \item Correct $\mathcal{A}^{(m + 1)}$ with \cref{eq:corrector} and $\partial_t \mathcal{A}^{(m + 1)}$ found in step 3.
-    Repeat steps 2 through 4 until $\mathcal{A}^{(m + 1)}$ has sufficiently converged, then set $m \leftarrow m + 1$.
+  \item Use \cref{eq:zmatrix} to calculate $\tilde{\mathcal{F}}^{(m + 1)}$.
+    Having extrapolated $\tilde{\mathcal{A}}^{(m + 1)}$ in step 1, $\tilde{\mathcal{F}}^{(m + 1)}$ will contain information from \qds{} within $c \, \Delta t$ of each other.
+  \item Produce $\partial_t \tilde{\rho}(t_{m + 1})$ (and thus $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$) by evaluating \cref{eq:rotating liouville} with the $\tilde{\mathcal{F}}^{(m+1)}$ found in step 2.
+  \item Correct $\tilde{\mathcal{A}}^{(m + 1)}$ with \cref{eq:corrector} and $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$ found in step 3.
+    Repeat steps 2 through 4 until $\tilde{\mathcal{A}}^{(m + 1)}$ has sufficiently converged, then set $m \leftarrow m + 1$.
 \end{enumerate}
