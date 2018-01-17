@@ -19,7 +19,7 @@ Here, $\vb{E}$, $g$, and $\vb{J}$ represent a field, propagator, and source dist
 Algorithms such as the fast-multipole (FMM)~\cite{Greengard1987} and plane-wave time-domain (PWTD)~\cite{Ergin1999} methods enjoy widespread success in accelerating \cref{eq:general integral equation} and operate by decomposing a composite Green's function into a product of factors and a translation function, e.g.\ $g(\vb{r} - \vb{r}') = \sum_i b_i(\vb{r}' - \vb{r}_o) T(\vb{r}_s - \vb{r}_o) a_i(\vb{r}_s - \vb{r})$.
 Using this representation, the $a_i(\vb{r}_s - \vb{r})$ and $b_i(\vb{r}' - \vb{r}_o)$ functions become aggregation and disaggregation operations for sources in the vicinity of $\vb{r}_s$ and $\vb{r}_o$.
 By transmitting these aggregated quantities between $\vb{r}_{s,o}$ points, \textcolor{red}{fill this in} \cref{fig:box to box}.
-Unfortunately, as kernel-dependent methods, these techniques rely heavily on the mathematical details of $g(\vb{r} - \vb{r}'; t - t')$ as the solution to a partial differential equation (a proper Green's function) to determine a convergent decomposition.
+Unfortunately, as kernel-dependent methods, these techniques heavily rely on the mathematical details of $g(\vb{r} - \vb{r}'; t - t')$ as the solution to a partial differential equation (a proper Green's function) to determine a convergent decomposition.
 The frequency-shifted propagators developed in \cref{ch:quantum dots} do not arise from rigorous mathematical analysis, instead coming from assumptions made about the underlying radiative system, thus we must seek algebraic acceleration techniques instead.
 
 For discrete, causal systems, the translational invariance (in time) of \cref{eq:general integral equation} implies $\vb{E} = G \cdot \vb{J}$, or
