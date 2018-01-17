@@ -22,12 +22,12 @@ We define the total electric field at any point as $\vb{E}(\vb{r}, t) = \vb{E}_L
 where $\vb{E}_L(\vb{r}, t)$ describes an incident laser field, $\vb{P}(\vb{r}, t)$ a polarization distribution arising from  the off-diagonal elements (coherences) of $\hat{\rho}$, and
 \begin{equation}
     \mathfrak{F}\{\vb{P}(\vb{r}, t)\} \equiv
-      \frac{-1}{4\pi \epsilon} \int
+    \frac{-1}{4\pi \epsilon} \int_{}
       \left(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \frac{\partial_t^2 \vb{P}(\vb{r}', t_R)}{c^2 \abs{\vb{r}-\vb{r}'}} + 
       \left(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \qty(
         \frac{\partial_t   \vb{P}(\vb{r}', t_R)}{c \abs{\vb{r}-\vb{r}'}^2} +
         \frac{             \vb{P}(\vb{r}', t_R)}{  \abs{\vb{r}-\vb{r}'}^3}
-      ) \dd[3]{\vb{r}}'
+      ) \dd[3]{\vb{r}'}
   \label{eq:integral operator}
 \end{equation}
 (see \S 72 of \cite{Landau2013}).
@@ -52,11 +52,11 @@ As such, a similar transformation applies to the source distribution in \cref{eq
 Writing $\vb{P}(\vb{r}, t) = \tilde{\vb{P}}(\vb{r}, t)e^{i \omega_L t}$ and similarly ignoring high-frequency terms, the radiated field envelope becomes
 \begin{equation}
   \begin{gathered}
-    \tilde{\mathfrak{F}}\{ \tilde{\vb{P}}(\vb{r}, t) \} \equiv \frac{-1}{4\pi \varepsilon} \int
+    \tilde{\mathfrak{F}}\{ \tilde{\vb{P}}(\vb{r}, t) \} \equiv \frac{-1}{4\pi \epsilon} \int_{}
     \qty(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{\qty(\partial_t^2 \tilde{\vb{P}}(\vb{r}', t_R) + 2 i \omega_L \partial_t \tilde{\vb{P}}(\vb{r}', t_R) - \omega_L^2 \tilde{\vb{P}}(\vb{r}', t_R)) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{c^2 \abs{\vb{r}-\vb{r}'}} + \\
     \qty(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{\qty(\partial_t \tilde{\vb{P}}(\vb{r}', t_R) + i \omega_L \tilde{\vb{P}}(\vb{r}', t_R))e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{c \abs{\vb{r}-\vb{r}'}^2} +
     \qty(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} ) \cdot \frac{                \tilde{\vb{P}}(\vb{r}', t_R) e^{-i \omega_L \abs{\vb{r} - \vb{r}'}/c}}{\abs{\vb{r}-\vb{r}'}^3}
-    \, \dd[3]{\vb{r'}}.
+  \, \dd[3]{\vb{r}'}.
   \end{gathered}
   \label{eq:radiated envelope}
 \end{equation}

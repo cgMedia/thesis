@@ -23,13 +23,13 @@ where
 \begin{equation}
   \lambda_j(t) =
   \begin{cases}
-    \frac{(1 - \tau)_j}{j!} \frac{(1 + \tau)_{p-j}}{(p-j)!} & j-1 \le \tau < j \\
+    \frac{(1 - \tau)_j}{j!} \frac{(1 + \tau)_{p-j}}{(p-j)!} & j-1 \leqslant \tau < j \\
     0 & \text{otherwise,}
   \end{cases}
   \label{eq:basis piece}
 \end{equation}
 $(a)_k \equiv \Gamma(a + k)/\Gamma(a)$ denotes the Pochhammer rising factorial, and $\tau \equiv t/\Delta t$.
-Such a $T(t)$ consists of shifted, backwards-looking Lagrange polynomials of order $p$ (we require $p \ge 3$ to recover a twice-differentiable function), forming a temporal basis set with functions similar to the one shown in \cref{fig:interpolation basis}.
+Such a $T(t)$ consists of shifted, backwards-looking Lagrange polynomials of order $p$ (we require $p \geqslant 3$ to recover a twice-differentiable function), forming a temporal basis set with functions similar to the one shown in \cref{fig:interpolation basis}.
 These functions  reliably interpolate smooth functions with controllable error and have a long history of use in studies of radiative systems~\cite{Manara1997,Bluck1997}.
 
 Combining \cref{eq:radiated envelope,eq:basis function representation} and projecting the resulting field onto the spatiotemporal basis functions produces a marching-on-in-time system of the form
@@ -47,7 +47,7 @@ In this (block $N_s \times N_s$) matrix equation
   \label{eq:projections}
 \end{subequations}
 where $\langle \cdot, \cdot \rangle$ denotes the scalar product of two functions.
-As we have elected to use a uniform $\Delta t$, the summation in \cref{eq:zmatrix} represents a discrete convolution that will produce $\mathcal{F}^{(m)}$ given only $\mathcal{A}^{(m' \le m)}$.
+As we have elected to use a uniform $\Delta t$, the summation in \cref{eq:zmatrix} represents a discrete convolution that will produce $\mathcal{F}^{(m)}$ given only $\mathcal{A}^{(m' \leqslant m)}$.
 To link $\mathcal{A}^{(m)}$ with the density matrix in \cref{eq:rotating liouville}, we take
 \begin{equation}
   \mathcal{A}^{(m)}_\ell \equiv \tilde{\rho}_{\ell, 01}(t = m \, \Delta t)
