@@ -52,7 +52,7 @@ By \cref{eq:gauss}, then,
 \end{equation*}
 and thus
 \begin{equation*}
-  \varphi(\vb{r}) = \int \frac{k_1 \rho(\vb{r}')}{\abs{\vb{r} - \vb{r}'}} \dd[3]{\vb{r}'}
+  \varphi(\vb{r}) = \sint \frac{k_1 \rho(\vb{r}')}{\abs{\vb{r} - \vb{r}'}} \dd[3]{\vb{r}'}
 \end{equation*}
 as
 \begin{equation*}
@@ -94,7 +94,7 @@ Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_
 \end{equation*}
 from which it follows
 \begin{equation}
-  \vb{E}(\vb{r}, t) = -k_2 \iint \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \vb{E}(\vb{r}, t) = -k_2 \siint \kern0.1em \frac{\delta\qty(t - t'_R )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
 \end{equation}
 where $t'_R \equiv t' - \abs{\vb{r} - \vb{r}'}/c$ and $\partial_t \vb{P} \equiv \vb{J}$.
 

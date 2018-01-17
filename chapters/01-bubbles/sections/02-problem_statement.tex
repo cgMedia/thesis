@@ -25,7 +25,7 @@ where $\vb{r}_k$ represents the center-of-mass coordinate for the $k^\text{th}$ 
 
 Using these relations, we apply the Kirchoff-Helmholtz theorem to define the following system of integral equations,
 \begin{equation}
-  \varphi(\vb{r}, t) = \varphi_\text{inc}(\vb{r}, t) + \sum_{i = 0}^{N - 1} \iint_{}
+  \varphi(\vb{r}, t) = \varphi_\text{inc}(\vb{r}, t) + \sum_{i = 0}^{N - 1} \siint
   \qty( \varphi(\vb{r}',t') \pdv{\GF}{\vu{n}_k} - \GF \pdv{\varphi(\vb{r}',t')}{\vu{n}_k} ) \dd{A'} \dd{t'},
   \label{eq:Kirchoff-Helmholtz}
 \end{equation}
@@ -62,7 +62,7 @@ For the incident pulse, $\varphi_\text{inc}$, we consider superpositions of wave
 \end{equation}
 Finally, the variation in pressure (and thus $\varphi$) over each of the $\Omega_k$ necessarily propels each \bubble\ according to
 \begin{equation}
-  m_k \dv[2]{\vb{r}_k}{t} = \rho_0 \! \int_{} \pdv{\varphi\qty(\vb{r}, t)}{t} \dd{\vb{S}}
+  m_k \dv[2]{\vb{r}_k}{t} = \rho_0 \sint \pdv{\varphi\qty(\vb{r}, t)}{t} \dd{\vb{S}}
   \label{eq:Newton}
 \end{equation}
 where $\vb{S}$ denotes the outward-pointing normal of $\Omega_k(t)$.

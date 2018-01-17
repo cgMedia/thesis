@@ -10,6 +10,13 @@
 \newcommand{\etal}{\emph{et~al.}} % and others
 \newcommand{\ie}{\emph{i.e.}}     % that is
 \newcommand{\eg}{\emph{e.g.}}     % for example
+
+% Some of the \int_{} symbols get really tight when set immediately before a fraction.
+% These macros ('spaced int') give a little bit of extra space when necessary.
+\newcommand{\integralspace}{\kern0.1em}
+\newcommand{\sint}{\int_{} \integralspace}
+\newcommand{\siint}{\iint_{} \integralspace}
+
 \newcommand{\QuEST}{QuEST}
 
 \newif\ifmakeplots
