@@ -93,3 +93,12 @@ In doing so, we need only propagate $\tilde{\vb{P}}(\vb{r}, t)e^{-i \omega_L \ab
 Moreover, we use the time history of the auxilliary sources alongside \cref{eq:q vector} (with familliar derivatives of Lagrange interpolants) to reconstruct the time-differentiated component of \cref{eq:envelope propagator}.
 Because the inter-grid communication step bottlenecks the whole process, this expansion scheme requires propagation of only three quantities corresponding to the cartesian components of the vector sources in the expensive step of the calculation instead of having to propagate the three components of $\partial_t^2 \tilde{\vb{P}}$ and nine components of $\grad \grad \boldsymbol{\cdot} \tilde{\vb{P}}$ independently.
 
+
+\begin{figure}
+  \centering
+  \input{figures/grid_spacing_error}
+  \caption{\label{fig:grid convergence} $\ell_2$ error calculation of $g(\vb{r} - \vb{r}') = e^{i k \abs{\vb{r} - \vb{r}'}}/{\abs{\vb{r} - \vb{r}'}}$ for expansion orders zero through four.
+    For each of the points above, a source and observation box separated by $\Delta \vb{r} = 10\lambda \vu{x} + 10 \lambda \vu{y} + 10 \lambda \vu{z}$ each contain 64 randomly placed points, thus the points within each box all map to identical nodes in the auxiliary grid. 
+    The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(h^{m + 1})$.
+  }
+\end{figure}
