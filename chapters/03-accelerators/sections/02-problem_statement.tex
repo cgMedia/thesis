@@ -93,6 +93,17 @@ In doing so, we need only propagate $\tilde{\vb{P}}(\vb{r}, t)e^{-i \omega_L \ab
 Moreover, we use the time history of the auxilliary sources alongside \cref{eq:q vector} (with familliar derivatives of Lagrange interpolants) to reconstruct the time-differentiated component of \cref{eq:envelope propagator}.
 Because the inter-grid communication step bottlenecks the whole process, this expansion scheme requires propagation of only three quantities corresponding to the cartesian components of the vector sources in the expensive step of the calculation instead of having to propagate the three components of $\partial_t^2 \tilde{\vb{P}}$ and nine components of $\grad \grad \boldsymbol{\cdot} \tilde{\vb{P}}$ independently.
 
+\section{Moment-matching}
+
+\begin{figure}
+  \centering
+  \input{figures/1d_moments}
+  \caption{\label{fig:1d moments} ``One-sided'' expansion picture.
+    Here, the dashed orange line represents $g(x - x_\text{src})$ in the vicinity of the expansion points.
+    Instead of calculating $g(x_\text{obs} - x_\text{src})$ directly, we represent the interaction as a weighted sum over the interactions on the grid: $g(x_\text{obs} - x_\text{src}) \approx \sum_m w_m g(x_m - x_\text{src})$.
+  }
+\end{figure}
+
 
 \begin{figure}
   \centering
