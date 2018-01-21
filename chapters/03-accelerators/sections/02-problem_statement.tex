@@ -97,9 +97,9 @@ This also motivates using the approximation to calculate interactions involving 
 \begin{figure}
   \centering
   \input{figures/1d_moments}
-  \caption{\label{fig:1d moments} ``One-sided'' expansion picture.
-    Here, the dashed orange line represents $g(x - x_\text{src})$ in the vicinity of the expansion points.
-    Instead of calculating $g(x_\text{obs} - x_\text{src})$ directly, we represent the interaction as a weighted sum over the interactions on the grid: $g(x_\text{obs} - x_\text{src}) \approx \sum_m w_m g(x_m - x_\text{src})$.
+  \caption{\label{fig:1d moments} Polynomial interpolation of $g(x - x_\text{src})$ near $x_\text{obs}$.
+    Here, the green curve represents the actual $g(x - x_\text{src})$ and the dashed black line its approximation.
+    Evaluating the $n^\text{th}$-order approximation requires knowledge of the signal at $n + 1$ grid points surrounding $x_\text{obs}$.
   }
 \end{figure}
 
