@@ -26,9 +26,10 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
 \section{\label{sec:quest descriptions}Descriptions}
 
 \begin{description}
-  \item[\texttt{cmplx}] Alias for \lstinline!std::complex<double>!. Bit-compatible with FFTW's \lstinline!fftw_complex! type (hence the use of \lstinline!static_cast! when interfacing with FFTW).
-  \item[\texttt{Configuration}] Struct to contain effectively ``global'' simulation parameters---the speed of light, number of particles, etc.
-    Most objects do not read these values directly, instead preferring to have them as a parameter in their constructor to enhance modularity (can test objects independently without running all of the \lstinline!Configuration! code).
+  \item[\texttt{cmplx}] An alias for \lstinline!std::complex<double>! with an identical bit structure to FFTW's \lstinline!fftw_complex! type (hence the use of \lstinline!static_cast! when interfacing with FFTW).
+  \item[\texttt{Configuration}] This struct effectively contains ``global'' simulation parameters---the speed of light, number of particles, total time, etc.
+    Most objects do not read these values directly, instead preferring to have them as a parameter in their constructor to enhance modularity. 
+    The \lstinline!parse_configs! function uses the Boost Program Options~\cite{boost} library to provide a clean, error-checked way of reading these values from specified files.
   \item[\texttt{QuantumDot}] Collection of parameters necessary to define a quantum dot (position, transition frequency, decay times, and dipole moment).
     Also provides a method to calculate the right-hand side of \cref{eq:rotating liouville} given an input density matrix and electric field.
     Because these right-hand sides have instance-dependent parameters (transition frequency, $T_1$ and $T_2$, etc.), \lstinline!std::bind! produces the appropriate functors for constructing \lstinline!Integrator::RHS! instances.
