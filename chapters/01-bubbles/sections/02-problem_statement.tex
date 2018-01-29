@@ -8,7 +8,7 @@ The incident acoustic pulse, in combination with the acoustic field scattered fr
 We consider here the linear regime, in which the perturbation induced by the acoustic and aerodynamic contribution remain sufficiently small so that the velocity field $\vb{v}(\vb{r}, t)$ satisfies the condition $\abs{\vb{v}(\vb{r}, t)} \ll c_s $, where $c_s$ represents the speed of sound in the fluid.
 In this limit, the velocity potential, defined by $\vb{v}(\vb{r}, t) = \nabla \varphi\qty(\vb{r}, t)$, satisfies the scalar wave equation:
 \begin{equation}
-    \left(\frac{1}{c_s^2} \frac{\partial^2}{\partial t^2}-\nabla^2\right) \varphi\qty(\vb{r}, t) = 0,
+  \qty(\laplacian - \frac{1}{c_s^2} \pdv[2]{t}) \varphi\qty(\vb{r}, t) = 0,
   \label{eq:Helmholtz}
 \end{equation}
 and we may express the pressure perturbation at any point in the exterior medium as
