@@ -21,6 +21,17 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
+\newcommand{\attrib}{} % dummy macro
+\newenvironment{frontquote}[1]
+{
+  \renewcommand{\attrib}{\hspace*{\fill}---#1}
+  \begin{quote}\small
+}{
+  \\ \attrib
+  \end{quote}
+}
+
+
 \newcommand{\QuEST}{QuEST}
 
 \newif\ifmakeplots
