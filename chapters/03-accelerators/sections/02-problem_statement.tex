@@ -2,6 +2,13 @@
 
 \begin{figure}
   \centering
+  \conditionalFigureInput{figures/toeplitz_matrix}
+  \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ propagation kernel on a $5 \times 5 \times 5$ grid.
+  As all of the unique elements lie along the first column, an FFT diagonalizes the ``circulant equivalent'' matrix (formed by mirroring appropriate elements/blocks) in $\mathcal{O}(n \log n)$ time.}
+\end{figure}
+
+\begin{figure}
+  \centering
   \input{figures/aim_terminology.tex}
   \caption{\label{fig:aim terminology} Illustration of a single box system.
     All of the particles within a box (shown as the dark shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box} = \floor{\vb{r}/h}$.
@@ -123,11 +130,7 @@ This also motivates using the approximation to calculate interactions involving 
 \begin{figure}
   \centering
   \input{figures/nf_pair.tex}
-  \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion in two dimensions.}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \input{figures/nf_pair.tex}
-  \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion in two dimensions.}
+  \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion.
+    The dashed line indicates the complete nearfield of \textcolor{cbblue}{$\vb{r}_0$}---i.e. all boxes that have an expansion point within $\Delta s$ of the expansion around \textcolor{cbblue}{$\vb{r}_0$}.
+  }
 \end{figure}

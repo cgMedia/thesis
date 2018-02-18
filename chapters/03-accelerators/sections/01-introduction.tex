@@ -1,44 +1,17 @@
 \section{Introduction}
 
-\begin{figure}[]
-  \centering
-  \input{figures/box_to_box}
-  \caption{General principle of mathematically accelerated \textcolor{red}{techniques}.
-    Given a sufficiently smooth Green's function, we can aggregate distant sources to significantly reduce the overall computational complexity.
-  }
-  \label{fig:box to box}
-\end{figure}
+The na\"ive $\mathcal{O}(n^2)$ complexity of matrix-vector products in integral equation systems stands as the singular bottleneck to large-scale simulations.
+Since the 1990s, so-called ``fast'' solvers have played a critical role in alleviating this bottleneck; by exploiting properties of the underlying physical system (such as smoothness and translational invariance) these methods achieve space and time complexities of $\mathcal{O}(n \log n)$ or even $\mathcal{O}(n)$ with fully-controllable error\footnote{In particular this means one can choose parameters such that the error in the calculation falls below the floating point error of a given machine, thus fast solution techniques produce identical results to their na\"ive counterparts with \emph{no} discernable approximation error.}.
 
-We wish to accelerate the (discrete) calculation of 
-\begin{equation}
-  \vb{E}(\vb{r}, t) = \iint_{} g(\vb{r} - \vb{r}'; t - t') \vb{J}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
-  \label{eq:general integral equation}
-\end{equation}
-between a set of source and observation points (often---but not necessarily---coincident).
-Here, $\vb{E}$, $g$, and $\vb{J}$ represent a field, propagator, and source distribution and each can have a number of different properties (such as bandlimitedness or a dyadic structure) depending on the physics under consideration.
-Algorithms such as the fast-multipole (FMM)~\cite{Greengard1987} and plane-wave time-domain (PWTD)~\cite{Ergin1999} methods enjoy widespread success in accelerating \cref{eq:general integral equation} and operate by decomposing a composite Green's function into a product of factors and a translation function, e.g.\ $g(\vb{r} - \vb{r}') = \sum_i b_i(\vb{r}' - \vb{r}_o) T(\vb{r}_s - \vb{r}_o) a_i(\vb{r}_s - \vb{r})$.
-Using this representation, the $a_i(\vb{r}_s - \vb{r})$ and $b_i(\vb{r}' - \vb{r}_o)$ functions become aggregation and disaggregation operations for sources in the vicinity of $\vb{r}_s$ and $\vb{r}_o$.
-By transmitting these aggregated quantities between $\vb{r}_{s,o}$ points, \textcolor{red}{fill this in} \cref{fig:box to box}.
-Unfortunately, as kernel-dependent methods, these techniques heavily rely on the mathematical details of $g(\vb{r} - \vb{r}'; t - t')$ as the solution to a partial differential equation (a proper Green's function) to determine a convergent decomposition.
-The frequency-shifted propagators developed in \cref{ch:quantum dots} do not arise from rigorous mathematical analysis, instead coming from assumptions made about the underlying radiative system, thus we must seek algebraic acceleration techniques instead.
+\emph{Kernel-type} solvers~\cite{Greengard1987,PWTD} exploit the physical similarity of sources at large distances to develop a series representation of the Green's function in terms of source and observation regions independently.
+Specifically, these techniques lump adjacent sources together so as to transmit their effects in aggregate across large distances (a process not dissimilar to how a telephone network or the Internet works).
+These methods scale very well for surface discretizations as they intelligently partition the simulation space into a hierarchy of boxes and only compute interactions between regions containing sources.
+Unfortunately, as these methods rely on the underlying mathematical structure of the kernel to produce a suitable series representation, they have limited utility in systems with nonstandard (specifically rotating-frame) kernels.
 
-For discrete, causal systems, the translational invariance (in time) of \cref{eq:general integral equation} implies $\vb{E} = G \cdot \vb{J}$, or
-\begin{equation}
-  \mqty(\vb{E}_0 \\ \vb{E}_1 \\ \vb{E}_2 \\ \vb{E}_3 \\ \vdots \\ \vb{E}_{N_t - 1}) = 
-  \mqty(G_0 \\ G_1 & G_0 \\ G_2 & G_1 & G_0 \\ G_3 & G_2 & G_1 & G_0 \\ \vdots & \ddots & \ddots  & \ddots & \ddots \\ G_{N_t - 1} & \dots & G_3 & G_2 & G_1 & G_0) \cdot
-  \mqty(\vb{J}_0 \\ \vb{J}_1 \\ \vb{J}_2 \\ \vb{J}_3 \\ \vdots \\ \vb{J}_{N_t - 1})
-  \label{eq:matrix system}
-\end{equation}
-Here, the numerical index represents the evolution of time and thus the $G_i$ denote block matrices that govern the spatial interactions of the basis functions.
-(For electromagnetic systems of finite size, the $G_{i' > i} = 0$ for some $i$ due to the retarded nature of $g(\vb{r} - \vb{r}'; t - t')$.)
+In contrast, \emph{source-type} solvers~\cite{Bleszynski1996,Yilmaz2004,Kapur1997} effectively apply transformations to the source distribution (leaving the actual kernel unchanged) with the intention of producing an equivalent system with exploitable low-rank properties.
+The Adaptive Integral Method (AIM), which we extend here, represents a kernel matrix as a sum of nearfield and farfield contributions, each constructed from a different set of basis functions.
+For all basis functions within a prescribed distance of each other, we compute their interactions directly, thus the nearfield matrix becomes increasingly sparse in the limit of a large number of sources.
+The farfield contribution arises as the interaction between a reduced number of auxiliary basis functions taken as $\delta$-functions on a regular cartesian grid.
+Each source function maps to a finite number of overlapping auxiliary functions---thus the mapping matrices have a sparse signature and compress the distant portions of the interaction matrix---and the translationally-invariant structure imposed by the cartesian grid allows for an efficient matrix diagonalization by way of a (multidimensional) fast Fourier transform (FFT).
+Because AIM does not rely on the specific mathematical form of the interaction kernel, it works equally well for rotating and fixed-frame problems.
 
-The accelerated method---derived from ``Adaptive Integral Method'' (AIM) techniques in both frequency~\cite{Bleszynski1996} and time-domain~\cite{Yilmaz2004} applications---proceeds by decomposing $G$ into terms describing near and far-field effects (i.e. $G = G_\text{near} + G_\text{far}$).
-As each source has a limited number of near-field neighbors independent of the size of the system, $G_\text{near} \cdot \vb{J}$ proceeds exactly as in \cref{ch:quantum dots} and needs no (mathematical) acceleration.
-Evaluation of the far-field, however, uses a compressed representation of $G_\text{far}$ alongside a fast matrix-vector multiplication to achieve an $\mathcal{O}(n \log n)$ spatial complexity (as compared with the na\"ive $\mathcal{O}(n^2)$ strategy).
-
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/toeplitz_matrix}
-  \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ propagation kernel on a $5 \times 5 \times 5$ grid.
-  As all of the unique elements lie along the first column, an FFT diagonalizes the ``circulant equivalent'' matrix (formed by mirroring appropriate elements/blocks) in $\mathcal{O}(n \log n)$ time.}
-\end{figure}
