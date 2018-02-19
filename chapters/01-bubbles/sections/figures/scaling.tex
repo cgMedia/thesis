@@ -150,23 +150,23 @@
   }
   \begin{loglogaxis}[
       axis x line*=bottom,
-      x axis style = red!75!black,
+      x axis style = cbred,
       axis y line*=left,
-      y axis style = red!75!black,
+      y axis style = cbred,
       xlabel = {Separation $\abs{\vb{d}}$ (\tikz{\pgfuseplotmark{triangle*}}, \si{\micro\meter})},
       ylabel = {$\Delta \abs{\vb{v}_\text{max}}$ (\tikz{\pgfuseplotmark{triangle*}}, relative)},
       width=0.85\columnwidth
     ]
 
     \addplot[
-      red!75!black,
+      cbred,
       only marks,
       mark=triangle*,
       mark size = 2.5
     ] table {separation_scaling.dat};
 
     \addplot[
-      red!35!black,
+      cbred,
       opacity=0.6,
       domain=4:128
     ] {0.250754*x^-3.00077};
@@ -174,22 +174,22 @@
 
   \begin{loglogaxis}[
       axis x line*=top,
-      x axis style = blue!75!black,
+      x axis style = cbblue,
       axis y line*=right,
-      y axis style = blue!75!black,
+      y axis style = cbblue,
       xlabel = {Radius (\tikz{\pgfuseplotmark{*}}, $\si{\micro\meter}$)},
       ylabel = {$\Delta\abs{\vb{v}_\text{max}}$ (\tikz{\pgfuseplotmark{*}}, relative)},
       ylabel style = {rotate=-180},
       width=0.85\columnwidth
     ]
     \addplot[
-      blue!75!black,
+      cbblue,
       only marks,
       mark size=0.4ex
     ] table {radius_scaling.dat};
 
     \addplot[
-      red,
+      cbred,
       domain=0.5:5,
       opacity=1,
     ] {0.0000313328*x^2.99814};

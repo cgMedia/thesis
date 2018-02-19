@@ -7,8 +7,8 @@
       concept color=black, fill=white, line width=1ex, text=black
     },
     text=white,
-    IE/.style={concept color=red,faded/.style={concept color=red!50}},
-    DE/.style={concept color=blue,faded/.style={concept color=blue!50}},
+    IE/.style={concept color=cbred,faded/.style={concept color=cbred!50}},
+    DE/.style={concept color=cbblue,faded/.style={concept color=cbblue!50}},
     measuring complexity/.style={concept color=orange,faded/.style={concept color=orange!50}},
     solving problems/.style={concept color=green!50!black,faded/.style={concept color=green!50!black!50}},
     grow cyclic,
@@ -19,7 +19,7 @@
   child[IE]{ node (IE) {Integral equation methods}}
   child[DE]{ node (DE) {Differential equation methods}};
     \end{scope}
-  \begin{scope}[every annotation/.style={fill=blue!10}]
+  \begin{scope}[every annotation/.style={fill=cbblue!10}]
     \node [annotation, xshift=3.5cm, yshift=0.0cm, text width = 6.5cm] at (DE.east) {
       Properties:
        \begin{itemize}
@@ -32,7 +32,7 @@
        \end{itemize}
     };
   \end{scope}
-  \begin{scope}[every annotation/.style={fill=red!10}]
+  \begin{scope}[every annotation/.style={fill=cbred!10}]
     \node [annotation, xshift=3.5cm, yshift=-0.0cm, text width = 6.5cm] at (IE.east) {
       Properties:
        \begin{itemize}
