@@ -1,50 +1,48 @@
 \section{Formulation}
 
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/toeplitz_matrix}
-  \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ propagation kernel on a $5 \times 5 \times 5$ grid.
-  As all of the unique elements lie along the first column, an FFT diagonalizes the ``circulant equivalent'' matrix (formed by mirroring appropriate elements/blocks) in $\mathcal{O}(n \log n)$ time.}
-\end{figure}
-
-We again consider the evolution of a collecltion of pointlike \qds{} in response to a time-varying electric field.
-As in \cref{ch:quantum dots}, the $j^\text{th}$ density matrix envelope, $\tilde{\rho}_j$, evolves according to the Liouville equation
+An incident electric field $\vb{E}_\text{inc}(\vb{r}, t)$ induces a source polarization distribution, $\vb{P}(\vb{r}, t)$, on a collection of objects (either discrete or continuous) embedded in a homogeneous background medium by way of an underlying linear~\cite{} or nonlinear~\cite{Glosser2017} process.
+This current subsequently generates a secondary $\vb{E}_\text{scat}(\vb{r}, t) = \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}$, thus the total field at any spacetime coordinate becomes
 \begin{equation}
-  \dv{\tilde{\rho}_j}{t} = \frac{-i}{\hbar} \commutator{\tilde{\mathcal{H}}_j\qty\big(\tilde{\vb{E}}(\vb{r}_j, t))}{\tilde{\rho}_j} - \hat{\mathcal{D}}_j \qty[\tilde{\rho_j}]
+  \vb{E}(\vb{r}, t) = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}.
 \end{equation}
-and we use the same predictor/corrector integration scheme as before.
-The coherent (off-diagonal) terms of $\tilde{\rho}_j$ 
-This evolution describes a localized point polarization $\tilde{\vb{P}}_j(t)\delta(\vb{r} - \vb{r}_j)$ and we may write the total electric field at any point in space as
+Assuming $\vb{E}(\vb{r}, t)$ consists of a low-frequency envelope modulated by a high-frequency sinusoid, i.e. $\vb{E}(\vb{r}, t) = \tilde{\vb{E}}(\vb{r}, t) e^{i \omega_L t}$, we can suppress the $e^{i \omega_L t}$ term in favor of an assumed spatial phase factor to preserve interference phenomena. 
+Thus
 \begin{equation}
   \tilde{\vb{E}}(\vb{r}, t) = \tilde{\vb{E}}_\text{inc}(\vb{r}, t) + \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)}
 \end{equation}
-where $\tilde{\vb{E}}(\vb{r}, t)$ describes an incident laser pulse,
+where tildes on field variables denote envelope functions.
+By enforcing radiation boundary conditions (namely that $\vb{E}_\text{scat}(\vb{r}, t) \to 0$ as $\abs{\vb{r}} \to \infty$), Maxwell's equations require
+\begin{equation}
+  \mathfrak{F}\qty{\vb{P}(\vb{r}, t)} = -\frac{\mu}{4\pi} \siint \frac{\delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \vb{P}(\vb{r}', t') \dd[1]{t'} \dd[3]{\vb{r}'}
+  \label{eq:efie}
+\end{equation}
+where $\mu$ characterizes the permeability of the background medium and $t_R \equiv t - \abs{\vb{r} - \vb{r}'}/c$ (see \cref{appendix:vector wave equation}).
+Accordingly,
+\begin{equation}
+  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)}e^{i \omega_L t} = -\frac{\mu}{4\pi} \siint \frac{\delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \tilde{\vb{P}}(\vb{r}', t') e^{i \omega_L t'} \dd[1]{t'} \dd[3]{\vb{r}'}
+  \label{eq:efie envelope}
+\end{equation}
+and, after performing the temporal integration and suppressing the $e^{i \omega_L t}$ factor on both sides of the equation, we have
+\begin{equation}
+  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)} = -\frac{\mu}{4\pi} \sint \frac{e^{- i \omega_L \abs{\vb{r} - \vb{r}'}}}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{t} + 2 i \omega_L \pdv{t} - \omega_L^2 - c^2 \grad' \grad'\boldsymbol{\cdot}) \tilde{\vb{P}}(\vb{r}', t_R) \dd[3]{\vb{r}'}.
+  \label{eq:efie envelope}
+\end{equation}
+(We note that $\partial_{t_R} = \partial_{t}$ and that \cref{eq:efie envelope} recovers \cref{eq:efie} in the limit of $\omega_L \to 0$.)
 
-The underlying mechanics remain effectively unchanged from \cref{ch:quantum dots}: a collection of $N_s$ pointlike \qds{} evolve due to incident electric field via \cref{eq:liouville}, implicitly coupled by way of secondary radiated fields.
-Under the rotating-wave approximation~\cref{Allen1975}, the off-diagonal elements of a given \qd's density matrix, $\tilde{\rho}$, directly characterize the (complex-valued) polarization density of the \qd{} ($\tilde{\vb{P}}$).
-This polarization density, then, acts as a source in Maxwell's equations to produce
+To effect the calculation of \cref{eq:efie envelope} on bounded geometries of interest, we represent $\tilde{\vb{P}}(\vb{r}, t)$ as a collection of spatio-temporal basis functions,
 \begin{equation}
-  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)}e^{i \omega_l t} = -\frac{\mu_0}{4\pi} \siint \frac{\delta(t - t'_r)}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{t} - c^2 \grad' \grad'\boldsymbol{\cdot}) \tilde{\vb{P}}(\vb{r}', t') e^{i \omega_l t'} \dd[1]{t'} \dd[3]{\vb{r}'}
-  \label{eq:envelope propagator}
+  \tilde{\vb{P}}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \tilde{\mathcal{A}}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t).
 \end{equation}
-(see \cref{appendix:vector wave equation}).
-This form of \cref{eq:radiated envelope} has several advantages in developing accelerated calculation schemes which we shall detail later.
-Representing $\tilde{\vb{p}}(\vb{r}, t)$ as a collection of spatio-temporal basis functions,
-\begin{equation}
-  \tilde{\vb{P}}(\vb{r}, t) = \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \tilde{\mathcal{A}}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \delta t),
-\end{equation}
-we have again chosen $\vb{s}_\ell(\vb{r}) = \vb{d}_\ell \delta(\vb{r} - \vb{r}_\ell)$ and $T(t)$ as the standard Lagrange polynomial basis set.
-Additionally, AIM embeds $\tilde{\vb{P}}(\vb{r}, t)$ within a cartesian grid with spacings chosen to sufficiently resolve the interference phenomena of \emph{unshifted}, fixed-frame sources.
-This grid allows for the construction of auxilliary sources at each gridpoint, chosen so as to accurately reproduce fields eminating from the primary source at large distances.
-As a result, interactions between gridpoints have a toeplitz matrix structure due to the translational invariance in $g(\vb{r} - \vb{r}')$ which facilitates rapid diagonalization via $n$-dimensional fast fourier transforms.
-In total, the accelerated far-field calculation then proceeds via
-\begin{inparaenum}[(i)]
-  \item projecting the primary sources onto a collection of auxilliary point sources located at nodes of a regular cartesian grid,
-  \item propagating fields between gridpoints with an accelerated matrix-vector product (done through multidimensional ffts),
-  \item projecting the auxilliary sources back onto the primary sources.
-\end{inparaenum}
 
 \subsection{AIM propagation}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/toeplitz_matrix}
+  \caption{\label{fig:toeplitz}Illustration of the three-level (corresponding to three spatial dimensions) Toeplitz matrix structure for a $1/r$ interaction kernel on a $5 \times 5 \times 5$ grid.
+  As all of the unique elements lie along the first column, an FFT diagonalizes the ``circulant equivalent'' matrix (formed by mirroring appropriate elements/blocks) in $\mathcal{O}(3 n \log n)$ time.}
+\end{figure}
+
 
 \begin{figure}
   \centering
