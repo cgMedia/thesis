@@ -77,3 +77,10 @@ To summarize, one timestep of our solution strategy proceeds as follows:
   \item Correct $\tilde{\mathcal{A}}^{(m + 1)}$ with \cref{eq:corrector} and $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$ found in step 3.
     Repeat steps 2 through 4 until $\tilde{\mathcal{A}}^{(m + 1)}$ has sufficiently converged, then set $m \leftarrow m + 1$.
 \end{enumerate}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/pc_flowchart}
+  \caption{\label{fig:flowchart} Flowchart of one iteration of the coupled quantum/electromagnetic solution procedure.}
+\end{figure}
+
