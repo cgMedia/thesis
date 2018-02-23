@@ -1,6 +1,6 @@
 \section{Introduction}
 
-The na\"ive $\mathcal{O}(n^2)$ complexity of matrix-vector products in integral equation systems stands as the singular bottleneck to large-scale simulations.
+The na\"ive $\mathcal{O}(n^2)$ complexity of matrix-vector products in integral equation systems stands as the singular bottleneck to large-scale simulations of related phenomena.
 Since the 1990s, so-called ``fast'' solvers have played a critical role in alleviating this bottleneck; by exploiting properties of the underlying physical system (such as smoothness and translational invariance) these methods achieve space and time complexities of $\mathcal{O}(n \log n)$ or even $\mathcal{O}(n)$ with fully-controllable error\footnote{In particular this means one can choose parameters such that the error in the calculation falls below the floating point error of a given machine, thus fast solution techniques produce identical results to their na\"ive counterparts with \emph{no} discernable approximation error.}.
 
 \emph{Kernel-type} solvers~\cite{Greengard1987,PWTD} exploit the physical similarity of sources at large distances to develop a series representation of the Green's function in terms of source and observation regions independently.
@@ -8,10 +8,10 @@ Specifically, these techniques lump adjacent sources together so as to transmit 
 These methods scale very well for surface discretizations as they intelligently partition the simulation space into a hierarchy of boxes and only compute interactions between regions containing sources.
 Unfortunately, as these methods rely on the underlying mathematical structure of the kernel to produce a suitable series representation, they have limited utility in systems with nonstandard (specifically rotating-frame) kernels.
 
-In contrast, \emph{source-type} solvers~\cite{Bleszynski1996,Yilmaz2004,Kapur1997} effectively apply transformations to the source distribution (leaving the actual kernel unchanged) with the intention of producing an equivalent system with exploitable low-rank properties.
+In contrast, \emph{source-type} solvers~\cite{Bleszynski1996,Yilmaz2004,Kapur1997} apply effective transformations to the source distribution (leaving the actual interaction kernel unchanged) with the intention of producing an equivalent system with exploitable low-rank properties.
 The Adaptive Integral Method (AIM), which we extend here, represents a kernel matrix as a sum of nearfield and farfield contributions, each constructed from a different set of basis functions.
 For all basis functions within a prescribed distance of each other, we compute their interactions directly, thus the nearfield matrix becomes increasingly sparse in the limit of a large number of sources.
 The farfield contribution arises as the interaction between a reduced number of auxiliary basis functions taken as $\delta$-functions on a regular cartesian grid.
 Each source function maps to a finite number of overlapping auxiliary functions---thus the mapping matrices have a sparse signature and compress the distant portions of the interaction matrix---and the translationally-invariant structure imposed by the cartesian grid allows for an efficient matrix diagonalization by way of a (multidimensional) fast Fourier transform (FFT).
-Because AIM does not rely on the specific mathematical form of the interaction kernel, it works equally well for rotating and fixed-frame problems.
+Because AIM does not rely on the specific mathematical form of the interaction kernel (a so-called ``algebraic acceleration''), it works equally well for rotating and fixed-frame problems.
 
