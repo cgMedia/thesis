@@ -60,15 +60,16 @@ For finite systems, only $\tilde{\mathcal{Z}}^{(0)}$ through $\tilde{\mathcal{Z}
 Immediately, this bands $\tilde{\mathcal{Z}}$ to reduce the complexity of the sum in \cref{eq:mot} though the $\mathcal{O}(N_s^2)$ spatial complexity still dominates the overall computational cost.
 Consequently, we draw inspiration from FFT-based techniques such as the Adaptive Integral Method (AIM)~\cite{AIM}, Conjugate Gradient FFT (CG-FFT)~\cite{CG-FFT}, and Particle-Particle Particle-Mesh (P$^3$M)~\cite{p cubed m} to develop an accelerated methodology for evaluating \cref{eq:mot}.
 
-\subsection{AIM propagation}
+\subsection{Auxiliary grids}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
   \hspace{1cm}
   \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
-  \caption{\label{fig:matrix structure} The distance matrix between 1024 points in a unit cube appears to have very little structure (left).
-    Sorting the points by their rough position in space---in this case by the index of a box of width $s$ (right)---reveals a diagonally-dominant block Toeplitz substructure, however.
+  \caption{\label{fig:matrix structure} The Laplace-kernel interaction matrix between 1024 points in a unit cube appears to have very little structure (left).
+    While we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
+    Points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
     Such structures indicate portions of the matrix have very accurate low-rank approximations, offering the possibility of significant compression.
   }
 \end{figure}
