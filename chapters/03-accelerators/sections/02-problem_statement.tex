@@ -50,15 +50,15 @@ Substituting \cref{eq:discretization} into \cref{eq:efie envelope} and projectin
 where
 \begin{subequations}
   \begin{align}
-    \tilde{\mathcal{F}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}(\vb{r}, m \, \Delta t) \rangle \\
-    \tilde{\mathcal{L}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \\
-    \tilde{\mathcal{Z}}^{(k)}_{\ell\ell'} &= \langle \vb{s}_\ell(\vb{r}), \tilde{\mathfrak{F}}\qty{\vb{s}_{\ell'}(\vb{r}, T(k \, \Delta t)} \rangle.
+    \tilde{\mathcal{F}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
+    \tilde{\mathcal{L}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
+    \tilde{\mathcal{Z}}^{(k)}_{\ell\ell'} &= \langle \vb{s}_\ell(\vb{r}), \tilde{\mathfrak{F}}\qty{\vb{s}_{\ell'}(\vb{r}, T(k \, \Delta t)} \rangle \label{eq:z elements}.
   \end{align}
 \end{subequations}
 
 For finite systems, only $\tilde{\mathcal{Z}}^{(0)}$ through $\tilde{\mathcal{Z}}^{(N_d)}$ contain nonzero elements, corresponding to the $N_d$ timesteps required to traverse the system completely.
 Immediately, this bands $\tilde{\mathcal{Z}}$ to reduce the complexity of the sum in \cref{eq:mot} though the $\mathcal{O}(N_s^2)$ spatial complexity still dominates the overall computational cost.
-Consequently, we draw inspiration from FFT-based techniques such as the Adaptive Integral Method (AIM)~\cite{AIM}, Conjugate Gradient FFT (CG-FFT)~\cite{CG-FFT}, and Particle-Particle Particle-Mesh (P$^3$M)~\cite{p cubed m} to develop an accelerated methodology for evaluating \cref{eq:mot}.
+Consequently, we draw inspiration from FFT-based techniques such as the Adaptive Integral Method (AIM)~\cite{Bleszynski1996,Yilmaz2004}, Conjugate Gradient FFT (CG-FFT)~\cite{CG-FFT}, and Particle-Particle Particle-Mesh (P$^3$M)~\cite{p cubed m} to develop an accelerated methodology for evaluating \cref{eq:mot}.
 
 \subsection{Auxiliary grids}
 
@@ -87,7 +87,7 @@ Consequently, we draw inspiration from FFT-based techniques such as the Adaptive
   \conditionalFigureInput{figures/expansion-grid}
   \caption{\label{fig:expansion grid}Spatial expansion pattern for a two-dimensional system.
     An expansion of order $m$ requires $(m + 1)^3$ grid points.
-    Moreover, increasing the expansion order incorporates new points in such a way as to keep $\vb{s}_\ell(\vb{r})$ as close to the center of the box as possible.
+    Moreover, increasing the expansion order incorporates new points in such a way as to keep $\vb{s}_\ell(\vb{r})$ as close to the center of the expansion region as possible.
   }
 \end{figure}
 
@@ -99,43 +99,58 @@ Consequently, we draw inspiration from FFT-based techniques such as the Adaptive
   }
 \end{figure}
 
+To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\tilde{\mathcal{Z}}^{(k)}$ as a sum of near- and far-field contributions.
+The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' so as to avoid incurring large errors in potentials with singularities.
+In contrast, the far-field matrix never explicitly arise.
+Instead, we construct the far-field interaction matrices between auxiliary sources residing on a regular grid.
+Such a procedure has two salient advantages: it compresses the interaction matrix to a reduced number of auxiliary unknowns and imposes a Toeplitz structure amenible to diagonalization with fast Fourier transforms (FFTs).
+
+The original AIM scheme in~\cite{Bleszynski1996} embeds a scattering structure within an auxiliary rectangular grid.
+By construction, the interaction matrix of a translationally-invariant propagator (such as \cref{eq:efie envelope}) on this grid will have a hierarchical (block) Toeplitz structure.
+This structure affords a very efficient matrix multiplication: as this matrix represents a discrete convolution, a multidimensional FFT diagonalizes the entire matrix in $\mathcal{O}(n \log n)$ steps.
+
+Effecting this calculation for arbitrary structures requires one additional step, however.
+As structures do not, in general, reside on structured grids, we require
+
+\begin{enumerate}
+  \item \textbf{Projection:} At time $m \, \Delta t$, we project the $\tilde{\mathcal{A}}^{(m)}_\ell \vb{s}_\ell(\vb{r})$ quantities onto a collection of spatial $\delta$-functions (the exterior grid).
+    The number expansion points for each $\vb{s}_\ell(\vb{r})$ depends on the number of multipole moments required to recover the potential to a prescribed accuracy at a given distance away from $\vb{s}_\ell(\vb{r})$.
+  \item \textbf{Propagation:}
+  \item \textbf{Back-projection:}
+  \item \textbf{Correction:}
+  \item \textbf{Interpolation:}
+\end{enumerate}
+
+\section{Moment-matching}
+
 To facillitate FFT-based matrix-vector products, we represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints, i.e.
 \begin{equation}
-  \psi_\ell(\vb{r}) \approx \sum_{\vb{u} \in c_{\ell}} \lambda_{\ell\vb{u}} \delta(\vb{r} - \vb{u}).
+  \psi_\ell(\vb{r}) \approx \sum_{\vb{u} \in B_{\ell}} \Lambda_{\ell\vb{u}} \delta(\vb{r} - \vb{u}).
   \label{eq:grid linear combination}
 \end{equation}
-Here, $\psi_\ell(\vb{r}) \in \qty{\vb{s}_\ell(\vb{r})\cdot \vu{x}, \vb{s}_\ell(\vb{r}) \cdot \vu{y}, \vb{s}_\ell(\vb{r}) \cdot \vu{z}}$ and $c_\ell$ denotes the collection of grid points, $\vb{u}$, within the expansion region of $\vb{s}_\ell(\vb{r})$.
+Here, $\psi_\ell(\vb{r}) \in \qty{\vb{s}_\ell(\vb{r})\cdot \vu{x}, \vb{s}_\ell(\vb{r}) \cdot \vu{y}, \vb{s}_\ell(\vb{r}) \cdot \vu{z}}$ and $B_\ell$ denotes the collection of grid points, $\vb{u}$, within the expansion region of $\vb{s}_\ell(\vb{r})$.
 For an expansion of order\footnote{In principle, one could expand to different orders in different cartesian directions, though this involves considerably more bookkeeping for relatively little benefit. Thus, for convenience, we take ``the expansion order'' to mean the expansion order in every direction.} $m$, this sum contains $(m + 1)^3$ terms corresponding to the $(m + 1)^3$ grid points nearest to $\vb{s}_\ell(\vb{r})$.
-Consequently, the $\lambda_{\ell \vb{u}}$ matrices contain few nonzero elements and we have elected to use a moment-matching scheme to capture the $(m + 1)^3$ multipole moments of $\vb{s}_\ell(\vb{r})$ according to
+Consequently, the $\Lambda_{\ell \vb{u}}$ matrices contain few nonzero elements and we have elected to use a moment-matching scheme to capture the $(m + 1)^3$ multipole moments of $\vb{s}_\ell(\vb{r})$ according to
 \begin{equation}
   \sint (x - x_0)^{m_x}(y - y_0)^{m_y}(z - z_0)^{m_z} \qty[\psi_\ell(\vb{r}) - \sum_{\vb{u} \in c_\ell}\Lambda_{\ell\vb{u}}\delta(\vb{r} - \vb{u})] \dd[3]{\vb{r}} = 0.
   \label{eq:moment matching}
 \end{equation}
 In this expression, $0 \leqslant m_x, m_y, m_z \leqslant m$ and $\vb{r}_0 \equiv x_0 \vu{x} + y_0 \vu{y} + z_0\vu{z}$ denotes the origin about which we compute the multipoles.
-Thus, to calculate the $\lambda_{\ell \vb{u}}$, we solve the least-squares system,
+Thus, to calculate the $\Lambda_{\ell \vb{u}}$, we solve the least-squares system,
 \begin{equation}
-  \sum_{\vb{u} \in c_\ell} W_{\vb{m}\vb{u}}\Lambda_{\ell\vb{u}} = Q_{\ell\vb{m}},
+  \sum_{\vb{u} \in B_\ell} W_{\vb{m}\vb{u}}\Lambda_{\ell\vb{u}} = Q_{\ell\vb{m}},
   \label{eq:expansion matrix system}
 \end{equation}
 where
 \begin{subequations}
   \begin{align}
-    Q_{\ell \vb{m}} &= \int_{} \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}\\
-    W_{\vb{m}\vb{u}} &= (u_x - x_0)^{m_x} (u_y - y_0)^{m_y} (u_z - z_0)^{m_z} \label{eq:w matrix}.
+    W_{\vb{m}\vb{u}} &= (u_x - x_0)^{m_x} (u_y - y_0)^{m_y} (u_z - z_0)^{m_z} \label{eq:w matrix} \\
+    Q_{\ell \vb{m}} &= \int_{} \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}.
   \end{align}
 \end{subequations}
 With infinite precision, the choice of $\vb{r}_0$ merely sets a reference point for the multipole coordinate system; to minimize numerical issues, however, we choose $\vb{r}_0$ at the center of $\vb{s}_\ell(\vb{r})$.
 As the primary basis functions consist entirely of $\delta$-functions, $\vb{r}_0 = \vb{r}$ and $Q_{\ell\vb{m}} = 0$ everywhere except for $Q_{\ell \vb{0}} \equiv 1$.
 
-\textcolor{red}{not sure how to link basis functions to derivatives yet---probably needs some description of matrix elements.}
-
-Additionally, these expansions prove useful in calculating the $\grad' \grad' \boldsymbol{\cdot}$ terms of \cref{eq:envelope propagator}.
-Using the definition of \cref{eq:q vector} we may compute additional collections of expansion coefficients corresponding to arbitrary derivatives in $x$, $y$, and $z$.
-In doing so, we need only propagate $\tilde{\vb{P}}(\vb{r}, t)e^{-i \omega_l \abs{\vb{r} - \vb{r}'}}/\abs{\vb{r} - \vb{r}'}$ between gridpoints; the final projection operation off the auxilliary grid reconstructs the total field.
-Moreover, we use the time history of the auxilliary sources alongside \cref{eq:q vector} (with familliar derivatives of Lagrange interpolants) to reconstruct the time-differentiated component of \cref{eq:envelope propagator}.
-Because the inter-grid communication step bottlenecks the whole process, this expansion scheme requires propagation of only three quantities corresponding to the cartesian components of the vector sources in the expensive step of the calculation instead of having to propagate the three components of $\partial_t^2 \tilde{\vb{p}}$ and nine components of $\grad \grad \boldsymbol{\cdot} \tilde{\vb{p}}$ independently.
-
-\section{Moment-matching}
 
 \subsection{Spatial analysis}
 
