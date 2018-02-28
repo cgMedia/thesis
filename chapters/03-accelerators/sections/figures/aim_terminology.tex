@@ -1,42 +1,55 @@
-\usetikzlibrary{colorbrewer, decorations.pathreplacing, shapes}
+\usetikzlibrary{colorbrewer, decorations.pathreplacing, shapes, calc}
 
 \begin{tikzpicture}[>=latex, scale=2]
+
+% Draw major grid
 \draw[step=1, black, thick, opacity=0.1] (-2,-2) grid (3, 3);
 
+% Draw colored ``zones''
 \fill[cbblue, opacity=0.4] (0,0) rectangle (1, 1);
 \fill[cbblue, opacity=0.2] (-1,-1) rectangle (2, 2);
 
+% Draw expansion points
 \foreach \x in {-1,...,2} {
   \foreach \y in {-1,...,2} {
-
     \draw[thick, cbblue, fill=white, radius=0.1] (\x,\y) circle;
-
   }
 }
 
+% Draw and label interior grid
+\foreach \x in {0.25, 0.5, 0.75} {
+  \foreach \y in {0.25, 0.5, 0.75} {
+    \draw[cbblue, fill=white, radius=0.05] (\x, \y) circle;
 
-\fill[cbblue, radius=0.03] (0.2, 0.7) node (A) {} circle;
-\fill[cbblue, radius=0.03] (0.5, 0.2) node (B) {} circle;
-\fill[cbblue, radius=0.03] (0.8, 0.5) node (C) {} circle;
-
-\foreach \x in {0, 0.333, ..., 1} {
-  \foreach \y in {0, 0.333, ..., 1} {
-    %\draw[cbblue, fill=white] (\x,\y) circle (0.05);
-    %\draw[] (\x,\y) node[cross, cbblue] {};
+    \draw[cbblue!50] ($(\x,\y) - ({1/(20 * sqrt(2))}, {1/(20 * sqrt(2))})$) -- ($(\x,\y) + ({1/(20 * sqrt(2))}, {1/(20 * sqrt(2))})$);
+    \draw[cbblue!50] ($(\x,\y) - ({1/(20 * sqrt(2))}, {-1/(20 * sqrt(2))})$) -- ($(\x,\y) + ({1/(20 * sqrt(2))}, {-1/(20 * sqrt(2))})$);
   }
 }
 
-\draw[diamond] (1.5, 1.5);
+\node[radius=0.03] (g1) at (0.25, 0.25) {};
+\node[radius=0.03] (g2) at (0.50, 0.25) {};
+\node[radius=0.03] (g3) at (0.75, 0.25) {};
 
-%\draw (0.5, 0.5) node[cross out] {} circle (0.2);
+\node[cbblue] (grid) at (0.5, -0.25) {Interior grid};
 
-\fill[cbblue, radius=0.06] node[anchor=north east] (0, 0) {$\mathbf{r}_\text{box}$} circle;
+\draw[cbblue, ->] (grid) -- (g1);
+\draw[cbblue, ->] (grid) -- (g2);
+\draw[cbblue, ->] (grid) -- (g3);
+
+% Draw and label particles
+\fill[cbblue, radius=0.03] (0.1, 0.75) node (A) {} circle;
+\fill[cbblue, radius=0.03] (0.325, 0.4) node (B) {} circle;
+\fill[cbblue, radius=0.03] (0.7, 0.65) node (C) {} circle;
+
+\fill[cbblue, radius=0.06] (0, 0) circle;
+\node[cbblue] at (-0.3, 0) {$\mathbf{r}_\text{box}$};
 
 \node[cbblue] (pts) at (0.5, 1.2) {Particles};
 \draw[cbblue, ->] (pts) -- (A);
 \draw[cbblue, ->] (pts) -- (B);
 \draw[cbblue, ->] (pts) -- (C);
 
+% Add annotations
 \draw[cbblue, thick, decorate,decoration={brace,amplitude=10}] (-1.1,2.2) -- (2.1, 2.2) node [midway, above, yshift=10] {Expansion region};
 \draw[cbblue, thick, decorate,decoration={brace,amplitude=10}] (1.1,1.1) -- (1.1, -0.1) node [midway, right, xshift=10] {Box};
 
