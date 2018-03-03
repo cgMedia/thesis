@@ -6,8 +6,41 @@
 
 \dropcap{A}{s} our ability to resolve physical systems grows, so, too, do our demands of the models we build.
 Unfortunately, we rapidly approach an age where approximate analytic descriptions of the universe simply cannot recover important features in systems of interest.
-Substituting \emph{numerical}---i.e.\ \emph{in silico}---techniques into higher resolution models alleviates this problem somewhat (particularly as the hardware evolves ``below'' the model), though the computational overhead of \naive\ algorithms almost certainly limits their utility.
-The computational scientist, then, has a tricky job: they must have expertise in their own domain so as to begin formulating testable hypotheses about the universe, as well as expertise in ``computation'' to understand the constraints of exploring such hypotheses digitally.
+Substituting \emph{numerical}---i.e.\ \emph{in silico}---techniques into higher resolution models alleviates this problem somewhat (particularly as computer hardware evolves ``below'' the model), though the computational overhead of \naive\ algorithms limits their utility beyond nearly analytic calculations, particularly in multiscale or multiphysics applications.
+The computational scientist, then, has a tricky job: they must have expertise in their own domain so as to begin formulating testable hypotheses about the universe, as well as expertise in ``computation'' to understand the constraints inherent in exploring such hypotheses numerically.
+
+\section{Active media}
+
+\subsection{Acoustically-induced trapping}
+
+% What is the background/why is it interesting?
+The placement of biological material or microscopic objects plays a large role in a number of tecnological applications related to biosensing.
+For example, droplet-based microfluidics entails the careful construction, manipulation, and sensing of \si{\micro\liter} (or smaller) droplets of fluid for myriad lab-on-a-chip applications.
+Similarly, DNA microarrays employ large numbers of micron-sized spots---each filled with a particular DNA sequence---to perform an experiment on thousands of genes simultaneously.
+Manipulating individual droplets and fabricating a microarray both require careful placement of apparatus; though given the small length scale of these problems conventional manipulation techniques (such as pipetting) become problematic.
+Instead, researchers require alternative means of precisely controlling the motion of such objects.
+
+% This site is great: http://bme.lth.se/research-pages/nanobiotechnology-and-lab-on-a-chip/research/acoustophoresis/
+Because of their low energy and minimal invasiveness, so-called acoustic tweezers offer an ideal mechanism for precise microscopic positioning in both biological and nonbiological applications..
+By varying the pressure in the surrounding environment through the precise application of ultrasonic pulses, acoustic tweezers effect acoustophoresis for a variety of uses including object placement, fractionation~\cite{Petersson2007}, and flow shaping.
+
+% What's the problem?
+
+% How did we solve it?
+
+\subsection{Quantum dots}
+
+
+Borrowing the title from optics where active media refers to the gain medium of a laser, we expand the term to encompass systems wherein independent elements interact with each other via an ``external'' interaction to effect changes in ``internal'' dynamical quantities.
+For example, consider a collection of objects amidst an applied external acoustic waveform---a scenario we will treat with far more detail in \cref{ch:bubbles}.
+As the wave encounters such an object, it necessarily scatters of the object's surface and possibly refracts into its interior; both producing secondary radiation effects that go on to further reflect/refract from other surfaces (the external interaction).
+If these objects may move freely, the variation in pressure over the surface will additionally set each into motion (the internal process\footnote{Admittedly it makes little sense to consider a moving body's motion as external or internal. By an ``internal process'' we mean one that evolves per-element and independently of the rest, save for effects carried through the interaction. In the example above, the motion of each object has no explicit dependence on the motion of the others, only an implicit dependence through motion-dependent secondary radiation.}) which will itself produce secondary radiation to more tightly couple the elements.
+
+Such systems universally exhibit nonlinearity as the dynamics of the system as a whole does not, in general, decompose into a sum of the dynamics of each element due to their interactions.
+Moreover, these systems often exhibit a large disparity in length and time scales due to the different physics underlying the internal and external phenomena.
+Despite these challenges, a number of commonalities in active systems emerge that aid in their solution.
+Principally, the external interaction frequently arises as a \emph{radiation potential}---the study of which has long interested physicists.
+As a result, a large body of work exists detailing methods for evaluating this potential at points/in regions of interest and the problem reduces to one of coupling
 
 \section{Wave propagation}
 
@@ -15,16 +48,14 @@ The computational scientist, then, has a tricky job: they must have expertise in
   \centering
   \input{figures/de_ie_mindmap}
   \caption{\label{fig:mindmap} Comparison of differential-equation and integral-equation methodologies.
-    As both approaches have several pros and cons, the choice of which technique to use largely depends on the problem under consideration.
+    As both approaches have several advantages and disadvantages, the choice of which technique to use largely depends on the problem under consideration.
   }
 \end{figure}
 
-Wave phenomena influence every aspect of our lives across every scale of the universe.
-From the nano-scale structure of matter, to human-scale (tele)communications, and even to a refined description of gravity, the mathematical description of waves plays a critical role in developing a coherent model of the world around us.
-As a result, developing techniques to explore and analyze these phenomena lies at the heart of many scientific and engineering disciplines.
-
 \subsection{Simulation techniques}
 
+Wave phenomena influence every aspect of our lives across every scale of the universe.
+Because of this, techniques to explore and analyze these phenomena lie at the heart of many scientific and engineering disciplines.
 Broadly, these techniques fall into differential-equation-based and integral-equation-based categories with each having several benefits and drawbacks.
 Differential-equation-based models follow directly from a discretization of the wave equation throughout the volume of interest and thus have a large number of local interactions.
 As these methods discretize the entire volume, they readily accommodate material variations within the volume such as a change in the velocity of propagation (perhaps via introduction of a dielectric).
@@ -32,26 +63,3 @@ Unfortunately, these operators introduce numerical errors that manifest as dispe
 
 Abruptly truncating this volume produces a ``hard'' boundary that causes potentially unwanted or even unphysical reflection effects, and thus systems formulated with a differential operators often contain artificial radiation boundary layers to suppress these effects.
 
-\section{Active media}
-
-Borrowing the title from optics where ``active media'' refers to the gain medium of a laser, we expand the term to encompass any radiative system goverened by non-radiative dynamics.
-In particular, this thesis concerns itself with the investigation of microspheres---where acoustic radiation affects the kinematics of an ensemble of particles governed by Newtonian mechanics---and \qds{}---where electromagnetic radiation couples to internal quantum degrees of freedom described by the Liouville equation.
-
-
-%\section{History of scattering models}
-
-
-
-%\subsection{Frequency-domain}
-
-%\begin{itemize}
-    %\item T-matrix methods
-    %\item Homogenization(?)
-    %\item Bruce Draine
-%\end{itemize}
-
-%\subsection{Time-domain}
-
-%\section{Introduction of dynamics}
-
-%\section{Overview of computational electromagnetics}
