@@ -11,36 +11,37 @@ The computational scientist, then, has a tricky job: they must have expertise in
 
 \section{Active media}
 
-\subsection{Acoustically-induced trapping}
+\subsection{Acoustophoresis}
 
-% What is the background/why is it interesting?
+% First, explain the background/why is this interesting?
 The placement of biological material or microscopic objects plays a large role in a number of tecnological applications related to biosensing.
 For example, droplet-based microfluidics entails the careful construction, manipulation, and sensing of \si{\micro\liter} (or smaller) droplets of fluid for myriad lab-on-a-chip applications.
 Similarly, DNA microarrays employ large numbers of micron-sized spots---each filled with a particular DNA sequence---to perform an experiment on thousands of genes simultaneously.
 Manipulating individual droplets and fabricating a microarray both require careful placement of apparatus; though given the small length scale of these problems conventional manipulation techniques (such as pipetting) become problematic.
 Instead, researchers require alternative means of precisely controlling the motion of such objects.
 
-% This site is great: http://bme.lth.se/research-pages/nanobiotechnology-and-lab-on-a-chip/research/acoustophoresis/
+% This site is really great: http://bme.lth.se/research-pages/nanobiotechnology-and-lab-on-a-chip/research/acoustophoresis/
 Because of their low energy and minimal invasiveness, so-called acoustic tweezers offer an ideal mechanism for precise microscopic positioning in both biological and nonbiological applications..
-By varying the pressure in the surrounding environment through the precise application of ultrasonic pulses, acoustic tweezers effect acoustophoresis for a variety of uses including object placement, fractionation~\cite{Petersson2007}, and flow shaping.
+By varying the pressure in the surrounding environment through the precise application of ultrasonic pulses, acoustic tweezers effect acoustophoresis for a variety of purposes including object placement, fractionation~\cite{Petersson2007}, and flow shaping.
+% Next, explain the specific problem
+Present models of such systems often fail to account for multiple scattering events or only do so by way of time- or volume-averaged techniques.
+This poses a significant problem in very small systems where such effects necessarily become important.
+% Finally, tease how we solved it
+To overcome this, \cref{ch:bubbles} develops the machinery to simulate the motion of an ensemble of hard spheres by computing all fields directly.
 
-% What's the problem?
+\subsection{Light in disordered media}
 
-% How did we solve it?
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/bloch_sphere.tex}
+  \caption{\label{eq:fig}Bloch sphere representation of a two-level quantum system.}
+\end{figure}
 
-\subsection{Quantum dots}
-
-
-Borrowing the title from optics where active media refers to the gain medium of a laser, we expand the term to encompass systems wherein independent elements interact with each other via an ``external'' interaction to effect changes in ``internal'' dynamical quantities.
-For example, consider a collection of objects amidst an applied external acoustic waveform---a scenario we will treat with far more detail in \cref{ch:bubbles}.
-As the wave encounters such an object, it necessarily scatters of the object's surface and possibly refracts into its interior; both producing secondary radiation effects that go on to further reflect/refract from other surfaces (the external interaction).
-If these objects may move freely, the variation in pressure over the surface will additionally set each into motion (the internal process\footnote{Admittedly it makes little sense to consider a moving body's motion as external or internal. By an ``internal process'' we mean one that evolves per-element and independently of the rest, save for effects carried through the interaction. In the example above, the motion of each object has no explicit dependence on the motion of the others, only an implicit dependence through motion-dependent secondary radiation.}) which will itself produce secondary radiation to more tightly couple the elements.
-
-Such systems universally exhibit nonlinearity as the dynamics of the system as a whole does not, in general, decompose into a sum of the dynamics of each element due to their interactions.
-Moreover, these systems often exhibit a large disparity in length and time scales due to the different physics underlying the internal and external phenomena.
-Despite these challenges, a number of commonalities in active systems emerge that aid in their solution.
-Principally, the external interaction frequently arises as a \emph{radiation potential}---the study of which has long interested physicists.
-As a result, a large body of work exists detailing methods for evaluating this potential at points/in regions of interest and the problem reduces to one of coupling
+Disordered nanostructures give rise to very striking optical phenomena.
+\emph{Cyphochilus} spp.\ beetles, for instance, owe their intense white coloration to an aperiodic arrangement of scales that scatters light across wavelengths~\cite{Vukusic2007}.
+Whereas manmade objects of similar whiteness and intensity require structures as thick as \SI{100}{\micro\meter}, the scales of \emph{cyphochilus} spp.\ can span as few as \SI{4}{\micro\meter} by exploiting an interior structure of disordered filaments. 
+Additional effects such as Anderson localization~\cite{Anderson1985}---wherein light remains spatially confined for extended periods of time---and L\'evy flights~\cite{Barthelemy2008}---in which light experiences superdiffusive, i.e.\ superlinear (in time), behavior---all follow from similarly disordered structures.
+Consequently, engineers seeking to develop new devices that exploit these phenomena require tools that accurately capture their effects and do so quickly.
 
 \section{Wave propagation}
 
