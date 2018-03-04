@@ -84,13 +84,20 @@ Assuming $x(t)$ contains little power above some threshold angular frequency $\o
   x(t) \approx \sum_{\ell = 0}^{N_\lambda - 1} w_\ell e^{\lambda_\ell t}
   \label{eq:exponential approximation}
 \end{equation}
-for a given set of complex-valued $\lambda_\ell$ arguments (explained below) and $w_\ell$ weights (never calculated explicitly).
+for a given set of complex-valued $\lambda_\ell$ arguments and $w_\ell$ weights (never calculated explicitly).
+As we wish to capture the behavior of physical systems---i.e.\ systems with exclusively oscillating and decaying modes---we choose the $\lambda_\ell$ to lie within the left half of the complex plane.
+Moreover, assuming $x(t)$ contains frequencies only up to some threshold $\omega_\text{max}$, we select the $\lambda_\ell$ from within $S = \qty{z \in \mathbb{C} \, | \Re{z} \leqslant 0, \abs{z} \leqslant \omega_\text{max}}$: the left semidisk of radius $\omega_\text{max}$ (\cref{fig:filled semidisk}).
+Finally, rather than choosing $\lambda_\ell$ from throughout $S$, the maximum modulus principle ensures that arguments taken from the boundary of $S$ in \cref{fig:discrete semidisk} will incur the maximum approximation error in \cref{eq:exponential approximation}. 
+As a result, an approximation using $\lambda_\ell$ chosen from the boundary of $S$ accurately recovers the behavior of all modes with arguments in $S$ (\cref{fig:discrete semidisk}).
 
-If $x(t)$ and $\partial_t x(t)$ have known values at equidistant points $t_0, t_1, \ldots, t_{W - 1}$ on the interval $\qty[-1, 1]$ (thus $\Delta t = 2/(W - 1)$), the prediction step of \cref{eq:predictor} requires
+
+If $x(t)$ and $\partial_t x(t)$ have known values at equidistant points $t_0, t_1, \ldots, t_{W - 1}$ on the interval $\qty[-1, 1]$ (thus $\Delta t = 2/(W - 1)$), we predict the value of $x(t_W)$ as a linear combination of past values and derivatives,
 \begin{equation}
-  x(t_W) = \sum_{j = 0}^{W - 1} p_j x(t_j) + p_{j + W} \, \partial_t x(t_j).
+  x(t_W) \leftarrow \sum_{j = 0}^{W - 1} p_j x(t_j) + p_{j + W} \, \partial_t x(t_j).
+  \label{eq:predictor}
 \end{equation}
-Inserting \cref{eq:exponential approximation} gives
+(The arrow here denotes an operation akin to assignment; this prediction does not \emph{define} $x(t_W)$, only the initial iteration of a process that will converge on $x(t_W)$.)
+Inserting \cref{eq:exponential approximation} into this equation gives the matrix equation
 \begin{equation}
   A \vb{p} = \vb{b}
   \label{eq:predictor vector}
@@ -101,17 +108,19 @@ where
   A_{ij} &= \begin{cases}
     e^{\lambda_i t_j}, & 0 \leqslant i < N_\lambda; \; 0 \leqslant j < W \\
     \lambda_i e^{\lambda i t_{j - W}}, & 0 \leqslant i < N_\lambda; \; W \leqslant j < 2 W
-  \end{cases} \\
-  b_i &= e^{\lambda_i t_W}.
+  \end{cases} \label{eq:a matrix}\\
+  b_i &= e^{\lambda_i t_W}. \label{eq:b vector}
 \end{align}
 \end{subequations}
-Accordingly, we use a minimum-norm least-squares procedure to determine the predictor coefficients $\vb{p}$ in \cref{eq:predictor vector}.
-An identical technique follows for determining the corrector coefficients.
-As the corrector step \cref{eq:corrector} stipulates
+Solving this equation for $\vb{p}$, then, produces the prediction coefficients in \cref{eq:predictor}.
+Accordingly, we use a minimum-norm least-squares procedure to determine $\vb{p}$.
+Having conjured an (approximate) value for $x(t_W)$, we may evaluate the prescribed ODE to obtain a value for $\partial_t x(t_W)$.
+Writing
 \begin{equation}
-  x(t_W) = \qty(\sum_{j = 0}^{W - 1} c_j x(t_j) + c_{W + j} \, \partial_t x(t_j)) + c_{2W} \, \partial_t x(t_W)
+  x(t_W) \leftarrow \qty(\sum_{j = 0}^{W - 1} c_j x(t_j) + c_{W + j} \, \partial_t x(t_j)) + c_{2W} \, \partial_t x(t_W),
 \end{equation}
-(with $\partial_t x(t_W)$ having come from evaluating the particular ODE at time $t_W$), the linear system for $\vb{c}$ becomes
+this new equation reincorporates derivative information to refine the $x(t_W)$ approximation, requiring only a means of determining the $c_j$.
+Again, inserting \cref{eq:exponential approximation} gives
 \begin{equation}
   \tilde{A} \vb{c} = \vb{b}.
 \end{equation}
@@ -124,7 +133,7 @@ Here,
 \end{equation}
 $\vb{b}$ remains unchanged, and the same least-squares procedure determines $\vb{c}$.
 
-Having derived the predictor/corrector coefficients for $h = 2/(W - 1)$ (i.e.\ a uniform spacing between $W$ timepoints on the interval $\qty[-1, 1]$), the coefficients determined above require only a slight modification to accommodate systems with any $\Delta t$.
+Having derived the predictor/corrector coefficients for $h = 2/(W - 1)$---i.e.\ a uniform spacing between $W$ timepoints on the interval $\qty[-1, 1]$---the coefficients determined above require only a slight modification to accommodate systems with any $\Delta t$.
 Noting that the formulation thusfar remains invariant under time translation and that the substitution $\tau = \alpha t$ (equivalently $\alpha = \Delta t/h$) turns
 \begin{subequations}
 \begin{equation}
@@ -136,12 +145,3 @@ into
 \end{equation}
 \end{subequations}
 we need only scale the coefficients multiplying $\partial_t x(t_j)$ by $\alpha$ to adjust for other step sizes.
-
-\section{Determination of the $\lambda_i$}
-
-where the $\lambda_\ell$ lie within the complex left-semidisk $S_{\omega_\text{max}} = \qty{\lambda \in \mathbb{C} \, | \Re{\lambda} \leqslant 0, \abs{\lambda} \leqslant \omega_\text{max}}$ (\cref{fig:filled semidisk}).
-Rather than choosing $\lambda_\ell$ from throughout $S_\rho$, the maximum modulus principle ensures that arguments taken from the boundary of $S_\rho$ in \cref{fig:discrete semidisk} will incur the maximum approximation error in \cref{eq:exponential approximation}. 
-As a result, an approximation using these boundary $\lambda_\ell$ accurately recovers the behavior of all modes with arguments in $S_\rho$.
-
-
-
