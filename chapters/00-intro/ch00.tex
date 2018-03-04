@@ -14,7 +14,7 @@ The computational scientist, then, has a tricky job: they must have expertise in
 \subsection{Acoustophoresis}
 
 % First, explain the background/why is this interesting?
-The placement of biological material or microscopic objects plays a large role in a number of tecnological applications related to biosensing.
+The placement of biological material or microscopic objects plays a large role in a number of technological applications related to biosensing.
 For example, droplet-based microfluidics entails the careful construction, manipulation, and sensing of \si{\micro\liter} (or smaller) droplets of fluid for myriad lab-on-a-chip applications.
 Similarly, DNA microarrays employ large numbers of micron-sized spots---each filled with a particular DNA sequence---to perform an experiment on thousands of genes simultaneously.
 Manipulating individual droplets and fabricating a microarray both require careful placement of apparatus; though given the small length scale of these problems conventional manipulation techniques (such as pipetting) become problematic.
@@ -27,9 +27,20 @@ By varying the pressure in the surrounding environment through the precise appli
 Present models of such systems often fail to account for multiple scattering events or only do so by way of time- or volume-averaged techniques.
 This poses a significant problem in very small systems where such effects necessarily become important.
 % Finally, tease how we solved it
-To overcome this, \cref{ch:bubbles} develops the machinery to simulate the motion of an ensemble of hard spheres by computing all fields directly.
+To overcome this, \cref{ch:bubbles} develops the machinery to simulate the motion of an ensemble of hard spheres within a fullwave scattering framework.
 
 \subsection{Light in disordered media}
+
+Disordered nanostructures give rise to very striking optical phenomena.
+\emph{Cyphochilus} spp.\ beetles, for instance, owe their intense white coloration to an aperiodic arrangement of scales that scatters light across wavelengths~\cite{Vukusic2007}.
+Whereas manmade objects of similar whiteness and intensity require structures as thick as \SI{100}{\micro\meter}, the scales of \emph{cyphochilus} spp.\ can span as few as \SI{4}{\micro\meter} by exploiting an interior structure of disordered filaments. 
+Additional effects such as Anderson localization~\cite{Anderson1985}---wherein light remains spatially confined for extended periods of time---and L\'evy flights~\cite{Barthelemy2008}---in which light experiences superdiffusive, i.e.\ superlinear (in time), behavior---all follow from similarly disordered structures.
+These phenomena all fall under the broad category of light/matter interactions, and engineers seeking to develop new devices that exploit these phenomena require tools that accurately and quickly resolve such interactions. 
+
+Quantum dots---colloquially called ``tuneable atoms'' because of the ease with which engineers can manipulate their spectra---stand as a premier element in optoelectronic device design and have enjoyed widespread areas such as light harvesting applications and quantum information storage/retrieval. 
+Because of this, a number of analytic methods based on ensemble-averaged single particle and higher order Green's functions have arisen to describe light propagation in such systems.
+These methods essentially cast the active quantum system as a homogeneous continuum source in the governing electromagnetic equations (Maxwell's equations for semiclassical systems)~\cite{Arecchi1965}, though such a treatment cannot account for effects arising from long-range order, partial order, or anisotropies. 
+Models of these effects, then, require a detailed computational framework that captures scattering/radiation effects between discrete, disordered elements.
 
 \begin{figure}
   \centering
@@ -37,11 +48,6 @@ To overcome this, \cref{ch:bubbles} develops the machinery to simulate the motio
   \caption{\label{eq:fig}Bloch sphere representation of a two-level quantum system.}
 \end{figure}
 
-Disordered nanostructures give rise to very striking optical phenomena.
-\emph{Cyphochilus} spp.\ beetles, for instance, owe their intense white coloration to an aperiodic arrangement of scales that scatters light across wavelengths~\cite{Vukusic2007}.
-Whereas manmade objects of similar whiteness and intensity require structures as thick as \SI{100}{\micro\meter}, the scales of \emph{cyphochilus} spp.\ can span as few as \SI{4}{\micro\meter} by exploiting an interior structure of disordered filaments. 
-Additional effects such as Anderson localization~\cite{Anderson1985}---wherein light remains spatially confined for extended periods of time---and L\'evy flights~\cite{Barthelemy2008}---in which light experiences superdiffusive, i.e.\ superlinear (in time), behavior---all follow from similarly disordered structures.
-Consequently, engineers seeking to develop new devices that exploit these phenomena require tools that accurately capture their effects and do so quickly.
 
 \section{Wave propagation}
 
