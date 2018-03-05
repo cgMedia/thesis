@@ -5,11 +5,16 @@
 \end{frontquote}
 
 \dropcap{A}{s} our ability to resolve physical systems grows, so, too, do our demands of the models we build.
-Unfortunately, we rapidly approach an age where approximate analytic descriptions of the universe simply cannot recover important features in systems of interest.
+Unfortunately, we rapidly approach an age where approximate analytic descriptions of physical systems simply cannot recover important features in systems of interest.
 Substituting \emph{numerical}---i.e.\ \emph{in silico}---techniques into higher resolution models alleviates this problem somewhat (particularly as computer hardware evolves ``below'' the model), though the computational overhead of \naive\ algorithms limits their utility beyond nearly analytic calculations, particularly in multiscale or multiphysics applications.
-The computational scientist, then, has a tricky job: they must have expertise in their own domain so as to begin formulating testable hypotheses about the universe, as well as expertise in ``computation'' to understand the constraints inherent in exploring such hypotheses numerically.
+The computational scientist, then, has a tricky job: they must have expertise in their own domain so as to begin formulating testable hypotheses about the (multi-)physical systems, as well as expertise in ``computation'' to understand the constraints inherent in exploring such hypotheses numerically.
 
 \section{Active media}
+
+Active media---dynamical systems that couple together through radiative processes---encompass a large class of problems across length and time scales and exhibit behavior fundamentally different from their passive counterparts.
+These behaviors offer new avenues towards novel device designs, though engineering devices to exploit them presents a considerable challenge.
+In particular, the underlying dynamical nature of active systems makes them inherently nonlinear, and accounting for these dynamics alongside the radiative coupling requires a multiphysical approach.
+As such, this thesis primarily concerns itself with the development of computational techniques for use in modeling active systems both efficiently and accurately with a particular focus on acoustophoresis (acoustically-induced motion) and quantum optics.
 
 \subsection{Acoustophoresis}
 
@@ -21,7 +26,7 @@ Manipulating individual droplets and fabricating a microarray both require caref
 Instead, researchers require alternative means of precisely controlling the motion of such objects.
 
 % This site is really great: http://bme.lth.se/research-pages/nanobiotechnology-and-lab-on-a-chip/research/acoustophoresis/
-Because of their low energy and minimal invasiveness, so-called acoustic tweezers offer an ideal mechanism for precise microscopic positioning in both biological and nonbiological applications..
+Because of their low energy and minimal invasiveness, so-called acoustic tweezers offer an ideal mechanism for precise microscopic positioning in both biological and nonbiological applications.
 By varying the pressure in the surrounding environment through the precise application of ultrasonic pulses, acoustic tweezers effect acoustophoresis for a variety of purposes including object placement, fractionation~\cite{Petersson2007}, and flow shaping.
 % Next, explain the specific problem
 Present models of such systems often fail to account for multiple scattering events or only do so by way of time- or volume-averaged techniques.
