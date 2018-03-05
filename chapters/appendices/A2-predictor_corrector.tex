@@ -1,50 +1,51 @@
 \chapter{The predictor/corrector integration scheme}
 
+\section{Motivation}
+
+Given an ordinary differential equation,
+\begin{equation}
+  \dv{x}{t} = f(t, x(t))
+  \label{eq:ode}
+\end{equation}
+and some initial condition at $t_0$, we may compactly write the unknown function at any discrete time $t_i \equiv i\,\Delta t$ as
+\begin{equation}
+  \begin{aligned}
+    x(t_i) & = x(t_{i-1}) + \int_{t_{i-1}}^{t_i} \dv{x}{t'} \dd{t'} \\
+    &                 \equiv x(t_{i-1}) + \int_{t_{i-1}}^{t_i} f(t', x(t')) \dd{t'}
+    \label{eq:ode step}
+  \end{aligned}
+\end{equation}
+Numerical integration schemes advance a solution from $t_{i-1}$ to $t_i$ by approximating this integral, often as a weighted sum of the integrand evaluated at intelligently chosen points within the interval\footnote{Many numerical integrators use much more sophisticated methods than a weighted sum, but the idea of intelligently evaluating the integrand remains the same.}.
+This process---particularly evaluating the integrand---becomes vastly more complicated through the introduction of retardation effects, effectively turning \cref{eq:ode} into
+\begin{equation}
+  \dv{x}{t} = f(t, x(t), x(t - \tau_1), x(t - \tau_2), \ldots).
+  \label{eq:delay rhs}
+\end{equation}
+Causality imposed by the propagation operators only requires $\tau_j > 0$, thus \cref{eq:delay rhs} can relate a derivative to quantities arbitrarily far back in time, often between the discrete $t_i$/known solution values.
+Further problems arise when $\tau_j < \Delta t$; in such cases, the unknown $x(t_i)$ depends on an unknown $x(t_i - \tau_j)$ which depends on an unknown $x(t_i - 2 \tau_j)$ etc., at least one of which lies ``ahead'' of the last known quantity, $x(t_{i-1})$.
+While adjusting the timestep to require $t_j \geqslant \Delta t$ makes the system perfectly causal, it also makes the timestep prohibitively small for dense systems.
+These constraints automatically exclude (or at least \emph{severely} limit the utility of) popular ODE algorithms and packages---the difficulty of reevaluating interactions prohibits variable-timestep integrators and integrators that require midpoint evaluations (such as the popular RK4 method) cannot accommodate small retardation factors without an exceptionally small $\Delta t$.
+Instead, we turn to the exponentially-fitted predictor/corrector algorithm detailed in~\cite{}.
+As a multistep method, the predictor/corrector does not require any function evaluations outside of those on the fixed timepoints, thus any causal interpolation scheme facillitates evaluating approximate versions of all the $x(t - \tau_j)$ via
+\begin{equation}
+  x(t_i - \tau_j) \approx \sum_{\ell = 0}^m w_\ell x\qty\big(t_i - (\floor{\tau_j/\Delta t} + \ell)\, \Delta t).
+  \label{eq:interpolation}
+\end{equation}
+(The particular interpolation scheme determines the $w_\ell$.)
+For $\tau_j < \Delta t$, \cref{eq:interpolation} suggests $x(t_i - \tau_j)$ becomes a function of $x(t_i)$.
+Ordinarily, this would cause problems thought the predictor step of the algorithm ensures an approximate $x(t_i)$ exists before any interpolation.
+The corrector step then works to correct this approximation in a convergent way, reincorporating adjacent sources as a total solution evolves.
+  
 \begin{figure}[]
   \centering
-  \begin{tikzpicture}[>=latex, scale=1.0]
-
-  \definecolor{Set1-3-1}{RGB}{228,26,28}
-  \definecolor{Set1-3-2}{RGB}{55,126,184}
-
-  \foreach \i in {1,2,3,4,5} {
-    \draw[thick, opacity=0.5] (\i, 0) arc (0:180:\i);
-    \node[above, opacity=0.5] at (0, \i) {$\i \, \Delta t$};
-  }
-
-  \fill[color=Set1-3-1] (0.6, 0.4) circle (0.1);
-  \begin{scope}[rotate=33.6901]
-    \foreach \i in {0,1,2,3} {
-      \draw[ultra thick, Set1-3-1] (\i,-0.6) -- (\i, 0.6);
-    }
-  \end{scope}
-
-
-  \fill[Set1-3-2] (-1, 1) circle (0.1);
-  \begin{scope}[rotate=135]
-    \foreach \i in {1,2,3,4} {
-      \draw[ultra thick, Set1-3-2] (\i,-0.6) -- (\i, 0.6);
-    }
-  \end{scope}
-
-  \fill[black] (0, 0) circle (0.1);
-
-  \end{tikzpicture}
+  \conditionalFigureInput{figures/time_circles.tex}
   \caption{\label{fig:retardation problem} Illustration of the ``retardation problem'' in solving coupled delay differential equations.
-    The filled points show particle locations and the colored tangent lines indicate historical quantities of $\vb{P}$  used in the interpolation scheme developed in \cref{ch:quantum dots}. 
+    The filled points indicate particle locations and the colored tangent lines mark the $x(t_i - \tau_j)$ quantities used in \cref{eq:interpolation}. 
     Because $\abs{\vb{r}_{\bullet \textcolor[RGB]{228,26,28}{\bullet}}} < c \, \Delta t$, determining $\qty{\vb{E}(\bullet, t),\vb{P}(\textcolor[RGB]{228,26,28}{\bullet}, t)}$ requires knowledge of $\qty{\vb{P}(\textcolor[RGB]{228,26,28}{\bullet}, t), \vb{E}(\bullet, t)}$.
   }
 \end{figure}
 
-\section{Motivation}
-
-In principle, any standard numerical ODE integrator will work just fine for integrating \cref{eq:liouville,eq:rotating liouville} for a single quantum system.
-In practice, however, the retarded coupling between systems introduced by \cref{eq:integral operator,eq:radiated envelope} makes this decidedly more complicated.
-These retardation effects turn the 
-These equations will have nonintegral retardation factors (i.e.\ $\Delta r/(c \, \Delta t) \not \in \mathbb{Z}$) for any geometry except a linear chain, thus to determine the unknown function ``between'' timesteps we turn to the polynomial interpolation scheme formulated in \cref{ch:quantum dots}.
-Given the complexity of tabulating interpolation coefficients and their dependence on $\Delta t$, this automatically excludes variable-step integrators as well as integrators that require an intermediate (mid) step (such as RK4). 
-
-\section{Determination of $\mathcal{P}_w^{(0, 1)}$, $\mathcal{C}_w^{(0, 1)}$}
+\section{Integration coefficients}
 
 \begin{figure}
   \centering
@@ -79,17 +80,17 @@ Given the complexity of tabulating interpolation coefficients and their dependen
 \end{figure}
 
 Let $x(t)$ denote the solution to a given ordinary differential equation.
-Assuming $x(t)$ contains little power above some threshold angular frequency $\omega_\text{max}$, we may approximate $x(t)$ with a collection complex-valued exponentials such that
+We seek to approximate $x(t)$ as a linear combination of complex-valued exponentials such that
 \begin{equation}
   x(t) \approx \sum_{\ell = 0}^{N_\lambda - 1} w_\ell e^{\lambda_\ell t}
   \label{eq:exponential approximation}
 \end{equation}
 for a given set of complex-valued $\lambda_\ell$ arguments and $w_\ell$ weights (never calculated explicitly).
 As we wish to capture the behavior of physical systems---i.e.\ systems with exclusively oscillating and decaying modes---we choose the $\lambda_\ell$ to lie within the left half of the complex plane.
-Moreover, assuming $x(t)$ contains frequencies only up to some threshold $\omega_\text{max}$, we select the $\lambda_\ell$ from within $S = \qty{z \in \mathbb{C} \, | \Re{z} \leqslant 0, \abs{z} \leqslant \omega_\text{max}}$: the left semidisk of radius $\omega_\text{max}$ (\cref{fig:filled semidisk}).
+Moreover, assuming $x(t)$ contains little power above some threshold $\omega_\text{max}$, we select the $\lambda_\ell$ from within $S = \qty{z \in \mathbb{C} \, | \Re{z} \leqslant 0, \abs{z} \leqslant \omega_\text{max}}$: the left semidisk of radius $\omega_\text{max}$ (\cref{fig:filled semidisk}).
 Finally, rather than choosing $\lambda_\ell$ from throughout $S$, the maximum modulus principle ensures that arguments taken from the boundary of $S$ in \cref{fig:discrete semidisk} will incur the maximum approximation error in \cref{eq:exponential approximation}. 
-As a result, an approximation using $\lambda_\ell$ chosen from the boundary of $S$ accurately recovers the behavior of all modes with arguments in $S$ (\cref{fig:discrete semidisk}).
-
+As a result, an approximation using $\lambda_\ell$ chosen from the boundary of $S$ accurately recovers the behavior of all modes with arguments in $S$.
+In particular, we choose the $\lambda_\ell$ to have an equal spacing about the perimeter of $S$ (\cref{fig:discrete semidisk}).
 
 If $x(t)$ and $\partial_t x(t)$ have known values at equidistant points $t_0, t_1, \ldots, t_{W - 1}$ on the interval $\qty[-1, 1]$ (thus $\Delta t = 2/(W - 1)$), we predict the value of $x(t_W)$ as a linear combination of past values and derivatives,
 \begin{equation}
