@@ -1,22 +1,23 @@
 \begin{abstract}
-  \dropcap{T}{his} work presents new approaches to simulations of active media at the level of individual particles.
-  Active systems contain internal, nonlinear, processes beyond those of simple scattering systems, thus these new models afford high degrees of fidelity in exploring the underlying physics without recourse to continuum or spatially-averaged approximations.
+\dropcap{T}{his} work presents new approaches to simulations of active media at the level of individual particles.
+Active systems contain internal, nonlinear, processes beyond those of simple scattering systems; thus these new models afford high degrees of fidelity in exploring the underlying physics without recourse to continuum or spatially-averaged approximations.
 
-  First, I explore the dynamics of \bubbles{} set into motion by ambient acoustic radiation in a fluid described by potential flow in the long-wavelength limit.
-  Variations in the local surface pressure caused by scattering from each \bubble{} sets each \bubble{} into motion in accordance with Newton's second law.
-  By expanding this pressure in terms of spherical harmonics---natural eigenfunctions of the unretarded radiation kernel---I recover an analytic description of the force on individual \bubbles{} due to an incident waveform.
-  High-order numerical integrations then relate the surface potential on one \bubble{} to the surface pressure on the others, thereby coupling the \bubbles' trajectories.
-  These simulations predict a dominant translational effect along the direction of propagation of the incident waveform, though they also reveal significant dipolar interactions between \bubbles{} that produce secondary expansions and contractions of the collective \bubble{} system.
+First, I examine the dynamics of \bubbles{} set into motion by ambient acoustic radiation in a fluid described by potential flow in the long-wavelength limit.
+Variations in the local surface pressure caused by scattering from each \bubble{} set each \bubble{} into motion following Newton’s second law.
+By expanding this pressure in terms of spherical harmonics—natural eigenfunctions of the unretarded radiation kernel—I recover an analytic description of the force on individual \bubbles{} due to an incident waveform.
+High-order numerical integrations then relate the surface potential on one \bubble{} to the surface pressure on the others, thereby coupling the \bubbles’ trajectories.
+These simulations predict a dominant translational effect along the direction of propagation of the incident waveform, though they also reveal significant dipolar
+interactions between \bubbles{} that produce secondary expansions and contractions of the collective \bubble{} system.
 
-  Extending my approach from acoustic to electromagnetic systems, I apply it to a collection of quantum dots: ``artificial'' two-level atoms with a size-dependent energy structure.
-  The optical Maxwell-Bloch equations give the evolution of quantum dots under the influence of electromagnetic fields; this evolution then produces secondary radiation that couples a collection of \qds{} together.
-  In my computational model, I cast my secondary electromagnetic fields in terms of a point-to-point integral operator that accurately recover both near- and far-field effects.
-  These fields, then, drive a set of implicitly-coupled Bloch equations (solved with an exponentially-fitted predictor/corrector scheme) to give the dynamics of the system as a whole.
-  In ensembles of up to $\num{10000}$ \qds{}, my model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
+Extending my approach from acoustic to electromagnetic systems, I apply it to a collection of \qds: “artificial” two-level atoms with a size-dependent energy structure.
+The optical Maxwell-Bloch equations give the evolution of \qds{} under the influence of electromagnetic fields; this evolution then produces secondary radiation that couples a collection of \qds{} together.
+In my computational model, I cast my secondary electromagnetic fields in terms of a point-to-point integral operator that accurately recover both near- and far-field effects.
+These fields, then, drive a set of implicitly-coupled Bloch equations (solved with an exponentially-fitted predictor/corrector scheme) to give the dynamics of the system as a whole.
+In ensembles of up to 10 000 \qds, my model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
 
-  The remainder of the work uses the same physical \qd{} system with a nod towards computationally efficient device design.
-  I detail an improved propagation algorithm  to reduce the time and space complexity of the simulation dramatically, thereby facilitating rapid analysis of promising device structures.
-  The algorithm makes use of physical and numerical approximations to effect large-scale calculations in reasonable CPU time.
-  A rotating-frame approximation removes high frequency components in the evolution of the system while simultaneously preserving accurate interference phenomena in space, thereby affording far larger simulation timesteps.
-  Additionally, projecting the source current distribution onto a regular spatial grid makes use of a low-rank approximation to the field propagator to communicate radiation information between distant groups of particles via fast Fourier transforms in a manner reminiscent of fast multipole methods.
+The remainder of the work uses the same physical \qd{} system with a nod towards computationally efficient device design.
+I detail an improved propagation algorithm to reduce the time and space complexity of the simulation dramatically, thereby facilitating rapid analysis of promising device structures.
+The algorithm makes use of physical and numerical approximations to effect large-scale calculations in reasonable CPU time.
+A rotating-frame approximation removes high-frequency components in the evolution of the system while simultaneously preserving accurate interference phenomena in space, thereby affording far larger simulation timesteps.
+Additionally, projecting the source current distribution onto a regular spatial grid makes use of a low-rank approximation to the field propagator to communicate radiation information between distant groups of particles via fast Fourier transforms in a manner reminiscent of fast multipole methods.
 \end{abstract}
