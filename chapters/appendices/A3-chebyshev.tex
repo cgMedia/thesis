@@ -70,6 +70,36 @@
   Because the Chebyshev scheme clusters sample points in the tails of the interpolation window, it does not suffer from high-order ringing effects (Runge's phenomenon).}
 \end{figure}
 
+The Chebyshev polynomials of the first kind, defined by
+\begin{equation}
+  T_n(x) = \cos(n \arccos(x)),
+  \label{eq:chebyshev}
+\end{equation}
+form an orthogonal (though not orthonormal) sequence well-suited to interpolation.
+with respect to a weight function of $w(x) = \sqrt{1 - x^2}$.
+As a result, the following two orthogonality relations hold:
+\begin{subequations}
+  \begin{align}
+    \int_{-1}^1 \frac{T_i(x) T_j(x)}{\sqrt{1 - x^2}} \dd{x} &= 
+    \begin{cases}
+      0 & i \not = j \\
+      \pi / 2 & i = j \not = 0 \\
+      \pi & i = j = 0
+    \end{cases} \label{eq:continuous orthogonality} \\
+    \sum_{k = 0}^{m} T_i(x_k) T_j(x_k) &= 
+    \begin{cases}
+      0 & i \not = j \\
+      (m + 1)/2 & i = j \not = 0 \\
+      m + 1 & i = j = 0
+    \end{cases}
+    \label{eq:discrete orthogonality}
+  \end{align}
+\end{subequations}
+where the $\qty{x_k}$ in \cref{eq:discrete orthogonality} represent the Chebyshev nodes\footnote{Many resources detailing Chebyshev polynomials use $0 \leqslant k < m$ instead of $0 \leqslant k < m + 1$. The latter, used here, matches the order of the interpolation to the order of the resulting polynomial.},
+\begin{equation}
+  x_k = -\cos(\frac{\pi(k + 1/2)}{m +1}) \qquad k = 0, 1, \ldots, m
+\end{equation}
+
 \section{Interpolation}
 
 Given a set of nonuniform sample points, $x_\lambda$, on the interval $\qty[-1, 1]$ where
@@ -83,14 +113,14 @@ Given a set of nonuniform sample points, $x_\lambda$, on the interval $\qty[-1, 
 
 \section{Derivatives}
 
-\begin{center}
-\begin{tabular}{ccc}
-                          & $1^\text{st}$ kind, $T_n(\cos\theta)$                                & $2^\text{nd}$ kind, $U_n(\cos\theta)$\\
-$0^\text{th}$ derivative  & $\displaystyle \cos(n \theta)$                                       & $\displaystyle \frac{\sin(\qty(n + 1)\theta)}{\sin\theta}$ \\[0.3cm]
-$1^\text{st}$ derivative  & $\displaystyle n U_{n-1}$                                            & $\displaystyle \frac{U_n \cos\theta - (n+1)T_{n+1}}{\sin^2\theta}$ \\[0.3cm]
-$2^\text{nd}$ derivative  & $\displaystyle \frac{n U_{n-1}\cos(\theta) - n^2 T_{n}}{\sin\theta}$ & $\displaystyle \frac{(n+2)\qty((n+3)\cos^2\theta - n)U_n - 3(n+1)U_{n+1}\cos\theta }{\sin^4\theta}$
-\end{tabular}
-\end{center}
+In general,
+\begin{equation}
+  \qty(1 - x^2) T_n'(x) = n \qty[T_{n-1}(x) - x T_n(x)]
+  \label{eq:chebyshev derivatives}
+\end{equation}
+relates Chebyshev polynomials to their derivatives~\cite{Gil2007}. 
+This relationship, however, becomes problematic with finite-precision arithmetic.
+
 
 \subsection{Three dimensions}
 \begin{equation}
@@ -101,7 +131,7 @@ Analogously,
 \begin{equation}
   c_{ijk} = \frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(M+1)^3} f(x_\lambda, y_\mu, z_\nu) T_{i'}(x_\lambda) T_{j'}(y_\mu) T_{k'}(z_\nu)
 \end{equation}
-(where $\alpha_{ab} \equiv 2\delta_{ab} - \delta_{a0}\delta_{0b}$ has become a diagonal tensor to ``balance'' the implied-sum indices) and thus
+(where $\alpha_{ab} \equiv 2\delta_{ab} - \delta_{a0}\delta_{b0}$ has become a diagonal tensor to ``balance'' the implied-sum indices) and thus
 \begin{equation}
   f(\vb{r}) \approx \qty(\frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(M+1)^3} \qty(f(x_\lambda, y_\mu, z_\nu) T_{i'}(x_\lambda) T_{j'}(y_\mu) T_{k'}(z_\nu))) T_i(x) T_j(y) T_k(z)
 \end{equation}
