@@ -18,6 +18,63 @@
   }
 \end{figure}
 
+The Chebyshev polynomials of the first kind, defined by
+\begin{equation}
+  T_n(x) = \cos(n \arccos(x))
+  \label{eq:chebyshev}
+\end{equation}
+and shown in \cref{fig:chebyshev polynomials}, form an orthogonal (though not orthonormal) sequence well-suited to interpolation.
+These polynomials have a continuous orthogonality relation over the interval $-1 \leqslant x \leqslant 1$ with respect to $w(x) = \qty(1-x^2)^{-1/2}$, giving
+\begin{equation}
+  \int_{-1}^1 \frac{T_i(x) T_j(x)}{\sqrt{1 - x^2}} \dd{x} =
+  \begin{cases}
+    0 & i \not = j \\
+    \pi / 2 & i = j \not = 0 \\
+    \pi & i = j = 0
+  \end{cases} \label{eq:continuous orthogonality} \\
+\end{equation}
+Such an orthogonality motivates $\qty{T_k(x)\, : \, k = 0, 1, \ldots, m}$ as a basis for $\mathbb{P}^m$---the polynomials through order $m$---on the interval $-1 \leqslant x \leqslant 1$.
+To construct a polynomial interpolation of an arbitrary function $f(x)$ in this basis such that
+\begin{equation}
+  \begin{aligned}
+    f(x) &\approx P_m(x) \\
+    &\equiv \sum_{i = 0}^{m} c_i T_i(x),
+  \end{aligned}
+  \label{eq:chebyshev expansion}
+\end{equation}
+we require samples of the function at $m+1$ interpolation nodes\footnote{For convenience, Latin letters index \emph{functions} while Greek letters index \emph{points}.} $\qty{x_\lambda \,:\, \lambda = 0, 1, \ldots, m}$ where $f(x_\lambda) = P_m(x_\lambda)$.
+By choosing sample points corresponding to Chebyshev nodes,
+\begin{equation}
+  x_\lambda = -\cos(\frac{\pi (\lambda + 1/2)}{m + 1}) \qquad \lambda = 0, 1, 2, \ldots, m,
+\end{equation}
+the Chebyshev polynomials satisfy~\cite{Gil2007}
+\begin{equation}
+  \begin{aligned}
+    \sum_{\lambda = 0}^{m} T_i(x_\lambda) T_j(x_\lambda) &=
+    \begin{cases}
+      0 & i \not = j \\
+      (m + 1)/2 & i = j \not = 0 \\
+      m + 1 & i = j = 0
+    \end{cases} \\
+  \end{aligned}
+  \label{eq:discrete orthogonality}
+\end{equation}
+in addition to the continuous relationship in \cref{eq:continuous orthogonality}.
+Inserting \cref{eq:chebyshev expansion} into \cref{eq:discrete orthogonality} then gives
+\begin{equation}
+  \sum_{\lambda = 0}^{m} T_i(x_\lambda) f(x_\lambda) = \sum_{\lambda = 0}^{m}T_i(x_\lambda) P_m(x_\lambda) = \sum_{i = 0}^m c_i \sum_{\lambda = 0}^{m}T_i(x_\lambda) T_i(x_\lambda)
+\end{equation}
+thus
+\begin{equation}
+  c_i = \frac{\alpha_i}{m + 1} \sum_{\lambda = 0}^{m}T_i(x_\lambda) f(x_\lambda) \qquad \alpha_i = 2 - \delta_{i 0}.
+  \label{eq:chebyshev coefficient}
+\end{equation}
+Finally, having obtained a Chebyshev approximation of $f(x)$ on the interval $-1 \leqslant x \leqslant 1$, we may effect a Chebyshev approximation of $f(x)$ on the interval $a \leqslant x \leqslant b$ by letting
+\begin{equation}
+  y \equiv \frac{x - (b + a)/2}{(b-a)/2}
+\end{equation}
+and constructing a Chebyshev approximation in $y$.
+
 \begin{figure}
   \centering
   \begin{tikzpicture}
@@ -70,69 +127,39 @@
   Because the Chebyshev scheme clusters sample points in the tails of the interpolation window, it does not suffer from high-order ringing effects (Runge's phenomenon).}
 \end{figure}
 
-The Chebyshev polynomials of the first kind, defined by
-\begin{equation}
-  T_n(x) = \cos(n \arccos(x)),
-  \label{eq:chebyshev}
-\end{equation}
-form an orthogonal (though not orthonormal) sequence well-suited to interpolation.
-with respect to a weight function of $w(x) = \sqrt{1 - x^2}$.
-As a result, the following two orthogonality relations hold:
-\begin{subequations}
-  \begin{align}
-    \int_{-1}^1 \frac{T_i(x) T_j(x)}{\sqrt{1 - x^2}} \dd{x} &= 
-    \begin{cases}
-      0 & i \not = j \\
-      \pi / 2 & i = j \not = 0 \\
-      \pi & i = j = 0
-    \end{cases} \label{eq:continuous orthogonality} \\
-    \sum_{k = 0}^{m} T_i(x_k) T_j(x_k) &= 
-    \begin{cases}
-      0 & i \not = j \\
-      (m + 1)/2 & i = j \not = 0 \\
-      m + 1 & i = j = 0
-    \end{cases}
-    \label{eq:discrete orthogonality}
-  \end{align}
-\end{subequations}
-where the $\qty{x_k}$ in \cref{eq:discrete orthogonality} represent the Chebyshev nodes\footnote{Many resources detailing Chebyshev polynomials use $0 \leqslant k < m$ instead of $0 \leqslant k < m + 1$. The latter, used here, matches the order of the interpolation to the order of the resulting polynomial.},
-\begin{equation}
-  x_k = -\cos(\frac{\pi(k + 1/2)}{m +1}) \qquad k = 0, 1, \ldots, m
-\end{equation}
+\section{Notes on the Chebyshev polynomials}
 
-\section{Interpolation}
-
-Given a set of nonuniform sample points, $x_\lambda$, on the interval $\qty[-1, 1]$ where
-\begin{equation}
-  x_\lambda = -\cos(\frac{\pi (\lambda + 1/2)}{M + 1}) \qquad \lambda = 0, 1, 2, \ldots, M
-\end{equation}
-
-\begin{equation}
-  c_i = \frac{\alpha_{i}}{M + 1}\sum_{\lambda = 0}^M T_{i}(x_\lambda) f(x_\lambda) \qquad \alpha_i = 2 - \delta_{i0}
-\end{equation}
-
-\section{Derivatives}
-
-In general,
+\subsection{Derivatives}
+The Chebyshev polynomials provide two means of approximating $f'(x)$ given samples of $f(x)$ though both have numerical drawbacks.
+Given that we wish to repeatedly evaluate the interpolating polynomial at a collection of static points, it becomes prudent pre-evaluate and cache $T_i(x)$ in \cref{eq:chebyshev expansion} for speed.
+The recurrence
 \begin{equation}
   \qty(1 - x^2) T_n'(x) = n \qty[T_{n-1}(x) - x T_n(x)]
-  \label{eq:chebyshev derivatives}
+  \label{eq:derivative recurrence}
 \end{equation}
-relates Chebyshev polynomials to their derivatives~\cite{Gil2007}. 
-This relationship, however, becomes problematic with finite-precision arithmetic.
+analytically relates Chebyshev polynomials to their derivatives, and so we may equivalently cache $T'_n(x)$ to repeatedly evaluate a derivative.
+Unfortunately, this becomes problematic for $x \to \pm 1$ as the $1-x^2$ term can cause a catastrophic loss of precision due to division by (near) zero.
+Instead,
+\begin{equation}
+  c'_{i-1} = c'_{i+1} + 2 i c_i \qquad c'_{m+1} = c'_m = 0
+\end{equation}
+adjusts the Chebyshev coefficients to give an approximated derivative in terms of the original basis.
+While this expression does not suffer from numerical cancellation issues, it incurs a large amount of overhead when evaluating many approximations.
+Moreover, this overhead grows significantly in higher-dimensional systems with vector derivatives.
 
+In practice, \QuEST{} makes use of the former strategy of differentiating the ``evaluating functions'' though without the recurrence of \cref{eq:derivative recurrence}.
+Instead, functions for the Chebyshev polynomials and their derivatives through a specified order, provide the necessary evaluations.
+Moreover, these functions contain the requisite polynomials expressed in Horner form to improve both speed and precision~\cite{}.
+While this method does not readily generalize to interpolations of arbitrary order (as it would require prohibitively long enumerations of functions), it facilitates a very efficient derivative evaluation without unduly sacrificing clarity.
 
-\subsection{Three dimensions}
-\begin{equation}
-  f(\vb{r}) \approx c_{ijk}T_i(x) T_j(y) T_k(z)
-\end{equation}
-with an implied summation on the bound indices $i$, $j$, and $k$.
-Analogously,
-\begin{equation}
-  c_{ijk} = \frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(M+1)^3} f(x_\lambda, y_\mu, z_\nu) T_{i'}(x_\lambda) T_{j'}(y_\mu) T_{k'}(z_\nu)
-\end{equation}
-(where $\alpha_{ab} \equiv 2\delta_{ab} - \delta_{a0}\delta_{b0}$ has become a diagonal tensor to ``balance'' the implied-sum indices) and thus
-\begin{equation}
-  f(\vb{r}) \approx \qty(\frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(M+1)^3} \qty(f(x_\lambda, y_\mu, z_\nu) T_{i'}(x_\lambda) T_{j'}(y_\mu) T_{k'}(z_\nu))) T_i(x) T_j(y) T_k(z)
-\end{equation}
-as one, \emph{mondo}, tensor expression.
+\subsection{Higher-dimensional approximations}
+The mechanics for constructing an approximation to $f(x)$ extend naturally to higher-dimensional and vector-valued systems.
+In such systems, Chebyshev approximation becomes a tensor polynomial,
+and the summations in \cref{eq:chebyshev expansion,eq:chebyshev coefficient} become mondo tensor contractions, i.e.
+\begin{subequations}
+  \begin{align}
+    \vb{f}(\vb{r}) &\approx \vb{c}_{ijk} T_i(x) T_j(y) T_k(z), \\
+    \vb{c}_{ijk} &= \frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(m+1)^3} T_{ii'}(x_\lambda) T_{jj'}(y_\mu) T_{kk'}(z_\nu) \vb{f}(x_\lambda, y_\mu, z_\nu)
+  \end{align}
+\end{subequations}
+with an implied summation over the bound indices $i'$, $j'$, $k'$ and $\lambda$, $\mu$, $\nu$.
