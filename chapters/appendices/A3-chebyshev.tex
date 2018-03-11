@@ -159,7 +159,8 @@ and the summations in \cref{eq:chebyshev expansion,eq:chebyshev coefficient} bec
 \begin{subequations}
   \begin{align}
     \vb{f}(\vb{r}) &\approx \vb{c}_{ijk} T_i(x) T_j(y) T_k(z), \\
-    \vb{c}_{ijk} &= \frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(m+1)^3} T_{ii'}(x_\lambda) T_{jj'}(y_\mu) T_{kk'}(z_\nu) \vb{f}(x_\lambda, y_\mu, z_\nu)
+    \vb{c}_{ijk} &= \frac{\alpha_{ii'} \alpha_{jj'} \alpha_{kk'}}{\qty(m+1)^3} T_{ii'}(x_\lambda) T_{jj'}(y_\mu) T_{kk'}(z_\nu) \vb{f}(x_\lambda, y_\mu, z_\nu) \label{eq:mondo tensor}
   \end{align}
 \end{subequations}
 with an implied summation over the bound indices $i'$, $j'$, $k'$ and $\lambda$, $\mu$, $\nu$.
+\QuEST{} makes use of the Tensor Algebra Compiler (taco)~\cite{taco} to generate the equivalent source expression for \cref{eq:mondo tensor}.
