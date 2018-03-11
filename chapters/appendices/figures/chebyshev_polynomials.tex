@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+  \begin{axis}[cycle list/Blues-7, every axis plot/.append style={smooth}, domain=-1:1]
+    \addplot {-1 + 18*x^2 - 48*x^4 + 32*x^6};
+    \addplot {5*x - 20*x^3 + 16*x^5};
+    \addplot {1 - 8*x^2 + 8*x^4};
+    \addplot {-3*x + 4*x^3};
+    \addplot {-1 + 2*x^2};
+    \addplot {x};
+    \addplot {1};
+  \end{axis}
+\end{tikzpicture}
