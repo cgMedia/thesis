@@ -1,63 +1,42 @@
 \section{Formulation}
 
-An incident electric field $\vb{E}_\text{inc}(\vb{r}, t)$ induces a source polarization distribution, $\vb{P}(\vb{r}, t)$, on a collection of objects (either discrete or continuous) embedded in a homogeneous background medium by way of an underlying linear~\cite{} or nonlinear~\cite{Glosser2017} process.
-This current subsequently generates a secondary $\vb{E}_\text{scat}(\vb{r}, t) = \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}$, thus the total field at any spacetime coordinate becomes
-\begin{equation}
-  \vb{E}(\vb{r}, t) = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}.
-\end{equation}
-Assuming $\vb{E}(\vb{r}, t)$ consists of a low-frequency envelope modulated by a high-frequency sinusoid, i.e. $\vb{E}(\vb{r}, t) = \tilde{\vb{E}}(\vb{r}, t) e^{i \omega_L t}$, we can suppress the $e^{i \omega_L t}$ term in favor of an assumed spatial phase factor.
-Thus,
-\begin{equation}
-  \tilde{\vb{E}}(\vb{r}, t) = \tilde{\vb{E}}_\text{inc}(\vb{r}, t) + \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)}
-\end{equation}
-where tildes on field variables denote envelope functions.
-By enforcing radiation boundary conditions (namely that $\vb{E}_\text{scat}(\vb{r}, t) \to 0$ as $\abs{\vb{r}} \to \infty$), Maxwell's equations require
-\begin{equation}
-  \mathfrak{F}\qty{\vb{P}(\vb{r}, t)} = -\frac{\mu}{4\pi} \siint \frac{\delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \vb{P}(\vb{r}', t') \dd[1]{t'} \dd[3]{\vb{r}'}
-  \label{eq:efie}
-\end{equation}
-where $\mu$ characterizes the permeability of the background medium and $t_R \equiv t - \abs{\vb{r} - \vb{r}'}/c$ (see \cref{appendix:vector wave equation}).
-Accordingly,
-\begin{equation}
-  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)}e^{i \omega_L t} = -\frac{\mu}{4\pi} \siint \frac{\delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \tilde{\vb{P}}(\vb{r}', t') e^{i \omega_L t'} \dd[1]{t'} \dd[3]{\vb{r}'}
-  \label{eq:efie envelope}
-\end{equation}
-and, after performing the temporal integration and suppressing the $e^{i \omega_L t}$ factor on both sides of the equation, we have
-\begin{equation}
-  \tilde{\mathfrak{F}}\qty{\tilde{\vb{P}}(\vb{r}, t)} = -\frac{\mu}{4\pi} \sint \frac{e^{- i \omega_L \abs{\vb{r} - \vb{r}'}}}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{t} + 2 i \omega_L \pdv{t} - \omega_L^2 - c^2 \grad' \grad'\boldsymbol{\cdot}) \tilde{\vb{P}}(\vb{r}', t_R) \dd[3]{\vb{r}'}.
-  \label{eq:efie envelope}
-\end{equation}
-(We note that $\partial_{t_R} = \partial_{t}$ and that \cref{eq:efie envelope} recovers \cref{eq:efie} in the limit of $\omega_L \to 0$.)
-
-To effect the calculation of \cref{eq:efie envelope} on bounded geometries of interest, we represent $\tilde{\vb{P}}(\vb{r}, t)$ as a collection of spatio-temporal basis functions,
-\begin{equation}
-  \tilde{\vb{P}}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \tilde{\mathcal{A}}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t).
-  \label{eq:discretization}
-\end{equation}
-Conventionally, $\Delta t^{-1} \propto \omega_\text{max}$---the highest frequency in the system.
-By formulating the problem in terms of envelope functions, however, we may choose $\Delta t$ proportional to the bandwidth of the envelopes.
-In narrowband applications that evade a frequency-domain analysis---such as those with nonlinear (semiclassical) trappings---this can allow a $\Delta t$ several orders of magnitude larger than in conventional simulations.
-This envelope shifting approach does not work equally well in space, however; due to the presence of the $e^{i \omega_L \abs{\vb{r} - \vb{r}'}/c}$ factor in \cref{eq:efie envelope}, interference phenomena still occur on the scale of $\omega_L/c$ (i.e. at a high spatial frequency), thus we still require sub-wavelength spatial discretizations.
-Finally, we require both $\vb{s}_\ell(\vb{r})$ and $T(t)$ to have finite support, and $T(t)$ must accurately interpolate derivatives of order $0 \leqslant d \leqslant 2$ to capture the full dynamics of \cref{eq:efie envelope}.
-
-Substituting \cref{eq:discretization} into \cref{eq:efie envelope} and projecting onto the same set of $\vb{s}_\ell(\vb{r})$ produces a spatially-blocked matrix equation of the form
+We wish to calculate the the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator in both space and time, presumably alongside/in response to an incident field.
+Formally, we may write the total field everywhere as
 \begin{equation}
   \begin{aligned}
-    \tilde{\mathcal{F}}^{(m)} &= \tilde{\mathcal{L}}^{(m)} + \sum_{m'= 0}^m \tilde{\mathcal{Z}}^{(m - m')} \tilde{\mathcal{A}}^{(m')} \\
-  \end{aligned}
+      \vb{E}(\vb{r}, t) &= \vb{E}_\text{inc}(\vb{r}, t) + \siint g(\vb{r} - \vb{r}', t - t') \mathfrak{F}\qty{\vb{P}(\vb{r}', t')} \dd[1]{t'} \dd[3]{\vb{r}'} \\
+                        &\equiv \vb{E}_\text{inc}(\vb{r}, t) + g(\vb{r}, t) \ast \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}
+    \end{aligned}
+  \label{eq:commuted propagator}
+\end{equation}
+where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$) and $\mathfrak{F}$ the differential operator.
+The linearity of both $\mathfrak{F}$ and the convolution allows us to commute the two operations, thus
+\begin{equation}
+  \vb{E}(\vb{r}, t) = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
+  \label{eq:propagator}
+\end{equation}
+which will serve as the basis of our accelerated algorithm.
+
+To effect the calculation of \cref{eq:propagator} on bounded geometries of interest, we represent the source distribution as a collection of local spatio-temporal basis functions,
+\begin{equation}
+  \vb{P}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t).
+  \label{eq:discretization}
+\end{equation}
+Here, $\Delta t$ denotes a (fixed) time interval chosen such that the discretization accurately oversamples the highest frequency in the system.
+Substituting \cref{eq:discretization} into \cref{eq:propagator} and projecting the resultant field onto the same set of $\vb{s}_\ell(\vb{r})$ produces a spatially-blocked matrix equation of the form
+\begin{equation}
+  \mathcal{F}^{(m)} = \mathcal{L}^{(m)} + \sum_{m'= 0}^m \mathcal{Z}^{(m - m')} \mathcal{A}^{(m')}
   \label{eq:mot}
 \end{equation}
 where
 \begin{subequations}
   \begin{align}
-    \tilde{\mathcal{F}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
-    \tilde{\mathcal{L}}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \tilde{\vb{E}}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
-    \tilde{\mathcal{Z}}^{(k)}_{\ell\ell'} &= \langle \vb{s}_\ell(\vb{r}), \tilde{\mathfrak{F}}\qty{\vb{s}_{\ell'}(\vb{r}, T(k \, \Delta t)} \rangle \label{eq:z elements}.
+    \mathcal{F}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
+    \mathcal{L}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
+    \mathcal{Z}^{(k)}_{\ell\ell'} &= \big\langle \vb{s}_\ell(\vb{r}), \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{s}_{\ell'}(\vb{r}) T(k \, \Delta t)} \big\rangle \label{eq:z elements}.
   \end{align}
 \end{subequations}
-
-For finite systems, only $\tilde{\mathcal{Z}}^{(0)}$ through $\tilde{\mathcal{Z}}^{(N_d)}$ contain nonzero elements, corresponding to the $N_d$ timesteps required to traverse the system completely.
-Immediately, this bands $\tilde{\mathcal{Z}}$ to reduce the complexity of the sum in \cref{eq:mot} though the $\mathcal{O}(N_s^2)$ spatial complexity still dominates the overall computational cost.
+From this, it immediately becomes apparent that the innter product of \cref{eq:mot} bottlenecks the field calculation.
 Consequently, we draw inspiration from FFT-based techniques such as the Adaptive Integral Method (AIM)~\cite{Bleszynski1996,Yilmaz2004}, Conjugate Gradient FFT (CG-FFT)~\cite{CG-FFT}, and Particle-Particle Particle-Mesh (P$^3$M)~\cite{p cubed m} to develop an accelerated methodology for evaluating \cref{eq:mot}.
 
 \subsection{Auxiliary grids}
@@ -67,10 +46,10 @@ Consequently, we draw inspiration from FFT-based techniques such as the Adaptive
   \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
   \hspace{1cm}
   \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
-  \caption{\label{fig:matrix structure} The Laplace-kernel interaction matrix between 1024 points in a unit cube appears to have very little structure (left).
+  \caption{\label{fig:matrix structure} The interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
     While we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
     Points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
-    Such structures indicate portions of the matrix have very accurate low-rank approximations, offering the possibility of significant compression.
+    Such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
   }
 \end{figure}
 
@@ -110,7 +89,7 @@ By construction, the interaction matrix of a translationally-invariant propagato
 This structure affords a very efficient matrix multiplication: as this matrix represents a discrete convolution, a multidimensional FFT diagonalizes the entire matrix in $\mathcal{O}(n \log n)$ steps.
 
 Effecting this calculation for arbitrary structures requires one additional step, however.
-As structures do not, in general, reside on structured grids, we require
+As the $\vb{s}_\ell(\vb{r})$ do not, in general, reside on structured grids, we require 
 
 \begin{enumerate}
   \item \textbf{Projection:} At time $m \, \Delta t$, we project the $\tilde{\mathcal{A}}^{(m)}_\ell \vb{s}_\ell(\vb{r})$ quantities onto a collection of spatial $\delta$-functions (the exterior grid).

@@ -8,7 +8,7 @@ Specifically, these techniques lump adjacent sources together so as to transmit 
 These methods scale very well for surface discretizations as they intelligently partition the simulation space into a hierarchy of boxes and only compute interactions between regions containing sources.
 Unfortunately, as these methods rely on the underlying mathematical structure of the kernel to produce a suitable series representation, they have limited utility in systems with nonstandard (specifically rotating-frame) kernels.
 
-In contrast, \emph{source-type} solvers~\cite{Bleszynski1996,Yilmaz2004,Kapur1997} apply effective transformations to the source distribution (leaving the actual interaction kernel unchanged) with the intention of producing an equivalent system with exploitable low-rank properties.
+In contrast, \emph{source-type} solvers~\cite{Bleszynski1996,Yilmaz2004,Kapur1997} apply effective transformations to the source distribution (leaving the actual interaction kernel unchanged) with the intention of producing a nearly-equivalent system with exploitable low-rank properties.
 The Adaptive Integral Method (AIM), which we extend here, represents a kernel matrix as a sum of nearfield and farfield contributions, each constructed from a different set of basis functions.
 For all basis functions within a prescribed distance of each other, we compute their interactions directly, thus the nearfield matrix becomes increasingly sparse in the limit of a large number of sources.
 The farfield contribution arises as the interaction between a reduced number of auxiliary basis functions taken as $\delta$-functions on a regular cartesian grid.
