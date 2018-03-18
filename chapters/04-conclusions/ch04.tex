@@ -1,0 +1,32 @@
+\chapter{\label{ch:conclusions}Conclusions and future perspective}
+
+\dropcap{T}{his} thesis serves three main purposes.
+First, it introduces the concept of \emph{active media}---physical systems governed by ordinary differential equations that couple together via radiative processes---and motivates the difficulty in examining these systems at a macroscopic or continuum level.
+Second, it provides a discussion of numerical solution strategies based around time-domain integral equations.
+Finally, it introduces and details the \QuEST{} software package.
+This chapter summarizes the main findings of each of these parts and offers some perspective on potential research based on these ideas.
+
+\section{Conclusion}
+
+
+\section{Discussion}
+
+\subsection{Advanced dissipators}
+
+\subsection{Micromagnetics}
+
+The Landau-Lifshitz-Gilbert (LLG) equation,
+\begin{equation}
+  \dv{\vb{M}}{t} = -\gamma_0 \vb{M} \cp \qty(\vb{H} - \eta \dv{\vb{M}}{t}),
+  \label{eq:llg}
+\end{equation}
+details the evolution of magnetization, $\vb{M}$, in response to an applied magnetic field, $\vb{H}$~\cite{Aharoni2000}.
+Here, $\gamma_0$ denotes the gyromagnetic ratio
+\begin{equation}
+  \gamma_0 = \frac{g \abs{e}}{2 m_e c},
+  \label{eq:gyro}
+\end{equation}
+$\eta$ represents a phenomenological decay constant, and $g$, $e$, $m_e$, \& $c$ stand for the Land\'e $g$-factor, elementary charge, electron mass, and speed of light, respectively.
+Immediately, \cref{eq:llg} draws a large number of parallels with the optical Bloch/Liouville equation \cref{eq:liouville}.
+Apart from the obvious first-order and vector nature of both equations, the dual nature of electromagnetism means that $\vb{M}$ (as a source in Maxwell's equations) relates to $\vb{H}$ in the exact same way that $\vb{P}$ relates to $\vb{E}$.
+By simply exchanging some of the physical constants, then, \cref{eq:integral operator} also describes radiation eminating from a magnetization distribution~\cite{Rothwell2009}.
