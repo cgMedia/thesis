@@ -2,9 +2,11 @@
 \begin{tikzpicture}[line cap=round, line join=round, >=Triangle]
   \draw [shift={(0,0)}, lightgray, fill, fill opacity=0.1] (0,0) -- (56.7:0.4) arc (56.7:90.:0.4) -- cycle;
   \draw [shift={(0,0)}, lightgray, fill, fill opacity=0.1] (0,0) -- (-135.7:0.4) arc (-135.7:-33.2:0.4) -- cycle;
-  \draw(0,0) circle (2);
+  \draw (0,0) circle (2);
   \draw [rotate around={0.:(0.,0.)},dash pattern=on 3pt off 3pt] (0,0) ellipse (2 and 1);
-  \draw (0,0)-- (0.70,1.07);
+  \draw (0,0) -- (0.7, 1) node[] (PSI) {};
+
+  \node[anchor=south] at (PSI) {$\ket{\psi}$};
 
   \draw [->] (0,0) -- (-0.894427, -0.894427) node[anchor=north east] (X) {$\vu{x}$};
   \draw [->] (0,0) -- (2,0) node[anchor=west] (Y) {$\vu{y}$};
@@ -12,11 +14,11 @@
 
   \node[anchor=north] at (0, -2) {$-\vu{z}=\ket{0}$};
 
-  \draw [dotted] (0.7,1) node[anchor=south] (PSI) {$\ket{\psi}$} -- (0.7,-0.46);
+  \draw [dotted] (PSI) -- (0.7,-0.46);
   \draw [dotted] (0,0) -- (0.7,-0.46);
   \draw (-0.2,-0.3) node[anchor=north west] {$\varphi$};
   \draw (-0.10,0.9) node[anchor=north west] {$\theta$};
 
   \draw [fill] (0,0) circle (1.5pt);
-  \draw [fill] (0.7,1.1) circle (0.5pt);
+  \draw [fill] (PSI) circle (0.5pt);
 \end{tikzpicture}
