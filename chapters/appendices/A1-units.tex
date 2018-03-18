@@ -10,7 +10,7 @@ I write the fully-generalized Fourier transform $f(t) \leftrightarrow F(\omega)$
     f(t) &= \sqrt{\frac{\abs{s_2}}{\qty(2\pi)^{1+s_1}}} \int_{-\infty}^{\infty} F(\omega) e^{- i s_2 \omega t} \dd{\omega} \label{eq:backward transform}
   \end{align}
 \end{subequations}
-where the $s_1, s_2$ parameters allow for different normalization and frequency conventions. 
+where the $s_1, s_2$ parameters allow for different normalization and frequency conventions.
 Of principal importance, \cref{eq:backward transform} implies
 \begin{equation}
   \partial_t f(t) \leftrightarrow -i \omega s_2 F(\omega).
@@ -30,13 +30,13 @@ In a unit-independent format, Maxwell's equations become~\cite{jackson2007classi
   \end{align}
   \label{eq:time-domain maxwell equations}
 \end{subequations}
-with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants. 
-One need only specify two of the four constants to pin down the unit system, however; in particular 
+with $k_1$, $k_2$, $\alpha$, and $k_3$ as system-dependent constants.
+One need only specify two of the four constants to pin down the unit system, however; in particular
 \begin{equation}
   \frac{k_1}{k_2 k_3 \alpha} = c^2 \qq{and} k_3 = \frac{1}{\alpha}.
 \end{equation}
 
-From \cref{eq:no monopoles}, $\vb{B} = \curl{\vb{A}}$. 
+From \cref{eq:no monopoles}, $\vb{B} = \curl{\vb{A}}$.
 Then, using \cref{eq:faraday}, it becomes apparent that
 \begin{equation*}
   \curl{\qty(\vb{E} + k_3 \pdv{\vb{A}}{t})} = 0
@@ -65,11 +65,13 @@ This defines the \emph{Laplace-kernel Green's function} as
 \end{equation}
 Analogously, the \emph{Helmholtz-kernel} and \emph{Wave-kernel} Green's functions become
 \begin{equation}
-  g(\vb{r}; k) \equiv \frac{e^{-i k \abs{\vb{r}}}}{\abs{\vb{r}}} \qquad
+  g(\vb{r}; k) \equiv \frac{e^{i k \abs{\vb{r}}}}{\abs{\vb{r}}} \qquad
   g(\vb{r}; t) \equiv \frac{\delta(t - \abs{\vb{r}}/c)}{\abs{\vb{r}}}
 \end{equation}
 
 \subsection{\label{appendix:vector wave equation}Vector wave equation}
+
+\subsubsection{Operator form}
 
 From \cref{eq:faraday,eq:ampere},
 \begin{equation}
@@ -85,8 +87,7 @@ As $\curl{\curl{\vb{A}}} = \grad{\qty(\div{\vb{A}})} - \grad^2{\vb{A}}$, the tim
   \grad{\qty(\div{\pdv{\vb{E}}{t}})} - \grad^2 \pdv{\vb{E}}{t} + \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = -4\pi k_2 \pdv[2]{\vb{J}}{t}
 \end{equation*}
 therefore
-\begin{equation*}
-  \grad^2 \pdv{\vb{E}}{t} - \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = 4\pi k_2 \qty(\pdv[2]{\vb{J}}{t} - c^2 \grad \div{\vb{J}}).
+\begin{equation*} \grad^2 \pdv{\vb{E}}{t} - \frac{1}{c^2} \pdv[3]{\vb{E}}{t} = 4\pi k_2 \qty(\pdv[2]{\vb{J}}{t} - c^2 \grad \div{\vb{J}}).
 \end{equation*}
 Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_t \vb{E}$ and thus
 \begin{equation*}
@@ -95,6 +96,80 @@ Immediately, the left-hand side gives the ``wave operator'' acting on $\partial_
 from which it follows
 \begin{equation}
   \vb{E}(\vb{r}, t) = -k_2 \siint \kern0.1em \frac{\delta\qty(t_R - t' )}{\abs{\vb{r} - \vb{r}'}} \qty(\pdv[2]{{t'}} - c^2 \grad' \grad'\boldsymbol{\cdot}) \, \vb{P}(\vb{r}', t') \dd[3]{\vb{r}'} \dd{t'}
+  \label{eq:operator form}
 \end{equation}
 where $t_R \equiv t - \abs{\vb{r} - \vb{r}'}/c$ and $\partial_t \vb{P} \equiv \vb{J}$.
 
+\subsubsection{Dyadic form}
+
+In addition to \cref{eq:operator form}, one may also construct an equivalent propagator without any spatial derivatives in the resulting expression.
+This form of the propagator has advantages in describing $\vb{E}(\vb{r}, t)$ when derivatives become ill-defined (for example, fields arising from point sources).
+
+To begin, we note that for time-harmonic $\vb{P}(\vb{r}, t) = \vb{P}(\vb{r})e^{-i \omega t}$ \cref{eq:operator form} becomes
+\begin{equation}
+  \vb{E}(\vb{r}) = -k_2 \sint \frac{e^{i k \abs{\vb{r} - \vb{r}'}}}{\abs{\vb{r} - \vb{r}'}} \qty((-i\omega)^2 - c^2 \grad'\grad'\boldsymbol{\cdot}) \vb{P}(\vb{r}') \dd[3]{\vb{r}'}
+  \label{eq:time harmonic}
+\end{equation}
+after suppressing the time-harmonic function and taking $k = \omega/c$.
+All of the terms in this equation commute due to the linearity of the operators, thus
+\begin{equation}
+  \begin{aligned}
+    \vb{E}(\vb{r}) &= -k_2 \, (-i\omega)^2 \sint \qty(\mathrm{I} + \frac{\grad\grad}{k^2}) \frac{e^{i k \abs{\vb{r} - \vb{r}'}}}{\abs{\vb{r} - \vb{r}'}} \boldsymbol{\cdot} \vb{P}(\vb{r}') \dd[3]{\vb{r}'} \\
+    &\equiv -k_2 (-i \omega) \sint \mathrm{G}_d(\vb{r} - \vb{r}'; \omega) \boldsymbol{\cdot} \vb{P}(\vb{r}'; \omega) \dd[3]{\vb{r}'}
+  \end{aligned}
+  \label{eq:dyadic integral}
+\end{equation}
+which defines the \emph{dyadic Green's function}
+\begin{equation}
+  \mathrm{G}_d(\vb{r}; \omega) = \qty(\mathrm{I} + \frac{\grad\grad}{k^2}) \frac{e^{ik\vb{r}}}{\vb{r}},
+  \label{eq:dyadic}
+\end{equation}
+where $\mathrm{I}$ represents the identity dyad.
+
+In spherical coordinates, $\mathrm{G}_d(\vb{r}) = \mathrm{G}_d(r)$ and the spatial derivatives become particularly easy to comptute.
+Accordingly,
+\begin{equation}
+  \begin{aligned}
+    \grad\grad \frac{e^{ikr}}{r} &= \grad \qty(\frac{e^{ikr}}{r^2}(ikr - 1) \vu{r}) \\
+    &= \vu{r}\grad \qty(\frac{e^{ikr}}{r^2}(ikr - 1)) + \frac{e^{ikr}}{r^2}(ikr - 1)\qty(\grad \vu{r}) \\
+    %&= \qty[\qty(\frac{2}{r^2}-\frac{2 i k}{r}-k^2) \vu{r}\vu{r} + \qty(-\frac{1}{r} + ik) \qty(\frac{\mathrm{I} - \vu{r}\vu{r}}{r}) ] \frac{e^{ikr}}{r} \\
+    %&= \qty[\qty(\frac{2}{r^2}-\frac{2 i k}{r}-k^2) \vu{r}\vu{r} + \qty(- \frac{1}{r^2} + \frac{ik}{r}) \qty(\mathrm{I} - \vu{r}\vu{r}) ] \frac{e^{ikr}}{r} \\
+    &= \qty[\qty(\frac{3}{r^2}-\frac{3 i k}{r}-k^2) \vu{r}\vu{r} + \qty(- \frac{1}{r^2} + \frac{ik}{r}) \mathrm{I}] \frac{e^{ikr}}{r}
+  \end{aligned}
+\end{equation}
+Inserting this expression back into \cref{eq:dyadic} then gives
+\begin{equation}
+  \begin{aligned}
+    G_d(r) & = \qty[\qty(\frac{3}{k^2 r^2}+\frac{3}{(i k) r}-1) \vu{r}\vu{r} + \qty(-\frac{1}{k^2r^2} - \frac{1}{(ik)r} + 1) \mathrm{I}] \frac{e^{ikr}}{r} \\
+    & = \qty[ \qty(\mathrm{I} - \vu{r}\vu{r}) - \qty(\mathrm{I} - 3\vu{r}\vu{r})\qty(\frac{1}{(ik)r} + \frac{1}{k^2 r^2})] \frac{e^{ikr}}{r}.
+  \end{aligned}
+  \label{eq:expanded dyadic}
+\end{equation}
+
+Having eliminated the spatial derivatives, we can perform the inverse of the Fourier transform that gave \cref{eq:time harmonic}.
+Inserting \cref{eq:expanded dyadic} back into \cref{eq:dyadic integral} and replacing $k$ with $\omega$ gives
+\begin{equation}
+  \vb{E}(\vb{r}, \omega) = -k_2 \sint \qty[ \qty(\mathrm{I} - \vu{r}\vu{r})(-i \omega)^2 + \qty(\mathrm{I} - 3\vu{r}\vu{r})\qty(c\frac{(-i\omega)}{r} + \frac{c^2}{r^2})] \frac{e^{ikr}}{r} \cdot \vb{P}(\vb{r}', \omega) \dd[3]{\vb{r}'}
+\end{equation}
+where $\vu{r} = (\vb{r} - \vb{r}')/\abs{\vb{r} - \vb{r}'}$.
+Exchanging $-i\omega$ for a time derivative and restoring the temporal convolution,
+\begin{equation}
+  \vb{E}(\vb{r}, t) = -k_2 \siint \qty[
+    (\mathrm{I} - \vu{r}\vu{r}) \frac{\partial_t^2 \delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}} +
+    (\mathrm{I} - 3\vu{r}\vu{r}) \qty(
+      \frac{c \partial_t \delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}^2} +
+      \frac{c^2 \delta(t_R - t')}{\abs{\vb{r} - \vb{r}'}^2}
+    )
+  ] \cdot \vb{P}(\vb{r}, t') \dd[1]{t'} \dd[3]{\vb{r}'}.
+\end{equation}
+The derivatives acting on the $\delta$-functions make little sense, thus we can apply them equally to $\vb{P}(\vb{r}, t)$ again due to the linearity of the operators.
+As a result,
+\begin{equation}
+  \vb{E}(\vb{r}, t) = -k_2 \sint
+  (\mathrm{I} - \vu{r}\vu{r}) \boldsymbol{\cdot} \frac{\ddot{\vb{P}}(\vb{r'}, t_R)}{\abs{\vb{r}-\vb{r}'}} +
+  (\mathrm{I} - 3\vu{r}\vu{r}) \boldsymbol{\cdot} \qty(
+    \frac{c \dot{\vb{P}}(\vb{r}', t_R)}{\abs{\vb{r} - \vb{r}'}^2} +
+    \frac{c^2 \vb{P}(\vb{r}', t_R)}{\abs{\vb{r} - \vb{r}'}^3}
+  ) \dd[3]{\vb{r}'}
+\end{equation}
+where dots indicate derivatives with respect to $t$ (or, equivalently, $t_R$).
