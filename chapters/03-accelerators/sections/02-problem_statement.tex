@@ -9,7 +9,7 @@ Formally, we may write the total field everywhere as
     \end{aligned}
   \label{eq:commuted propagator}
 \end{equation}
-where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$) and $\mathfrak{F}$ the differential operator.
+where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$) and $\mathfrak{F}$ the differential operator in both space and time.
 The linearity of both $\mathfrak{F}$ and the convolution allows us to commute the two operations, thus
 \begin{equation}
   \vb{E}(\vb{r}, t) = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
@@ -64,7 +64,7 @@ Consequently, we draw inspiration from FFT-based techniques such as the Adaptive
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/expansion-grid}
-  \caption{\label{fig:expansion grid}Spatial expansion pattern for a two-dimensional system.
+  \caption{\label{fig:expansion grid}Spatial expansion pattern for $\vb{s}_\ell(\vb{r}) = \delta(\vb{r} - \vb{r}_\ell)$.
     An expansion of order $m$ requires $(m + 1)^3$ grid points.
     Moreover, increasing the expansion order incorporates new points in such a way as to keep $\vb{s}_\ell(\vb{r})$ as close to the center of the expansion region as possible.
   }
@@ -73,13 +73,14 @@ Consequently, we draw inspiration from FFT-based techniques such as the Adaptive
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/nf_correction}
-  \caption{\label{fig:nearfield correction}Expansions $A$ and $B$ overlap, but only box $B$ lies in the nearfield of box $C$.
+  \caption{\label{fig:nearfield correction}Illustration of nearfield corrections between close boxes.
+    Expansions $A$ and $B$ overlap, but only box $B$ lies in the nearfield of box $C$.
     Consequently, we must track the $BC$ interaction (dashed line) independently of the FFT-based convolution so as to remove its high-error contribution to the total field.
   }
 \end{figure}
 
 To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\tilde{\mathcal{Z}}^{(k)}$ as a sum of near- and far-field contributions.
-The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' so as to avoid incurring large errors in potentials with singularities.
+The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' (via the method detailed in \cref{ch:quantum dots}) so as to avoid incurring large errors in potentials with singularities.
 In contrast, the far-field matrix never explicitly arise.
 Instead, we construct the far-field interaction matrices between auxiliary sources residing on a regular grid.
 Such a procedure has two salient advantages: it compresses the interaction matrix to a reduced number of auxiliary unknowns and imposes a Toeplitz structure amenible to diagonalization with fast Fourier transforms (FFTs).
@@ -87,18 +88,26 @@ Such a procedure has two salient advantages: it compresses the interaction matri
 The original AIM scheme in~\cite{Bleszynski1996} embeds a scattering structure within an auxiliary rectangular grid.
 By construction, the interaction matrix of a translationally-invariant propagator (such as \cref{eq:efie envelope}) on this grid will have a hierarchical (block) Toeplitz structure.
 This structure affords a very efficient matrix multiplication: as this matrix represents a discrete convolution, a multidimensional FFT diagonalizes the entire matrix in $\mathcal{O}(n \log n)$ steps.
-
-Effecting this calculation for arbitrary structures requires one additional step, however.
-As the $\vb{s}_\ell(\vb{r})$ do not, in general, reside on structured grids, we require 
-
-\begin{enumerate}
-  \item \textbf{Projection:} At time $m \, \Delta t$, we project the $\tilde{\mathcal{A}}^{(m)}_\ell \vb{s}_\ell(\vb{r})$ quantities onto a collection of spatial $\delta$-functions (the exterior grid).
-    The number expansion points for each $\vb{s}_\ell(\vb{r})$ depends on the number of multipole moments required to recover the potential to a prescribed accuracy at a given distance away from $\vb{s}_\ell(\vb{r})$.
-  \item \textbf{Propagation:}
-  \item \textbf{Back-projection:}
-  \item \textbf{Correction:}
-  \item \textbf{Interpolation:}
-\end{enumerate}
+Effecting this calculation for arbitrary structures requires one additional step; as the $\vb{s}_\ell(\vb{r})$ do not, in general, reside on structured grids, we require a means of projecting the the source distribution onto a regularly structured grid.
+For this, we employ the moment-matching technique developed in~\cite{Bleszynski1996} with an additional caveat: after projecting the source distribution itself onto the grid, we calculate only the potential, i.e. $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$, between gridpoints.
+Another independent set of expansion coefficients captures the action of $\mathfrak{F}\qty{\cdot}$ when projecting from the grid back to $\vb{s}_\ell(\vb{r})$. 
+Mathematically, this amounts to writing \cref{eq:mot} as 
+\begin{equation}
+  \mathcal{F}^{(m)} \approx \mathcal{L}^{(m)} + \sum_{m'= 0}^m \qty(\sum_{j=0}^p \tilde{\Lambda}^{(j)}\mathcal{G}^{(m - m')} \Lambda + \mathcal{Z}^{(m - m')}_\text{direct})\mathcal{A}^{(m')}
+\end{equation}
+where 
+\begin{equation}
+  \mathcal{G}^{(m - m')}_{ab} = \frac{T\qty((m - m')\, \Delta t - \frac{\abs{\vb{r}_b - \vb{r}_a}}{c})}{4 \pi \abs{\vb{r}_b - \vb{r}_a}}
+  \label{<+label+>}
+\end{equation}
+and
+\begin{equation}
+  \qty(\mathcal{Z}^{(m - m')}_\text{direct})_{ab} = \begin{cases}
+    0                                                                   & \text{dist}(\vb{r}_a, \vb{r}_b) > \gamma \, \Delta s \\
+    \qty(\mathcal{Z}^{(m-m')} - \mathcal{Z}^{(m - m')}_\text{FFT})_{ab} & \text{otherwise}
+  \end{cases}
+  \label{<+label+>}
+\end{equation}<++>
 
 \section{Moment-matching}
 
@@ -129,6 +138,10 @@ where
 \end{subequations}
 With infinite precision, the choice of $\vb{r}_0$ merely sets a reference point for the multipole coordinate system; to minimize numerical issues, however, we choose $\vb{r}_0$ at the center of $\vb{s}_\ell(\vb{r})$.
 As the primary basis functions consist entirely of $\delta$-functions, $\vb{r}_0 = \vb{r}$ and $Q_{\ell\vb{m}} = 0$ everywhere except for $Q_{\ell \vb{0}} \equiv 1$.
+
+\subsubsection{Differential operators}
+
+For any given pair of basis functions $\vb{s}_\ell(\vb{r})$ radiating to $\vb{s}_{\ell'}(\vb{r})$, our propagtaion scheme transmits only three quantities  through the structured grid corresponding to the vector components of $\vb{s}_\ell(\vb{r})$.
 
 
 \subsection{Spatial analysis}
