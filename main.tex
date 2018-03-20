@@ -74,7 +74,7 @@
 \input{extra/pgf_settings}
 \input{extra/macros}
 
-%\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
+\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
 
 % Zero-index the chapters and sections, just to be cheeky.
 %\setcounter{chapter}{-1}
@@ -137,9 +137,9 @@ Your acknowledgements here.
 % May violate thesis office rules
 %\addtocontents{toc}{\protect\renewcommand{\protect\cftchapterdotsep} {\cftnodots}}
 
-%\import{chapters/00-intro/}{ch00}
-%\import{chapters/01-bubbles/}{ch01}
-%\import{chapters/02-quantum_dots/}{ch02}
+\import{chapters/00-intro/}{ch00}
+\import{chapters/01-bubbles/}{ch01}
+\import{chapters/02-quantum_dots/}{ch02}
 \import{chapters/03-accelerators/}{ch03}
 \import{chapters/04-conclusions/}{ch04}
 
@@ -154,10 +154,10 @@ Your acknowledgements here.
 %\pagestyle{plain} % remember to change the pagestyle back to plain
 
 \begin{appendices}
-  %\import{chapters/appendices/}{A0-QuEST_manual}
-  %\import{chapters/appendices/}{A2-predictor_corrector}
+  \import{chapters/appendices/}{A0-QuEST_manual}
+  \import{chapters/appendices/}{A2-predictor_corrector}
   \import{chapters/appendices/}{A1-units}
-  %\import{chapters/appendices/}{A3-chebyshev}
+  \import{chapters/appendices/}{A3-chebyshev}
 \end{appendices}
 
 \backmatter
