@@ -1,0 +1,41 @@
+\section{Results}
+
+\subsection{Spatial analysis}
+
+Consider two point particles located at $x_\text{src}$ and $x_\text{obs}$.
+A time-independent Green's function, $g(x_\text{obs} - x_\text{src})$, describes the interaction between the two particles and we wish to construct a polynomial approximation of $g(x - x_\text{src})$ for $x$ in the vicinity of $x_\text{obs}$ as in \cref{fig:1d moments}.
+
+To construct an interpolation polynomial over the expansion region of order $M$, we define a polynomial coordinate $x_p$ in units of $h$ such that $x_p^\text{min} \leqslant x_p \leqslant x_p^\text{min} + M$ where $x_p^\text{min} \equiv -\floor*{M/2}$.
+Consequently, the expansion points about $x_\text{obs}$ correspond to $x_p \in \{-\floor*{M/2}$, $-\floor*{M/2} + 1$, $-\floor*{M/2} + 2$, $\ldots\}$ with the \nth{0} order expansion point, $x_0$, equivalent to $x_p = 0$.
+Such a coordinate system defines the Vandermonde linear equation $\sum_{j}V_{ij} w_j = g_i$ for the weights of an interpolating polynomial\footnote{In principle this analysis works equally well in the original $(x_\text{src}, x_\text{obs})$ coordinate system. The polynomial coordinate has three advantages, however: it indexes the expansion points ``logically'' from left to right, $x_p^\text{min} \in \mathbb{Z}$ and thus the Vandermonde matrix has infinite precision, and it makes the interpolation error in terms of $h$ explicit.}~\cite{NumericalRecipes} where
+\begin{subequations}
+  \begin{align}
+    V_{ij} &= (x_p^\text{min} + i)^j \\
+    g_i &= g\qty((x_0 - x_\text{src}) + h(x_p^\text{min} + i))
+  \end{align}
+\end{subequations}
+and $0 \leqslant i, j \leqslant M$.
+Approximating $g(x - x_\text{src})$ at $x_\text{obs}$ then becomes a matter of evaluating this polynomial at $x_p = \qty(x_\text{obs} - x_0)/h$, i.e.
+\begin{equation}
+  g(x_\text{obs} - x_\text{src}) \approx \sum_{i = 0}^{M} w_i \qty(\frac{x_\text{obs} - x_0}{h})^i.
+\end{equation}
+Accordingly, the polynomial approximation to $g(x_\text{obs} - x_\text{src})$ contains terms of order $\mathcal{O}(h^{-M})$ and we can expect the approximation error to scale as $\mathcal{O}(h^{-(M + 1)})$ as demonstrated in \cref{fig:grid convergence}.
+This also motivates using the approximation to calculate interactions involving differential operators; applying an $n^\text{th}$-order derivative reduces the polynomial order by $n$, thus the error scales like $\mathcal{O}(h^{-(M + 1) + n})$.
+
+\begin{figure}
+  \centering
+  \input{figures/1d_moments}
+  \caption{\label{fig:1d moments} Polynomial interpolation of $g(x - x_\text{src})$ near $x_\text{obs}$.
+    Here, the green curve represents the actual $g(x - x_\text{src})$ and the dashed black line its approximation.
+    Evaluating the $m^\text{th}$-order approximation requires samples of the signal at $m + 1$ grid points surrounding $x_\text{obs}$.
+  }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \input{figures/grid_spacing_error}
+  \caption{\label{fig:grid convergence} $\ell_2$ error calculation of $g(\vb{r} - \vb{r}') = e^{i k \abs{\vb{r} - \vb{r}'}}/{\abs{\vb{r} - \vb{r}'}}$ for expansion orders zero through four.
+    For each of the points above, a source and observation box separated by $\Delta \vb{r} = 10\lambda \vu{x} + 10 \lambda \vu{y} + 10 \lambda \vu{z}$ each contain 64 randomly placed points, thus the points within each box all map to identical nodes in the auxiliary grid.
+    The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(h^{m + 1})$.
+  }
+\end{figure}

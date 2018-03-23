@@ -1,194 +1,61 @@
 \section{Formulation}
 
-We wish to calculate the the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator in both space and time, presumably alongside/in response to an incident field.
+We wish to calculate the the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator, $\mathfrak{F}\qty{\cdot}$, in both space and time, presumably alongside/in response to an incident field, $\mathbf{E}_\text{inc}$.
 Formally, we may write the total field everywhere as
 \begin{equation}
   \begin{aligned}
-      \vb{E}(\vb{r}, t) &= \vb{E}_\text{inc}(\vb{r}, t) + \siint g(\vb{r} - \vb{r}', t - t') \mathfrak{F}\qty{\vb{P}(\vb{r}', t')} \dd[1]{t'} \dd[3]{\vb{r}'} \\
-                        &\equiv \vb{E}_\text{inc}(\vb{r}, t) + g(\vb{r}, t) \ast \mathfrak{F}\qty{\vb{P}(\vb{r}, t)}
+    \vb{E}(\vb{r}, t) & = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{\siint g(\vb{r} - \vb{r}', t - t') \vb{P}(\vb{r}', t') \dd[1]{t'} \dd[3]{\vb{r}'}} \\
+                      & \equiv \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
     \end{aligned}
-  \label{eq:commuted propagator}
-\end{equation}
-where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$) and $\mathfrak{F}$ the differential operator in both space and time.
-The linearity of both $\mathfrak{F}$ and the convolution allows us to commute the two operations, thus
-\begin{equation}
-  \vb{E}(\vb{r}, t) = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
   \label{eq:propagator}
 \end{equation}
-which will serve as the basis of our accelerated algorithm.
-
-To effect the calculation of \cref{eq:propagator} on bounded geometries of interest, we represent the source distribution as a collection of local spatio-temporal basis functions,
+where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$).
+To numerically evaluate \cref{eq:propagator}, we discretize $\vb{P}(\vb{r}, t)$ with separable space/time basis functions such that 
 \begin{equation}
-  \vb{P}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t).
+  \vb{P}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t)
   \label{eq:discretization}
 \end{equation}
-Here, $\Delta t$ denotes a (fixed) time interval chosen such that the discretization accurately oversamples the highest frequency in the system.
-Substituting \cref{eq:discretization} into \cref{eq:propagator} and projecting the resultant field onto the same set of $\vb{s}_\ell(\vb{r})$ produces a spatially-blocked matrix equation of the form
+where $\Delta t$ denotes a fixed time interval chosen to accurately oversample $\omega_\text{max}$---the highest frequency in $\vb{P}$.
+Substituting \cref{eq:discretization} into \cref{eq:propagator} and projecting the resulting field onto the same set of $\vb{s}_\ell(\vb{r})$ produces an $(N_s \times N_s)$-block matrix equation of the form
 \begin{equation}
-  \mathcal{F}^{(m)} = \mathcal{L}^{(m)} + \sum_{m'= 0}^m \mathcal{Z}^{(m - m')} \mathcal{A}^{(m')}
+  \mathcal{E}^{(m)} = \mathcal{E}_\text{inc}^{(m)} + \sum_{m'= 0}^m \mathcal{F}^{(m - m')} \boldsymbol{\cdot} \mathcal{A}^{(m')}
   \label{eq:mot}
 \end{equation}
 where
 \begin{subequations}
   \begin{align}
-    \mathcal{F}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
-    \mathcal{L}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
-    \mathcal{Z}^{(k)}_{\ell\ell'} &= \big\langle \vb{s}_\ell(\vb{r}), \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{s}_{\ell'}(\vb{r}) T(k \, \Delta t)} \big\rangle \label{eq:z elements}.
+    \mathcal{E}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
+    \mathcal{E}^{(m)}_{\text{inc},\ell} &= \langle \vb{s}_\ell(\vb{r}), \vb{E}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
+    \mathcal{F}^{(k)}_{\ell\ell'} &= \big\langle \vb{s}_\ell(\vb{r}), \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{s}_{\ell'}(\vb{r}) T(k \, \Delta t)} \big\rangle \label{eq:z elements}.
   \end{align}
 \end{subequations}
-From this, it immediately becomes apparent that the innter product of \cref{eq:mot} bottlenecks the field calculation.
-Consequently, we draw inspiration from FFT-based techniques such as the Adaptive Integral Method (AIM)~\cite{Bleszynski1996,Yilmaz2004}, Conjugate Gradient FFT (CG-FFT)~\cite{CG-FFT}, and Particle-Particle Particle-Mesh (P$^3$M)~\cite{p cubed m} to develop an accelerated methodology for evaluating \cref{eq:mot}.
+From this, it immediately becomes apparent that \cref{eq:z elements} bottlenecks the field calculation due to the $\mathcal{O}(N_s^2)$ complexity of the inner product.
 
-\subsection{Auxiliary grids}
+\subsection{PWTD breakdown and motivation for FFT-based methods}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
-  \hspace{1cm}
-  \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
-  \caption{\label{fig:matrix structure} The interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
-    While we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
-    Points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
-    Such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
-  }
-\end{figure}
-
-\begin{figure}
-  \centering
-  \input{figures/aim_terminology.tex}
-  \caption{\label{fig:aim terminology} Illustration of an AIM box and the surrounding environment.
-    All of the sources within a box (shown as the central shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box} = \floor{\vb{r}/s}$.
-  }
-\end{figure}
-
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/expansion-grid}
-  \caption{\label{fig:expansion grid}Spatial expansion pattern for $\vb{s}_\ell(\vb{r}) = \delta(\vb{r} - \vb{r}_\ell)$.
-    An expansion of order $m$ requires $(m + 1)^3$ grid points.
-    Moreover, increasing the expansion order incorporates new points in such a way as to keep $\vb{s}_\ell(\vb{r})$ as close to the center of the expansion region as possible.
-  }
-\end{figure}
-
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/nf_correction}
-  \caption{\label{fig:nearfield correction}Illustration of nearfield corrections between close boxes.
-    Expansions $A$ and $B$ overlap, but only box $B$ lies in the nearfield of box $C$.
-    Consequently, we must track the $BC$ interaction (dashed line) independently of the FFT-based convolution so as to remove its high-error contribution to the total field.
-  }
-\end{figure}
-
-To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\tilde{\mathcal{Z}}^{(k)}$ as a sum of near- and far-field contributions.
-The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' (via the method detailed in \cref{ch:quantum dots}) so as to avoid incurring large errors in potentials with singularities.
-In contrast, the far-field matrix never explicitly arise.
-Instead, we construct the far-field interaction matrices between auxiliary sources residing on a regular grid.
-Such a procedure has two salient advantages: it compresses the interaction matrix to a reduced number of auxiliary unknowns and imposes a Toeplitz structure amenible to diagonalization with fast Fourier transforms (FFTs).
-
-The original AIM scheme in~\cite{Bleszynski1996} embeds a scattering structure within an auxiliary rectangular grid.
-By construction, the interaction matrix of a translationally-invariant propagator (such as \cref{eq:efie envelope}) on this grid will have a hierarchical (block) Toeplitz structure.
-This structure affords a very efficient matrix multiplication: as this matrix represents a discrete convolution, a multidimensional FFT diagonalizes the entire matrix in $\mathcal{O}(n \log n)$ steps.
-Effecting this calculation for arbitrary structures requires one additional step; as the $\vb{s}_\ell(\vb{r})$ do not, in general, reside on structured grids, we require a means of projecting the the source distribution onto a regularly structured grid.
-For this, we employ the moment-matching technique developed in~\cite{Bleszynski1996} with an additional caveat: after projecting the source distribution itself onto the grid, we calculate only the potential, i.e. $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$, between gridpoints.
-Another independent set of expansion coefficients captures the action of $\mathfrak{F}\qty{\cdot}$ when projecting from the grid back to $\vb{s}_\ell(\vb{r})$. 
-Mathematically, this amounts to writing \cref{eq:mot} as 
+Numerous schemes exist to ameliorate this bottleneck and accelerate calculations of the form in \cref{eq:mot}.
+The Plane-Wave Time-Domain (PWTD) algorithm~\cite{PWTD} in particular stands as the time-domain analogue of frequency-domain fast multipole methods that reconstruct time-harmonic fields as a superposition of plane waves.
+In particular, PWTD accelerates the calculation of a retarded potential,
 \begin{equation}
-  \mathcal{F}^{(m)} \approx \mathcal{L}^{(m)} + \sum_{m'= 0}^m \qty(\sum_{j=0}^p \tilde{\Lambda}^{(j)}\mathcal{G}^{(m - m')} \Lambda + \mathcal{Z}^{(m - m')}_\text{direct})\mathcal{A}^{(m')}
+  u(\vb{r}, t) = \sint \frac{\delta(t - \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} \star q(\vb{r}', t) \dd[3]{\vb{r}'},
+  \label{eq:retarded potential}
 \end{equation}
-where 
-\begin{equation}
-  \mathcal{G}^{(m - m')}_{ab} = \frac{T\qty((m - m')\, \Delta t - \frac{\abs{\vb{r}_b - \vb{r}_a}}{c})}{4 \pi \abs{\vb{r}_b - \vb{r}_a}}
-  \label{<+label+>}
-\end{equation}
-and
-\begin{equation}
-  \qty(\mathcal{Z}^{(m - m')}_\text{direct})_{ab} = \begin{cases}
-    0                                                                   & \text{dist}(\vb{r}_a, \vb{r}_b) > \gamma \, \Delta s \\
-    \qty(\mathcal{Z}^{(m-m')} - \mathcal{Z}^{(m - m')}_\text{FFT})_{ab} & \text{otherwise}
-  \end{cases}
-  \label{<+label+>}
-\end{equation}<++>
-
-\section{Moment-matching}
-
-To facillitate FFT-based matrix-vector products, we represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints, i.e.
-\begin{equation}
-  \psi_\ell(\vb{r}) \approx \sum_{\vb{u} \in B_{\ell}} \Lambda_{\ell\vb{u}} \delta(\vb{r} - \vb{u}).
-  \label{eq:grid linear combination}
-\end{equation}
-Here, $\psi_\ell(\vb{r}) \in \qty{\vb{s}_\ell(\vb{r})\cdot \vu{x}, \vb{s}_\ell(\vb{r}) \cdot \vu{y}, \vb{s}_\ell(\vb{r}) \cdot \vu{z}}$ and $B_\ell$ denotes the collection of grid points, $\vb{u}$, within the expansion region of $\vb{s}_\ell(\vb{r})$.
-For an expansion of order\footnote{In principle, one could expand to different orders in different cartesian directions, though this involves considerably more bookkeeping for relatively little benefit. Thus, for convenience, we take ``the expansion order'' to mean the expansion order in every direction.} $m$, this sum contains $(m + 1)^3$ terms corresponding to the $(m + 1)^3$ grid points nearest to $\vb{s}_\ell(\vb{r})$.
-Consequently, the $\Lambda_{\ell \vb{u}}$ matrices contain few nonzero elements and we have elected to use a moment-matching scheme to capture the $(m + 1)^3$ multipole moments of $\vb{s}_\ell(\vb{r})$ according to
-\begin{equation}
-  \sint (x - x_0)^{m_x}(y - y_0)^{m_y}(z - z_0)^{m_z} \qty[\psi_\ell(\vb{r}) - \sum_{\vb{u} \in c_\ell}\Lambda_{\ell\vb{u}}\delta(\vb{r} - \vb{u})] \dd[3]{\vb{r}} = 0.
-  \label{eq:moment matching}
-\end{equation}
-In this expression, $0 \leqslant m_x, m_y, m_z \leqslant m$ and $\vb{r}_0 \equiv x_0 \vu{x} + y_0 \vu{y} + z_0\vu{z}$ denotes the origin about which we compute the multipoles.
-Thus, to calculate the $\Lambda_{\ell \vb{u}}$, we solve the least-squares system,
-\begin{equation}
-  \sum_{\vb{u} \in B_\ell} W_{\vb{m}\vb{u}}\Lambda_{\ell\vb{u}} = Q_{\ell\vb{m}},
-  \label{eq:expansion matrix system}
-\end{equation}
-where
+via the Weyl identity,
 \begin{subequations}
   \begin{align}
-    W_{\vb{m}\vb{u}} &= (u_x - x_0)^{m_x} (u_y - y_0)^{m_y} (u_z - z_0)^{m_z} \label{eq:w matrix} \\
-    Q_{\ell \vb{m}} &= \int_{} \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}.
+    u_W(\vb{r}, t) & = -\frac{\partial_t}{2c} \siint \delta\qty[t - \vu{k} \vdot (\vb{r} - \vb{r}')/c] \star q(\vb{r}', t') \dd[3]{\vb{r}'} \dd[2]{\vu{k}} \label{eq:weyl-a}\\
+                   & = u(\vb{r}, t) - \sint \frac{\delta(t + \abs{\vb{r} - \vb{r}'}/c)}{\abs{\vb{r} - \vb{r}'}} \star q(\vb{r}', t) \dd[3]{\vb{r}'}. \label{eq:weyl-b}
   \end{align}
+  \label{eq:weyl}
 \end{subequations}
-With infinite precision, the choice of $\vb{r}_0$ merely sets a reference point for the multipole coordinate system; to minimize numerical issues, however, we choose $\vb{r}_0$ at the center of $\vb{s}_\ell(\vb{r})$.
-As the primary basis functions consist entirely of $\delta$-functions, $\vb{r}_0 = \vb{r}$ and $Q_{\ell\vb{m}} = 0$ everywhere except for $Q_{\ell \vb{0}} \equiv 1$.
+In these expressions, $\star$ indicates a convolution with respect to time, $\vu{k} = \vu{x} \sin \theta \cos \phi + \vu{y} \sin \theta \sin \phi \vu{y} + \vu{z} \cos \theta$, and $\sint \cdot \dd[2]{\vu{k}}$ an integration over the whole solid angle.
+A detailed explanation of how \cref{eq:weyl} accelerates potential evaluations lies beyond the scope of this thesis, however it suffices to say that \cref{eq:weyl-a} aggregates $q(\vb{r}, t)$ within a source region onto a spectrum of plane-waves and that a clever\footnote{Some might even call it black magic.} time-gating procedure removes the advanced potential contribution in \cref{eq:weyl-b} to recover $u(\vb{r}, t)$.
 
-\subsubsection{Differential operators}
-
-For any given pair of basis functions $\vb{s}_\ell(\vb{r})$ radiating to $\vb{s}_{\ell'}(\vb{r})$, our propagtaion scheme transmits only three quantities  through the structured grid corresponding to the vector components of $\vb{s}_\ell(\vb{r})$.
-
-
-\subsection{Spatial analysis}
-
-Consider two point particles located at $x_\text{src}$ and $x_\text{obs}$.
-A time-independent Green's function, $g(x_\text{obs} - x_\text{src})$, describes the interaction between the two particles and we wish to construct a polynomial approximation of $g(x - x_\text{src})$ for $x$ in the vicinity of $x_\text{obs}$ as in \cref{fig:1d moments}.
-
-To construct an interpolation polynomial over the expansion region of order $M$, we define a polynomial coordinate $x_p$ in units of $h$ such that $x_p^\text{min} \leqslant x_p \leqslant x_p^\text{min} + M$ where $x_p^\text{min} \equiv -\floor*{M/2}$.
-Consequently, the expansion points about $x_\text{obs}$ correspond to $x_p \in \{-\floor*{M/2}$, $-\floor*{M/2} + 1$, $-\floor*{M/2} + 2$, $\ldots\}$ with the \nth{0} order expansion point, $x_0$, equivalent to $x_p = 0$.
-Such a coordinate system defines the Vandermonde linear equation $\sum_{j}V_{ij} w_j = g_i$ for the weights of an interpolating polynomial\footnote{In principle this analysis works equally well in the original $(x_\text{src}, x_\text{obs})$ coordinate system. The polynomial coordinate has three advantages, however: it indexes the expansion points ``logically'' from left to right, $x_p^\text{min} \in \mathbb{Z}$ and thus the Vandermonde matrix has infinite precision, and it makes the interpolation error in terms of $h$ explicit.}~\cite{NumericalRecipes} where
-\begin{subequations}
-  \begin{align}
-    V_{ij} &= (x_p^\text{min} + i)^j \\
-    g_i &= g\qty((x_0 - x_\text{src}) + h(x_p^\text{min} + i))
-  \end{align}
-\end{subequations}
-and $0 \leqslant i, j \leqslant M$.
-Approximating $g(x - x_\text{src})$ at $x_\text{obs}$ then becomes a matter of evaluating this polynomial at $x_p = \qty(x_\text{obs} - x_0)/h$, i.e.
+To conjure an integration rule for \cref{eq:weyl-a}, consider
 \begin{equation}
-  g(x_\text{obs} - x_\text{src}) \approx \sum_{i = 0}^{M} w_i \qty(\frac{x_\text{obs} - x_0}{h})^i.
+  \Xi \equiv \int_{0}^\pi \delta(t - R \cos \theta/c) \star f(t) \dd{(\cos\theta)}.
 \end{equation}
-Accordingly, the polynomial approximation to $g(x_\text{obs} - x_\text{src})$ contains terms of order $\mathcal{O}(h^{-M})$ and we can expect the approximation error to scale as $\mathcal{O}(h^{-(M + 1)})$ as demonstrated in \cref{fig:grid convergence}.
-This also motivates using the approximation to calculate interactions involving differential operators; applying an $n^\text{th}$-order derivative reduces the polynomial order by $n$, thus the error scales like $\mathcal{O}(h^{-(M + 1) + n})$.
-
-\begin{figure}
-  \centering
-  \input{figures/1d_moments}
-  \caption{\label{fig:1d moments} Polynomial interpolation of $g(x - x_\text{src})$ near $x_\text{obs}$.
-    Here, the green curve represents the actual $g(x - x_\text{src})$ and the dashed black line its approximation.
-    Evaluating the $n^\text{th}$-order approximation requires knowledge of the signal at $n + 1$ grid points surrounding $x_\text{obs}$.
-  }
-\end{figure}
-
-\begin{figure}
-  \centering
-  \input{figures/grid_spacing_error}
-  \caption{\label{fig:grid convergence} $\ell_2$ error calculation of $g(\vb{r} - \vb{r}') = e^{i k \abs{\vb{r} - \vb{r}'}}/{\abs{\vb{r} - \vb{r}'}}$ for expansion orders zero through four.
-    For each of the points above, a source and observation box separated by $\Delta \vb{r} = 10\lambda \vu{x} + 10 \lambda \vu{y} + 10 \lambda \vu{z}$ each contain 64 randomly placed points, thus the points within each box all map to identical nodes in the auxiliary grid.
-    The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(h^{m + 1})$.
-  }
-\end{figure}
-
-\begin{figure}
-  \centering
-  \input{figures/nf_pair.tex}
-  \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion.
-    The dashed line indicates the complete nearfield of the box associated with \textcolor{cbblue}{$\vb{r}_0$}---i.e. all boxes that have an expansion point within $\Delta s$ of the expansion around \textcolor{cbblue}{$\vb{r}_0$}.
-  }
-\end{figure}
-
+A well-known expansion gives the $\delta$-function in terms of Legendre polynomials, thus
+\begin{equation}
+  \Xi = \int_{0}^\pi \qty(\sum_{n=0}^{\infty} P_n(t) P_n(R\cos\theta/c)) \star f(t) \dd{(\cos\theta)}
+\end{equation}

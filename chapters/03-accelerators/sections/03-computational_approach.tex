@@ -1,0 +1,88 @@
+\subsection{Auxiliary grids}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
+  \hspace{1cm}
+  \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
+  \caption{\label{fig:matrix structure} The interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
+    While we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
+    Points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
+    Such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
+  }
+\end{figure}
+
+To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\mathcal{G}^{(k)}$ as a sum of near- and far-field contributions.
+The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' so as to avoid incurring unreasonable approximation error between adjacent basis functions.
+Sources beyond this threshold, however, interact via auxiliary basis functions taken to reside at the vertices of a regular Cartesian grid.
+These auxiliary sources recover $\mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}$ at large distances and impose a Toeplitz structure on the resulting interaction matrix.
+This structure, then, lends itself to efficient $\mathcal{O}(N_s \log N_s)$ diagonalization through FFTs. 
+
+\subsubsection{Potential evaluation: $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$}
+
+\begin{figure}
+  \centering
+  \input{figures/aim_terminology.tex}
+  \caption{\label{fig:aim terminology} Illustration of the grid structure and terminology.
+    All of the sources within a box (shown as the central shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box} = \floor{\vb{r}/s}$.
+  }
+\end{figure}
+
+We represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints , i.e.
+\begin{equation}
+  \psi_\ell(\vb{r}) \approx \sum_{\vb{u} \in B_{\ell}} \Lambda_{\ell\vb{u}} \delta(\vb{r} - \vb{u}).
+  \label{eq:grid linear combination}
+\end{equation}
+Here, $\psi_\ell(\vb{r}) \in \qty{\vb{s}_\ell(\vb{r})\cdot \vu{x}, \vb{s}_\ell(\vb{r}) \cdot \vu{y}, \vb{s}_\ell(\vb{r}) \cdot \vu{z}}$ and $B_\ell$ denotes the collection of grid points, $\vb{u}$, within the expansion region of $\vb{s}_\ell(\vb{r})$ (\cref{fig:aim terminology}).
+For an expansion of order\footnote{In principle, one could expand to different orders in different cartesian directions, though this involves considerably more bookkeeping for relatively little benefit. Thus, for convenience, we take ``the expansion order'' to mean the expansion order in every direction.} $m$, this sum contains $(m + 1)^3$ terms corresponding to the $(m + 1)^3$ grid points nearest to $\vb{s}_\ell(\vb{r})$.
+Consequently, the $\Lambda_{\ell \vb{u}}$ matrices contain few nonzero elements and we have elected to use a moment-matching scheme to capture the $(m + 1)^3$ multipole moments of $\vb{s}_\ell(\vb{r})$ according to
+\begin{equation}
+  \sint (x - x_0)^{m_x}(y - y_0)^{m_y}(z - z_0)^{m_z} \qty[\psi_\ell(\vb{r}) - \sum_{\vb{u} \in c_\ell}\Lambda_{\ell\vb{u}}\delta(\vb{r} - \vb{u})] \dd[3]{\vb{r}} = 0.
+  \label{eq:moment matching}
+\end{equation}
+In this expression, $0 \leqslant m_x, m_y, m_z \leqslant m$ and $\vb{r}_0 \equiv x_0 \vu{x} + y_0 \vu{y} + z_0\vu{z}$ denotes the origin about which we compute the multipoles.
+To determine the $\Lambda_{\ell \vb{u}}$, we then solve the least-squares system
+\begin{equation}
+  \sum_{\vb{u} \in B_\ell} W_{\vb{m}\vb{u}}\Lambda_{\ell\vb{u}} = Q_{\ell\vb{m}}
+  \label{eq:expansion matrix system}
+\end{equation}
+where
+\begin{subequations}
+  \begin{align}
+    W_{\vb{m}\vb{u}} &= (u_x - x_0)^{m_x} (u_y - y_0)^{m_y} (u_z - z_0)^{m_z} \label{eq:w matrix} \\
+    Q_{\ell \vb{m}} &= \int_{} \psi_\ell(\vb{r}) (x - x_0)^{m_x} (y - y_0)^{m_y} (z - z_0)^{m_z} \dd[3]{\vb{r}} \label{eq:q vector}.
+  \end{align}
+\end{subequations}
+With infinite precision, the choice of $\vb{r}_0$ merely sets a reference point for the multipole coordinate system.
+To minimize numerical issues, we choose $\vb{r}_0$ at the center of $\vb{s}_\ell(\vb{r})$.
+
+Substituting \cref{eq:grid linear combination} into \cref{eq:propagator} and projecting onto $\psi_{\ell'}(\vb{r})$ gives
+\begin{equation}
+  \mathcal{G}_{\ell \ell'} = \siint \qty( \siint \psi_{\ell'}(\vb{r}) g(\vb{r} - \vb{r}', t - t') \psi_\ell(\vb{r}') \dd[1]{t'} \dd[3]{\vb{r}'} ) \dd[1]{t} \dd[3]{\vb{r}}
+\end{equation}
+
+\begin{figure}
+  \centering
+  \input{figures/nf_pair.tex}
+  \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion.
+    The dashed line indicates the complete nearfield of the box associated with \textcolor{cbblue}{$\vb{r}_0$}---i.e. all boxes that have an expansion point within $\Delta s$ of the expansion around \textcolor{cbblue}{$\vb{r}_0$}.
+  }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/expansion-grid}
+  \caption{\label{fig:expansion grid}Spatial expansion pattern for $\vb{s}_\ell(\vb{r}) = \delta(\vb{r} - \vb{r}_\ell)$.
+    An expansion of order $m$ requires $(m + 1)^3$ grid points.
+    Moreover, increasing the expansion order incorporates new points in such a way as to keep $\vb{s}_\ell(\vb{r})$ as close to the center of the expansion region as possible.
+  }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/nf_correction}
+  \caption{\label{fig:nearfield correction}Illustration of nearfield corrections between close boxes.
+    Expansions $A$ and $B$ overlap, but only box $B$ lies in the nearfield of box $C$.
+    Consequently, we must track the $BC$ interaction (dashed line) independently of the FFT-based convolution so as to remove its high-error contribution to the total field.
+  }
+\end{figure}
