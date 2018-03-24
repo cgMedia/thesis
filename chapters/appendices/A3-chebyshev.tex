@@ -76,7 +76,7 @@ and constructing a Chebyshev approximation in $y$.
 
 \subsection{Derivatives}
 The Chebyshev polynomials provide two means of approximating $f'(x)$ given samples of $f(x)$ though both have numerical drawbacks.
-Given that we wish to repeatedly evaluate the interpolating polynomial at a collection of static points, it becomes prudent pre-evaluate and cache $T_i(x)$ in \cref{eq:chebyshev expansion} for speed.
+Given that we wish to repeatedly evaluate the interpolating polynomial at a collection of static points, it becomes prudent to pre-evaluate and cache $T_i(x)$ in \cref{eq:chebyshev expansion} for speed.
 The recurrence
 \begin{equation}
   \qty(1 - x^2) T_n'(x) = n \qty[T_{n-1}(x) - x T_n(x)]
@@ -94,13 +94,12 @@ Moreover, this overhead grows significantly in higher-dimensional systems with v
 
 In practice, \QuEST{} makes use of the former strategy of differentiating the ``evaluating functions'' though without the recurrence of \cref{eq:derivative recurrence}.
 Instead, functions for the Chebyshev polynomials and their derivatives through a specified order, provide the necessary evaluations.
-Moreover, these functions contain the requisite polynomials expressed in Horner form to improve both speed and precision~\cite{}.
-While this method does not readily generalize to interpolations of arbitrary order (as it would require prohibitively long enumerations of functions), it facilitates a very efficient derivative evaluation without unduly sacrificing clarity.
+Moreover, these functions contain the requisite polynomials expressed in Horner form to improve both speed and precision~\cite{Knuth1997}.
+While this method does not readily generalize to interpolations of arbitrary order (as it would require prohibitively long enumerations of functions), it nevertheless facilitates an efficient derivative evaluation without unduly sacrificing clarity.
 
 \subsection{Higher-dimensional approximations}
 The mechanics for constructing an approximation to $f(x)$ extend naturally to higher-dimensional and vector-valued systems.
-In such systems, Chebyshev approximation becomes a tensor polynomial,
-and the summations in \cref{eq:chebyshev expansion,eq:chebyshev coefficient} become mondo tensor contractions, i.e.
+In such systems, the Chebyshev approximation becomes a tensor polynomial, and the summations in \cref{eq:chebyshev expansion,eq:chebyshev coefficient} become mondo tensor contractions, i.e.
 \begin{subequations}
   \begin{align}
     \vb{f}(\vb{r}) &\approx \vb{c}_{ijk} T_i(x) T_j(y) T_k(z), \\

@@ -74,7 +74,8 @@
 \input{extra/pgf_settings}
 \input{extra/macros}
 
-\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
+
+%\makeplotsfalse % Used to switch off PGFplots figures with \conditionalFigureInput macro
 
 % Zero-index the chapters and sections, just to be cheeky.
 %\setcounter{chapter}{-1}
@@ -154,6 +155,7 @@ Your acknowledgements here.
 %\pagestyle{plain} % remember to change the pagestyle back to plain
 
 \begin{appendices}
+  \crefalias{chapter}{appsec}
   \import{chapters/appendices/}{A0-QuEST_manual}
   \import{chapters/appendices/}{A2-predictor_corrector}
   \import{chapters/appendices/}{A1-units}

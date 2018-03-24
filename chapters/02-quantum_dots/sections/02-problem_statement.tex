@@ -3,7 +3,7 @@
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/bloch_sphere.tex}
-  \caption{\label{eq:fig}Bloch sphere representation of a two-level quantum system.
+  \caption{\label{fig:bloch sphere}Bloch sphere representation of a two-level quantum system.
     \Cref{eq:liouville} describes the evolution of $\ket{\psi}$ on the surface of this sphere in response to an external electric field.
   }
 \end{figure}
@@ -14,7 +14,7 @@ If we concern ourselves only with electric dipole transitions in a resonant (or 
   \dv{\hat{\rho}}{t} = \frac{-i}{\hbar}\commutator{\hat{\mathcal{H}}(t)}{\hat{\rho}} - \hat{\mathcal{D}}\qty[\hat{\rho}].
   \label{eq:liouville}
 \end{equation}
-Here, $\hat{\mathcal{H}}(t)$ represents a local Hamiltonian that governs the internal two-level structure of the \qd{}, as well as its interaction with an external electromagnetic field, and $\hat{\mathcal{D}}$ provides dissipation terms that account for emission effects phenomenologically.
+As we wish to investigate two-level systems, $\hat{\rho}(t)$ contains three unique unknowns ($\rho_{00}$ and the real and imaginary parts of $\rho_{01}$) that describe point on the Bloch sphere (\cref{fig:bloch sphere}), $\hat{\mathcal{H}}(t)$ represents a local Hamiltonian that governs the internal two-level structure of the \qd{}, as well as its interaction with an external electromagnetic field, and $\hat{\mathcal{D}}$ provides dissipation terms that account for emission effects phenomenologically.
 Formally,
 \begin{subequations}
   \begin{align}
@@ -40,11 +40,11 @@ where $\vb{E}_L(\vb{r}, t)$ describes an incident laser field, $\vb{P}(\vb{r}, t
       ) \dd[3]{\vb{r}'}
   \label{eq:integral operator}
 \end{equation}
-(see \S 72 of \cite{Landau2013}).
+(see~\cite[section \S 72]{Landau2013} or \cref{appendix:vector wave equation}).
 Here, $\tensor{\mathrm{I}}$ denotes the identity dyad, $\bar{\vb{r}} \equiv \qty(\vb{r} - \vb{r}')/\abs{\vb{r} - \vb{r}'}$, $\otimes$ represents the tensor product (i.e.\ $\qty(\outerprod{\vb{a}}{\vb{b}})_{ij} = a_i b_j$), $t_R \equiv t - \abs{\vb{r} - \vb{r}'}/c$, and $\epsilon$ gives the dielectric constant of the inter-dot medium.
 Thus, in a system composed of multiple \qds{}, \cref{eq:integral operator} couples the evolution of each \qd{} by way of the off-diagonal matrix elements appearing in \cref{eq:hamiltonian}.
 Note that this approach does not require an instantaneous dipole-dipole Coulomb term between (charge-neutral) \qds{}; the interactions between structures occur only via the electric field which propagates through space with finite velocity.
-(See {A}$_{\textsc{iv}}$  and {C}$_{\textsc{iv}}$ of~\cite{Cohen1989} for in-depth discussions of this point.)
+(See ~\cite[sections {A}$_{\textsc{iv}}$ and {C}$_{\textsc{iv}}$]{Cohen1989} for in-depth discussions of this point.)
 
 
 In the systems under consideration here, $\omega_0$ lies in the optical frequency band ($\sim \SI{1500}{\milli\eV\per\hbar}$).

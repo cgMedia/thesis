@@ -13,9 +13,9 @@
 The collection of formulas and algorithms in this thesis provide a mathematical foundation upon which one can implement a simulation tool. This section gives some details on the \textbf{Qu}antum \textbf{E}lectromagnetics \textbf{S}imulation \textbf{T}oolbox (\QuEST{}) reference implementation~\cite{github}. Written in C++, \QuEST{} has minimal external dependencies, using only the Boost Multiarray and Program Options libraries~\cite{boost}, the Eigen linear algebra library~\cite{eigen}, and FFTW~\cite{FFTW}.
 
 As a scientific endeavor, \QuEST{} largely emphasizes reproducibility, ease of extension, and execution speed.
-Reproducibility demands modularity to allow well-tested pieces to combine in a record able manner reminiscent of experiments, thus the main functionality of \QuEST{} resides within a library of independently-constructed objects.
+Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experiments, thus the main functionality of \QuEST{} resides within a library of independently-constructed objects that interface with eachother.
 These objects have appropriate constructors to set the parameters of the simulation and slot together to build an executable.
-For example, to isolate the ODE solver's behavior from the tricky numerics of the propagation code, the ODE solver only requires "an RHS" (see \cref{sec:quest descriptions} below).
+For example, to isolate the ODE solver's behavior from the tricky numerics of the propagation code, the ODE solver only requires the definition of a right-hand side (an RHS) (see \cref{sec:quest descriptions}).
 Coding an RHS with a well-known solution, such as $f'(x) = - \lambda f(x)$, can validate the numerics of the integration step independent of the propagation calculations.
 
 Similarly, making \QuEST{} easy to extend necessitates encapsulating mathematical statements as tightly as possible with these objects.
@@ -45,26 +45,26 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
     Ultimately subclasses into \lstinline!PulseInteraction!, \lstinline!DirectInteraction!, and \lstinline!AimInteraction!.
     \begin{description}
       \item[\texttt{PulseInteraction}] Calculates and returns $\vb{d} \cdot \vb{E}_\text{inc}/\hbar$ at the location of each \lstinline!QuantumDot! at a specified time.
-      \item[\texttt{DirectInteraction}] (subclass of \lstinline!HistoryInteraction!).
+      \item[\texttt{DirectInteraction}] (subclass of \lstinline!HistoryInteraction!)
         Calculates and returns $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ at the location of each \lstinline!QuantumDot! (where $\vb{E}_\text{rad}$ depends on the history of every other \lstinline!QuantumDot! due to retardation effects).
         This object stores the space/time interaction matrix elements between each \lstinline!QuantumDot! directly, assuming reciprocity and no self interactions (effectively the lower triangle of the matrix).
         Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
-      \item[\texttt{AIMInteraction}] (subclass of \lstinline!HistoryInteraction!).
+      \item[\texttt{AIMInteraction}] (subclass of \lstinline!HistoryInteraction!)
         Calculates $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ between well-separated sources (so as to avoid incurring undue approximation error).
         Uses the vastly more efficient AIM (FFT) framework to reduce the storage and accelerate the matrix-vector products.
         Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
-        \textcolor{Red!90!black}{Warning:} you \emph{must} call \lstinline!AIMInteraction.evaluate! with sequential arguments (starting at zero, corresponding to sequential timesteps) due to the way this object fills internal tables.
+        \textcolor{Red!90!black}{\textbf{WARNING:}} you \emph{must} call \lstinline!AIMInteraction.evaluate! with sequential arguments (starting at zero, corresponding to sequential timesteps) due to the way this object fills internal tables.
         This keeps the indexing correct as later calls to \lstinline!evaluate! depend on the results of previous calculations.
         \begin{description}
           \item[\texttt{Grid}] Class to construct and manage a representation of the auxiliary AIM grid.
-            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at zero), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in 3d space).
+            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at zero), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in three-dimensional space).
           \item[\texttt{ExpansionFunction}] Complicated black magic sorcery. Stay away.
           \item[\texttt{ExpansionTable}] Table of dimension [number of sources][number of points each source expands into] containing the thirteen ($\partial_0$, $\partial_x$, \ldots, $\partial_{yz}$, $\partial_{zz}$) expansion weights relating each source to its immediate (i.e. not trivially zero) auxiliary grid points.
           \item[\texttt{LeastSquaresExpansionSolver}] Utility class to build and solve the least-squares system in \cref{eq:moment matching}.
             Uses a named constructor to avoid creating a persistent instance that implicitly depends on a non-\lstinline!const Grid! (only the static \lstinline!get_expansions! function can instantiate a \lstinline!LeastSquaresExpansionSolver! and thus will call its destructor when the function returns).
         \end{description}
     \end{description}
-  \item[\texttt{PredictorCorrector}] Implementation of the exponentially-fitted predictor/corrector scheme in~\cite{Rokhlin}.
+  \item[\texttt{PredictorCorrector}] Implementation of the exponentially-fitted predictor/corrector scheme in~\cite{Glaser2009}.
     Implemented as a template class so as to allow solution of arbitrary ODEs (scalar/vector, real/complex, etc.).
     \begin{description}
       \item[\texttt{Weights}] Assistance class for solving the matrix equation that determines the predictor/corrector weights.

@@ -57,24 +57,26 @@ For this, we make use of the predictor/corrector scheme detailed in~\cite{Glaser
 Defining $t_m \equiv m \, \Delta t$ and approximating $\tilde{\rho}(t)$ as a weighted sum of complex exponentials, the predictor/corrector scheme proceeds with an extrapolation predictor step,
 \begin{equation}
   \tilde{\rho}_\ell(t_{m + 1}) \leftarrow \sum_{w = 0}^{W-1} \mathcal{P}_w^{\qty(0)} \tilde{\rho}_\ell(t_{m-w}) + \mathcal{P}_w^{\qty(1)} \, \partial_t \tilde{\rho}_\ell(t_{m-w}),
-  \label{eq:predictor}
+  \label{eq:predictor ch}
 \end{equation}
-and iterated corrector steps,
+and iterated corrector steps\footnote{The arrow in these operations denotes an operation akin to assignment; this prediction/correction does not \emph{define} $x(t_W)$, only the steps of an iteration that will converge on $x(t_W)$ (or an approximation thereof).},
 \begin{equation}
     \tilde{\rho}_\ell(t_{m + 1}) \leftarrow \sum_{w = -1}^{W - 1} \mathcal{C}_w^{\qty(0)} \tilde{\rho}_\ell(t_{m-w}) + \mathcal{C}_w^{\qty(1)} \, \partial_t \tilde{\rho}_\ell(t_{m-w})
-  \label{eq:corrector}
+  \label{eq:corrector ch}
 \end{equation}
 ($\mathcal{C}_{-1}^{(0)} \equiv 0$ by construction) to advance the system by $\Delta t$.
-Such an integrator has significantly better convergence properties than Runge-Kutta integrators for equations of the type seen in \cref{eq:rotating liouville}.
+Such an integrator has significantly better convergence properties than Runge-Kutta integrators for equations of the type seen in \cref{eq:rotating liouville} and naturally accommodates basis functions within $c \, \Delta t$ of each other.
+(See \cref{appendix:predictor corrector} for an in-depth discussion of this point.)
 
-To summarize, one timestep of our solution strategy proceeds as follows:
+\Cref{fig:flowchart} illustrates these computational steps.
+In short,
 \begin{enumerate}
-  \item At timestep $m$, use \cref{eq:predictor,eq:polarization definition} to predict $\tilde{\mathcal{A}}^{(m + 1)}$.
+  \item At timestep $m$, use \cref{eq:predictor ch,eq:polarization definition} to predict $\tilde{\mathcal{A}}^{(m + 1)}$.
     This prediction depends only on the known history of the system and does not require the calculation of any electromagnetic interactions.
   \item Use \cref{eq:zmatrix} to calculate $\tilde{\mathcal{F}}^{(m + 1)}$.
     Having extrapolated $\tilde{\mathcal{A}}^{(m + 1)}$ in step 1, $\tilde{\mathcal{F}}^{(m + 1)}$ will contain information from \qds{} within $c \, \Delta t$ of each other.
   \item Produce $\partial_t \tilde{\rho}(t_{m + 1})$ (and thus $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$) by evaluating \cref{eq:rotating liouville} with the $\tilde{\mathcal{F}}^{(m+1)}$ found in step 2.
-  \item Correct $\tilde{\mathcal{A}}^{(m + 1)}$ with \cref{eq:corrector} and $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$ found in step 3.
+  \item Correct $\tilde{\mathcal{A}}^{(m + 1)}$ with \cref{eq:corrector ch} and $\partial_t \tilde{\mathcal{A}}^{(m + 1)}$ found in step 3.
     Repeat steps 2 through 4 until $\tilde{\mathcal{A}}^{(m + 1)}$ has sufficiently converged, then set $m \leftarrow m + 1$.
 \end{enumerate}
 

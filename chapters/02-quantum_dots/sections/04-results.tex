@@ -22,15 +22,6 @@
   }
 \end{table}
 
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/frame_comparison}
-  \caption{
-    Comparison of $\rho_{00}(t)$ using both fixed (59959 timesteps) and rotating (160 timesteps) reference frames for interacting quantum dots.
-    Both frames produce largely the same trajectory, however the inset spy reveals the fixed frame contains a minute oscilliatory term that the rotating frame does not.
-  }
-\end{figure}
-
 Here we detail the results of investigations into coupled \qd{} behavior with the model presented thus far.
 Our algorithm reliably handles tens of thousands of \qds{} and can simulate ten picoseconds of system dynamics in two days on a single processor.
 We perform simulations of systems of \qds{} randomly distributed throughout a simulation volume experiencing a laser pulse of the form
@@ -41,6 +32,15 @@ We perform simulations of systems of \qds{} randomly distributed throughout a si
 \Cref{table:parameters} provides the physical system parameters unless otherwise stated.
 
 \subsection{Stability \& adjacency effects}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/frame_comparison}
+  \caption{
+    Comparison of $\rho_{00}(t)$ using both fixed (requiring 59959 timesteps) and rotating (requiring 160 timesteps) reference frames for two interacting quantum dots.
+    Both frames produce similar trajectories, however the inset spy reveals the fixed frame contains a minute oscilliatory term that the rotating frame does not.
+  }
+\end{figure}
 
 \begin{figure}
   \centering
@@ -100,30 +100,39 @@ Moreover, this dynamical localization effect features oscillations which suggest
   \centering
   \subfloat{
     \begin{tikzpicture}
+      \node (spacer) at (-1.4, 0) {};
       \begin{axis}[
-          hide axis,
-          scale only axis,
-          height=0pt,
-          width=0pt,
-          colormap/viridis,
-          colorbar horizontal,
-          point meta min=0.32,
-          point meta max=0.40,
-          colorbar style={
-              width=0.6180339887\textwidth,
-              xtick={0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40},
-              xticklabels={$\leqslant 0.32$, $0.33$, $0.34$, $0.35$, $0.36$, $0.37$, $0.38$, $0.39$, $0.40 \leqslant$}
-          }]
-          \addplot [draw=none] coordinates {(0,0)};
+        hide axis,
+        scale only axis,
+        height=0pt,
+        width=0pt,
+        colormap/viridis,
+        colorbar horizontal,
+        point meta min=0.32,
+        point meta max=0.40,
+        colorbar style={
+          width=0.6180339887\textwidth,
+          xtick={0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40},
+          xticklabels={$\leqslant 0.32$, $0.33$, $0.34$, $0.35$, $0.36$, $0.37$, $0.38$, $0.39$, $0.40 \leqslant$},
+        }
+      ]
+      \addplot [draw=none] coordinates {(0,2)};
       \end{axis}
     \end{tikzpicture}
   } \\
-  \subfloat{\includegraphics[width=\textwidth]{figures/tube/tube_print_0.png}} \\
-  \subfloat{\includegraphics[width=\textwidth]{figures/tube/tube_print_1.png}} \\
-  \subfloat{\includegraphics[width=\textwidth]{figures/tube/tube_print_2.png}} \\
-  \subfloat{\includegraphics[width=\textwidth]{figures/tube/tube_print_3.png}} \\
+  \subfloat{
+    \begin{tikzpicture}[>=Latex]
+      \node[] (tube0) at (0,-1) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_0.png}};
+      \node[] (tube1) at (0,-3) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_1.png}};
+      \node[] (tube2) at (0,-5) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_2.png}};
+      \node[] (tube3) at (0,-7) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_3.png}};
+
+      \draw[->,thick] ($(tube0.west) - (0.3,0)$) -- ($(tube3.west) - (0.3,0)$) node[midway,fill=white, rotate=90] {Time};
+      \draw[->,thick] ($(tube3.south east) - (3,0.3)$) -- ($(tube3.south east) - (0,0.3)$) node[midway,fill=white] {$\vu{k}$};
+    \end{tikzpicture}
+  }
   \caption{\label{fig:tubes}
-    Coloration of $\abs{\tilde{\rho}_{01}}$ at $t_1 = \SI{-0.05}{\pico\second}$, $t_2 = \SI{0}{\pico\second}$, $t_3 = \SI{0.05}{\pico\second}$, and $t_4 = \SI{0.10}{\pico\second}$ relative to the peak of a \SI{1}{\pico\second}-wide pulse.
+    Coloration of $\abs{\tilde{\rho}_{01}}$ as an indicator of $\abs{\vb{\tilde{P}}}$ at $t_1 = \SI{-0.05}{\pico\second}$, $t_2 = \SI{0}{\pico\second}$, $t_3 = \SI{0.05}{\pico\second}$, and $t_4 = \SI{0.10}{\pico\second}$ relative to the peak of a \SI{1}{\pico\second}-wide pulse.
     \num{10000} \qds{} randomly distributed throughout a $\SI{0.2}{\micro\meter} \text{ (radius)} \times \SI{4}{\micro\meter}$ cylinder oriented along $\vb{k}_L$ demonstrate near-field the effects of \cref{fig:density stats} as distinct, outlying bright/dark \qds{}.
     Additionally, the size of the system allows for wavelength-scale phenomena that appear here as five standing regions of enhanced polarization.
     (Note that we model \qds{} as point objects; the size of the spheres here has no physical interpretation.)

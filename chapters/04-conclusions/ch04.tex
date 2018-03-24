@@ -12,12 +12,12 @@ This chapter summarizes the main findings of each of these parts and offers some
 
 \section{Conclusion}
 
-In \cref{ch:bubles} we presented a computational analysis of acoustically-driven microsphere systems.
+In \cref{ch:bubbles} we presented a computational analysis of acoustically-driven microsphere systems.
 By considering only small \bubbles{} we cast the problem in terms of an incompressible fluid where velocity potentials describe pressure distributions.
 Acoustic radiation incident on the system scatters from rigid spherical objects leading to pressure variations over the objects' surfaces; this variation necessarily sets the objects into motion, leading to further potential/pressure perturbations within the system.
-By expressing the velocity potential on the surface of each \bubble{} in terms of spherical harmonics, we obtain a matrix equation relating the velocity of each \bubble{} to the potential oin every other \bubble{}.
+By expressing the velocity potential on the surface of each \bubble{} in terms of spherical harmonics, we obtain a matrix equation relating the velocity of each \bubble{} to the potential on every other \bubble{}.
 From this, we compute the net force on every body which we then integrate numerically, noting that directly integrating the force causes numerical instabilities due to an atypical acceleration-dependent force.
-To remedy this, we not that this force serves only to impede the motion of each \bubble{}, thus we treat it as an additional mass term.
+To remedy this, we note that this force serves only to impede the motion of each \bubble{}, thus we treat it as an additional mass term.
 We find that an incident acoustic pulse predominantly serves to translate a collection of \bubbles{} a fixed distance along $\vu{k}$---the pulse's wavevector---though the scattering effects also produce system-scale expansions and contractions depending on the \bubbles' initial configuration.
 
 \Cref{ch:quantum dots} departs from kinematic systems to develop a semiclassical description of coupled \qds{}.
@@ -25,7 +25,7 @@ Here, each of $N$ \qds{} evolves according to the Liouville equation in response
 From this, we compute the expectation value of a transition dipole moment.
 This acts as a source term in Maxwell's equations and gives rise to secondary radiation that couples the evolution of each \qd{}.
 By employing an integral equation framework to describe this radiation, we recover fields with a high degree of accuracy at both extremely short and extremely long length scales.
-We find that pairs of exceptionally close \qds{} have a greatly dimniished response to an incident pulse; we attribute this effect to a dynamical detuning that brings the pair out of resonance with the external driving field. 
+We find that pairs of exceptionally close \qds{} have a greatly diminished response to an incident pulse; we attribute this effect to a dynamical detuning that brings the pair out of resonance with the external driving field. 
 Larger assemblages of \qds{}, however, display a much richer behavior: we observe spatially-localized regions of increased and diminsihed polarization as well as multiple frequency generation in the nonlinear polarization response of particular \qds{}.
 
 The integral equation methodology of \cref{ch:quantum dots} has an implicit $\mathcal{O}(n^2)$ spatial complexity because of the pairwise interactions between \qds{}.
@@ -60,7 +60,7 @@ Apart from the obvious first-order and vector nature of both equations, the dual
 By simply exchanging some of the physical constants, then, \cref{eq:integral operator} also describes radiation eminating from a magnetization distribution~\cite{Rothwell2009}.
 
 Solving \cref{eq:llg} within a semiclassical radiaton framework requires a little more care than an equivalent Bloch problem, however.
-\Cref{eq:liouville} describes the evolution of a quantum wavefunction---a vector in ``Bloch space''---that generates an electromagnetic source distribution through application of an operator (see the discussion surrounding \cref{eq:qd operators,eq:polarization definition} for an illustration of this point).
+\Cref{eq:liouville} describes the evolution of a quantum wavefunction---a vector in ``Bloch space''---that generates an electromagnetic source distribution through application of an operator (see the discussion surrounding \cref{eq:qd operators,eq:polarization definition} on \cpagerefrange{eq:qd operators}{eq:polarization definition} for an illustration of this point).
 As a result, the dynamics of \cref{eq:liouville} describe the evolution of a dipole's amplitude but not its orientation and we may employ separate spatial and temporal discretizations to effect a numerical analysis.
 Moreover, this allow for systems with zero intial polarization ($\vb{P} = 0$ in an eigenstate of the unperturbed Hamiltonian, e.g. $\hat{\rho} = \op{0}{0}$ or $\hat{\rho} = \op{1}{1}$), thus the external pulse induces all of the dynamical behavior.
 This makes for a far easier simulation as sources/fields before the start of the simulation do not require any specification.
@@ -69,7 +69,7 @@ On the other hand, \cref{eq:llg} detremines the trajectory of an electromagnetic
 \begin{equation}
   \vb{M}(t) = m_x(t) \vu{x} + m_y(t) \vu{y} + m_z(t) \vu{z}.
 \end{equation}
-As \QuEST{} accommodates histories of any numeric type (scalar or tensor, real or complex) through careful templating, building a propagator for \cref{eq:llg} does not presnt much difficulty aside from some extra index tracking.
+As \QuEST{} accommodates histories of any numeric type (scalar or tensor, real or complex) through careful templating, building a propagator for \cref{eq:llg} does not present much difficulty aside from some extra index tracking.
 \Cref{eq:llg} also has an implicit normalization condition, however, in that
 \begin{equation}
   \dv{\abs{\vb{M}}}{t} = 0.
