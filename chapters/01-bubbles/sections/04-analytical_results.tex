@@ -42,22 +42,30 @@ Note that this drag force presents only in the case of accelerated motion of the
 \begin{equation}
   \qty(\rho_s + \frac{\rho_0}{2})V \dot{u}_z = \frac{3\rho_0 V}{2} \dot{v}_0.
 \end{equation}
-This expression leads to a simple relation linking $u_z(t)$ and $v_0(t)$ provided the velocity does not remain constant and that the sphere does not move in the absence of the field:
+This expression leads to a simple relation linking $u_z(t)$ and $v_0(t)$ provided that the velocity does not remain constant and that the sphere does not move in the absence of the field:
 \begin{equation}
   \label{eq:landau result}
   \frac{u_z}{v_0} = \frac{3\rho_0}{\rho_0 + 2\rho_s}.
 \end{equation}
 
 The idea of a virtual mass for the accelerated motion of a single sphere in an ideal fluid readily generalizes to the case of a moving collection of mutually-interacting spheres.
-Through this, we may compute the dynamics of each \bubble\ in the group, taking into account the effect of the momentum exchange between the fluid and the \bubbles, resulting in both drag and inter-particle forces in addition to the displacement caused by the driving acoustic field.
+Through this, we may compute the dynamics of each \bubble\ in the group, taking into account the effect of the momentum exchange between the fluid and the \bubbles.
+This results in both drag and inter-particle forces in addition to the displacement caused by the driving acoustic field.
 
 \subsection{Low-order interactions}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/perpendicular_configuration}
+  \caption{\label{fig:perpendicular}Perpendicular configuration.}
+\end{figure}
 
 We now consider two identical \bubbles\ arranged perpendicularly to an incident waveform as in \cref{fig:perpendicular}.
 Within the Born approximation, we may take \cref{eq:uniform field} as the incident field and use it in place of the total field on the right-hand side of \cref{eq:reduced Kirchoff-Helmholtz}, assuming negligible contributions from scattering. In doing so, the field everywhere becomes
 \begin{equation}
   \varphi(\vb{r}, t) = v_0(t) z + \frac{a^3}{3} \frac{\cos(\theta_1)}{\abs{\vb{r} - \vb{d}_{12}/2}^2}\qty\big[v_0 - u_1]
                                 + \frac{a^3}{3} \frac{\cos(\theta_2)}{\abs{\vb{r} + \vb{d}_{12}/2}^2}\qty\big[v_0 - u_2].
+  \label{eq:carlo}
 \end{equation}
 By inserting this into \cref{eq:Newton} for $\vb{r}_1$, we have
 \begin{equation}
@@ -79,13 +87,7 @@ and noting $\vb{u}_1 = \vb{u}_2 \equiv \vb{u}_s$ due to symmetry in the initial 
 In the limit of $d_{12} \to \infty$, this becomes
 \begin{equation}
   \frac{u_s}{v_0} = \frac{4 \rho_0}{\rho_0 + 3\rho_s}.
+  \label{eq:infinite limit}
 \end{equation}
-By considering negligible scattered fields at the surface of each \bubble, we qualitatively recover Eq. (27) with different coefficients arising only from the Born approximation.
-Moreover, the additional interaction term in Eq. (31) scales as $\abs{\vb{d}_{ij}}^{-3}$; a behavior anticipated from the dipolar nature of \cref{eq:dipole}.
-
-\begin{figure}
-  \centering
-  \conditionalFigureInput{figures/perpendicular_configuration}
-  \caption{\label{fig:perpendicular}Perpendicular configuration.}
-\end{figure}
-
+By considering negligible scattered fields at the surface of each \bubble, we qualitatively recover \cref{eq:carlo} with different coefficients arising only from the Born approximation.
+Moreover, the additional interaction term in \cref{eq:infinite limit} scales as $\abs{\vb{d}_{ij}}^{-3}$; a behavior anticipated from the dipolar nature of \cref{eq:dipole}.

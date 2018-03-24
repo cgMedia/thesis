@@ -32,7 +32,7 @@ The acoustic pulses lie in the ultrasonic regime, and the chosen frequency of \S
 \end{figure}
 
 \Cref{fig:single_displacement} gives the trajectory of a single \bubble\ initially at rest under the effects of an incident Gaussian pulse.
-Under the linear and ideal fluid approximations and absent the Gaussian envelope in \cref{eq:inc_field}, the \bubble\ merely oscillates about its origin in accordance with \cref{eq:landau result}.
+Under the linear and ideal fluid approximations and without the Gaussian envelope in \cref{eq:inc_field}, the \bubble\ merely oscillates about its origin in accordance with \cref{eq:landau result}.
 In the pulsed case, however, the variation in pressure imposed by the finite value of $\vb{k}$ modifies the system dynamics to yield a net translation of each \bubble.
 Note that the regime considered here produces no net transfer of momentum between the acoustic field and the \bubble---a consequence of the ideal fluid.
 
@@ -41,7 +41,7 @@ Note that the regime considered here produces no net transfer of momentum betwee
   \conditionalFigureInput{figures/acoustic_trapping.tex}
   \caption{\label{fig:planar_confinement}
   (Color online) Confinement of non-interacting spheres to planes; identical counter-propagating pulses ($f_0 = \SI{20}{\mega\hertz}$, $\sigma = \SI{23.8}{\micro\second}$) initially displaced along $\vu{z}$ tend to align objects in $\nabla P = \vb{0}$ planes at $\lambda/2$ intervals.
-    Field \& trajectories sampled every 30 timesteps and smoothed with a 16-sample windowed average.
+    Here, we have sampled the field and trajectories every 30 timesteps and smoothed the resulting data with a 16-sample windowed average.
   }
 \end{figure}
 
@@ -89,8 +89,7 @@ In addition, the application of multiple pulses serves to confine \bubbles\ to h
   \caption{
     \label{fig:isosurface}(Color online) 
     Isosurfaces of velocity potential (arb.~units) calculated by evaluating the $\hat{\mathcal{S}}$ and $\hat{\mathcal{D}}$ terms in \cref{eq:reduced Kirchoff-Helmholtz} for a $N = 16$ particle simulation.
-    Red, blue, and yellow surfaces denote regions of positive, negative, and zero potential, with holes appearing due to intersections with the bounding box.
-    The inset box shows the three dimensional arrangement of the \bubbles\ superimposed with their velocity vectors, as well as several positive and negative potential isosurfaces.
+    Red, blue, and yellow surfaces denote regions of positive, negative, and zero potential respectively, with holes appearing due to intersections with the bounding box.
     Rendered with VisIt\cite{VisIt}.
   }
 \end{figure}

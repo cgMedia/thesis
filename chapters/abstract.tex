@@ -12,10 +12,10 @@ interactions between \bubbles{} that produce secondary expansions and contractio
 Extending my approach from acoustic to electromagnetic systems, I apply it to a collection of \qds: “artificial” two-level atoms with a size-dependent energy structure.
 The optical Maxwell-Bloch equations give the evolution of \qds{} under the influence of electromagnetic fields; this evolution then produces secondary radiation that couples a collection of \qds{} together.
 In my computational model, I cast my secondary electromagnetic fields in terms of a point-to-point integral operator that accurately recover both near- and far-field effects.
-These fields, then, drive a set of implicitly-coupled Bloch equations (solved with an exponentially-fitted predictor/corrector scheme) to give the dynamics of the system as a whole.
-In ensembles of up to 10 000 \qds, my model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
+These fields, then, drive a set of implicitly coupled Bloch equations (solved with an exponentially-fitted predictor/corrector scheme) to give the dynamics of the system as a whole.
+In ensembles of up to \num{10000} \qds, my model predicts synchronized multiplets of particles that exchange energy, \qds{} that dynamically couple to screen the effect of incident external radiation, localization of the polarization due to randomness and interactions, as well as wavelength-scale regions of enhanced and suppressed polarization.
 
-The remainder of the work uses the same physical \qd{} system with a nod towards computationally efficient device design.
+The remainder of the work uses the same physical \qd{} system while moving towards efficient computer-aided device design.
 I detail an improved propagation algorithm to reduce the time and space complexity of the simulation dramatically, thereby facilitating rapid analysis of promising device structures.
 The algorithm makes use of physical and numerical approximations to effect large-scale calculations in reasonable CPU time.
 A rotating-frame approximation removes high-frequency components in the evolution of the system while simultaneously preserving accurate interference phenomena in space, thereby affording far larger simulation timesteps.

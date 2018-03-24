@@ -1,21 +1,20 @@
 \section{Discretization of the Integral Equations}
 
 To solve the integral equation scattering problem, we begin by discretizing our field in both space and time.
-As we have restricted our particles to completely spherical geometries, the spherical harmonics, defined by
+As we have restricted our particles to completely spherical geometries, the $Y_{\ell m}(\theta, \phi)$ spherical harmonics give simple eigenfunctions of the operators in \cref{eq:operator_kirchoff} where
 \begin{equation} \label{eq:Ylms}
-  Y_{\ell m}\quantity(\theta, \phi) = \sqrt{\frac{2\ell + 1}{4\pi}\frac{\quantity(\ell - m)!}{\quantity(\ell + m)!}}P_\ell^m\quantity(\cos\theta)e^{i m \phi},
+  Y_{\ell m}\quantity(\theta, \phi) = \sqrt{\frac{2\ell + 1}{4\pi}\frac{\quantity(\ell - m)!}{\quantity(\ell + m)!}}P_\ell^m\quantity(\cos\theta)e^{i m \phi}.
 \end{equation}
-give simple eigenfunctions of the operators in \cref{eq:operator_kirchoff}.
 As a result, they lend themselves well to an expansion of $\varphi$ on the surface of each \bubble\ with respect to the \bubble's center,
 \begin{equation} \label{eq:potential_expansion}
   \varphi(\vb{r}\in\Omega_k, t) = \sum_{\ell \geqslant 0} \sum_{\abs{m} \leqslant \ell} C^k_{\ell m}(t) \; Y_{\ell m}\qty(\theta, \phi).
 \end{equation}
-By considering \cref{eq:Bernoulli} and expressing the local velocity potential at each of the $\Omega_k$ as a linear combination of spherical harmonics, we have a complete representation of the body force acting on each \bubble,
+By considering \cref{eq:Bernoulli} and expressing the local velocity potential at each of the $\Omega_k$ as a linear combination of spherical harmonics, we have a complete representation of the body force acting on each \bubble{} due to the orthogonality of dipole terms with the rest of the multipoles.
+Hence,
 \begin{align}
   \vb{F}_\text{body}^k(t) &= - \int_{} p(\vb{r}, t) \dd{\vb{S}} \nonumber \\
-  &= \rho_0 \sqrt{\frac{2\pi}{3}}r^2 \Big(\qty[\dot{C}^k_{11}(t) - \dot{C}^k_{1\, -1}(t)]\vu{x} + i\qty[\dot{C}^k_{11}(t) + \dot{C}^k_{1\,-1}(t)]\vu{y} - \sqrt{2}\dot{C}^k_{10}(t)\vu{z}\Big)
+  &= \rho_0 \sqrt{\frac{2\pi}{3}}r^2 \Big(\qty[\dot{C}^k_{11}(t) - \dot{C}^k_{1\, -1}(t)]\vu{x} + i\qty[\dot{C}^k_{11}(t) + \dot{C}^k_{1\,-1}(t)]\vu{y} - \sqrt{2}\dot{C}^k_{10}(t)\vu{z}\Big).
 \end{align}
-due to the orthogonality of dipole terms with the rest of the multipoles.
 
 The problem then becomes one of solving a system of linear equations that we may compactly represent as
 \begin{equation}
@@ -29,7 +28,7 @@ We define the elements of $\boldsymbol{\mathcal{F}}$ as projections of the incid
   \label{eq:forcing projection}
 \end{equation}
 and detail $\mathcal{Z}^{jk}_{\ell m, \ell' m'}$ for two cases: $j = k$ and $j \not = k$.
-In the instances where $j = k$, \cref{eq:operator_kirchoff} propagates effects of the interaction through to every point on a surface sharing a coordinate system with the original, thus the harmonics remain orthogonal and
+In the instances where $j = k$, \cref{eq:operator_kirchoff} propagates effects of the interaction to every point on a surface sharing a coordinate system with the original, thus the harmonics remain orthogonal and
 \begin{equation}
   \mathcal{Z}_{\ell m, \ell' m'}^{jj} = \frac{\ell + 1}{2\ell + 1}  \delta_{\ell \ell'} \delta_{m m'}
   \label{eq:z_matrix_self}
@@ -48,9 +47,9 @@ Thus, at every timestep of the simulation, the algorithm proceeds as follows:
   \item project the incident pulse and surface velocities onto local expansions of spherical harmonics,
   \item propagate scattering effects through space by inverting the operators in \cref{eq:reduced Kirchoff-Helmholtz},
   \item project these scattered fields onto local spherical harmonics to give a total representation of $\varphi$ on each surface, and
-  \item move each \bubble\ according to \cref{eq:Newton} \& advance $t \rightarrow t + \Delta t$.
+  \item move each \bubble\ according to \cref{eq:Newton} and advance $t \rightarrow t + \Delta t$.
 \end{inparaenum}
-For rigid \bubbles\ only $\ell = 1$ terms contribute to center-of-mass motion, thus we use only the $C_{1m}$ coefficients in evolving \cref{eq:Newton}.
+Only $\ell = 1$ terms contribute to the center-of-mass motion of rigid \bubbles{}, thus we use the $C_{1m}$ coefficients in evolving \cref{eq:Newton}.
 
 The inversion in step (ii) above requires some care; by simply inverting the entire propagation operator, $\hat{\mathcal{D}} - \hat{\mathcal{S}}$, to give a single surface pressure, \cref{eq:Newton} reduces to a differential equation of the form
 \begin{equation}
