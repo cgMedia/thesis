@@ -26,7 +26,7 @@ Further problems arise when $\tau_j < \Delta t$; in such cases, the unknown $x(t
 While adjusting the timestep to require $t_j \geqslant \Delta t$ makes the system perfectly causal, it also makes the timestep prohibitively small for dense systems.
 These constraints automatically exclude (or at least \emph{severely} limit the utility of) popular ODE algorithms and packages---the difficulty of reevaluating interactions prohibits variable-timestep integrators and integrators that require midpoint evaluations (such as the popular RK4 method) cannot accommodate small retardation factors without an exceptionally small $\Delta t$.
 Instead, we turn to the exponentially-fitted predictor/corrector algorithm detailed in~\cite{Glaser2009}.
-As a multistep method, the predictor/corrector does not require any function evaluations outside of those on the fixed timepoints, thus any causal interpolation scheme facillitates evaluating approximate versions of all the $x(t - \tau_j)$ via
+As a multistep method, the predictor/corrector does not require any function evaluations outside of those on the fixed timepoints, thus any causal interpolation scheme facilitates evaluating approximate versions of all the $x(t - \tau_j)$ via
 \begin{equation}
   x(t_i - \tau_j) \approx \sum_{\ell = 0}^m w_\ell x\qty\big(t_i - (\floor{\tau_j/\Delta t} + \ell)\, \Delta t).
   \label{eq:interpolation}
@@ -121,7 +121,7 @@ Here,
 $\vb{b}$ remains unchanged, and the same least-squares procedure determines $\vb{c}$.
 
 Having derived the predictor/corrector coefficients for $h = 2/(W - 1)$---i.e.\ a uniform spacing between $W$ timepoints on the interval $\qty[-1, 1]$---the coefficients determined above require only a slight modification to accommodate systems with any $\Delta t$.
-Noting that the formulation thusfar remains invariant under time translation and that the substitution $\tau = \alpha t$ (equivalently $\alpha = \Delta t/h$) turns
+Noting that the formulation thus far remains invariant under time translation and that the substitution $\tau = \alpha t$ (equivalently $\alpha = \Delta t/h$) turns
 \begin{subequations}
 \begin{equation}
   \pdv{\varphi(t)}{t} = \lambda \varphi(t)

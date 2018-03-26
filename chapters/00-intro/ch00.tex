@@ -6,7 +6,7 @@
 
 \dropcap{A}{s} our ability to resolve physical systems grows, so, too, do our demands of the models we build.
 Unfortunately, we rapidly approach an age where approximate analytic descriptions of physical systems simply cannot recover important features in systems of interest.
-Substituting \emph{numerical}---i.e.\ \emph{in silico}---techniques into higher resolution models alleviates this problem somewhat (particularly as computer hardware evolves ``below'' the model), though the computational overhead of \naive\ algorithms limits their utility beyond nearly analytic calculations, particularly in multiscale or multiphysics applications.
+Substituting \emph{numerical}---i.e.\ \emph{in silico}---techniques into higher resolution models alleviates this problem somewhat (particularly as computer hardware evolves ``below'' the model), though the computational overhead of \naive\ algorithms limits their utility beyond nearly analytic calculations, particularly in multi-scale or multiphysics applications.
 Computational scientists, then, have a tricky job: they must have expertise in their own domain so as to begin formulating testable hypotheses about the (multi-)physical systems, as well as expertise in ``computation'' to understand the constraints inherent in exploring such hypotheses numerically.
 
 \section{Active media}
@@ -38,7 +38,7 @@ To overcome this, \cref{ch:bubbles} develops the machinery to simulate the motio
 
 Disordered nanostructures give rise to striking optical phenomena.
 \emph{Cyphochilus} spp.\ beetles, for instance, owe their intense white coloration to an aperiodic arrangement of scales that scatters light across wavelengths~\cite{Vukusic2007}.
-Whereas manmade objects of similar whiteness and intensity require structures as thick as \SI{100}{\micro\meter}, the scales of \emph{cyphochilus} spp.\ can span as few as \SI{4}{\micro\meter} by exploiting an interior structure of disordered filaments.
+Whereas man-made objects of similar whiteness and intensity require structures as thick as \SI{100}{\micro\meter}, the scales of \emph{cyphochilus} spp.\ can span as few as \SI{4}{\micro\meter} by exploiting an interior structure of disordered filaments.
 Additional effects such as Anderson localization~\cite{Anderson1985}---wherein light remains spatially confined for extended periods of time---and L\'evy flights~\cite{Barthelemy2008}---in which light experiences superdiffusive, i.e.\ superlinear (in time), behavior---all follow from similarly disordered structures.
 Because of their dynamical absorption and emission effects, these phenomena all fall under the broad category of active light/matter interactions.
 
@@ -46,7 +46,7 @@ Quantum dots---colloquially called ``tuneable atoms'' because of the ease with w
 Because of this, a number of analytic methods based on ensemble-averaged single particle and higher order Green's functions have arisen to describe light propagation in such systems.
 These methods essentially cast the active quantum system as a homogeneous continuum source in the governing electromagnetic equations (Maxwell's equations for semiclassical systems)~\cite{Arecchi1965}, though such a treatment cannot account for effects arising from long-range order, partial order, or anisotropies.
 Models of these effects, then, require a detailed computational framework that captures scattering/radiation effects between discrete, disordered elements.
-In \cref{ch:quantum dots} we develop just such a framework; one that eschews a phenomenological treatment of matter, preferring instead to ``generate'' the constituative relations that govern the sources in Maxwell's equations.
+In \cref{ch:quantum dots} we develop just such a framework; one that eschews a phenomenological treatment of matter, preferring instead to ``generate'' the constitutive relations that govern the sources in Maxwell's equations.
 
 \section{Numerical simulation of wave propagation}
 
@@ -70,4 +70,4 @@ These features, however, do not come without cost.
 Integral-equation methodologies have a great deal more mathematical sophistication than their differential-equation analogues and their discretizations inherently produce dense interaction matrices.
 The $\mathcal{O}(n^2)$ solution cost of these matrices scales poorly for systems with many degrees of freedom, thus a large body of work has emerged to reduce this cost to $\mathcal{O}(n^p)$ (where $p < 2$) or even $\mathcal{O}(n \log n)$.
 These so-called ``fast methods'' exploit the underlying structure of the interaction matrix to develop compressed representations of the interaction between distant sources with fully-controllable numerical error.
-Because of its accuruacy and speed, the development of such a method stands as the principal contribution of \cref{ch:accelerator}.
+Because of its accuracy and speed, the development of such a method stands as the principal contribution of \cref{ch:accelerator}.

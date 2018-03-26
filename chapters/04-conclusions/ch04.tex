@@ -26,7 +26,7 @@ From this, we compute the expectation value of a transition dipole moment.
 This acts as a source term in Maxwell's equations and gives rise to secondary radiation that couples the evolution of each \qd{}.
 By employing an integral equation framework to describe this radiation, we recover fields with a high degree of accuracy at both extremely short and extremely long length scales.
 We find that pairs of exceptionally close \qds{} have a greatly diminished response to an incident pulse; we attribute this effect to a dynamical detuning that brings the pair out of resonance with the external driving field. 
-Larger assemblages of \qds{}, however, display a much richer behavior: we observe spatially-localized regions of increased and diminsihed polarization as well as multiple frequency generation in the nonlinear polarization response of particular \qds{}.
+Larger assemblages of \qds{}, however, display a much richer behavior: we observe spatially-localized regions of increased and diminished polarization as well as multiple frequency generation in the nonlinear polarization response of particular \qds{}.
 
 The integral equation methodology of \cref{ch:quantum dots} has an implicit $\mathcal{O}(n^2)$ spatial complexity because of the pairwise interactions between \qds{}.
 In practice, this limits simulations to several tens of thousands of particles.
@@ -57,15 +57,15 @@ $\eta$ represents a phenomenological decay constant, and $g$, $e$, $m_e$, \& $c$
 
 Immediately, \cref{eq:llg} draws a large number of parallels with the material equation of  \cref{ch:quantum dots}.
 Apart from the obvious first-order and vector nature of both equations, the dual nature of electromagnetism means that $\vb{M}$ (as a source in Maxwell's equations) relates to $\vb{H}$ in the exact same way that $\vb{P}$ relates to $\vb{E}$.
-By simply exchanging some of the physical constants, then, \cref{eq:integral operator} also describes radiation eminating from a magnetization distribution~\cite{Rothwell2009}.
+By simply exchanging some of the physical constants, then, \cref{eq:integral operator} also describes radiation emanating from a magnetization distribution~\cite{Rothwell2009}.
 
-Solving \cref{eq:llg} within a semiclassical radiaton framework requires a little more care than an equivalent Bloch problem, however.
+Solving \cref{eq:llg} within a semiclassical radiation framework requires a little more care than an equivalent Bloch problem, however.
 \Cref{eq:liouville} describes the evolution of a quantum wavefunction---a vector in ``Bloch space''---that generates an electromagnetic source distribution through application of an operator (see the discussion surrounding \cref{eq:qd operators,eq:polarization definition} on \cpagerefrange{eq:qd operators}{eq:polarization definition} for an illustration of this point).
 As a result, the dynamics of \cref{eq:liouville} describe the evolution of a dipole's amplitude but not its orientation and we may employ separate spatial and temporal discretizations to effect a numerical analysis.
-Moreover, this allow for systems with zero intial polarization ($\vb{P} = 0$ in an eigenstate of the unperturbed Hamiltonian, e.g. $\hat{\rho} = \op{0}{0}$ or $\hat{\rho} = \op{1}{1}$), thus the external pulse induces all of the dynamical behavior.
+Moreover, this allow for systems with zero initial polarization ($\vb{P} = 0$ in an eigenstate of the unperturbed Hamiltonian, e.g. $\hat{\rho} = \op{0}{0}$ or $\hat{\rho} = \op{1}{1}$), thus the external pulse induces all of the dynamical behavior.
 This makes for a far easier simulation as sources/fields before the start of the simulation do not require any specification.
 
-On the other hand, \cref{eq:llg} detremines the trajectory of an electromagnetic source vector in both (real, Cartesian, directional) space and time with no ability to decouple the dimensions beyond
+On the other hand, \cref{eq:llg} determines the trajectory of an electromagnetic source vector in both (real, Cartesian, directional) space and time with no ability to decouple the dimensions beyond
 \begin{equation}
   \vb{M}(t) = m_x(t) \vu{x} + m_y(t) \vu{y} + m_z(t) \vu{z}.
 \end{equation}
@@ -74,5 +74,5 @@ On the other hand, \cref{eq:llg} detremines the trajectory of an electromagnetic
 \begin{equation}
   \dv{\abs{\vb{M}}}{t} = 0.
 \end{equation}
-This presents a larger computational challenge as it implies particles/magnetic domains/``spins'' always interact---even before the start of a simulation in a manner not dissimlar to molecular dynamics simulations.
+This presents a larger computational challenge as it implies particles/magnetic domains/``spins'' always interact---even before the start of a simulation in a manner not dissimilar to molecular dynamics simulations.
 The mechanism behind the predictor/corrector algorithm---updating a source distribution and then reincorporating that into the electromagnetic fields before advancing the timestep---will accommodate these interactions without issue but meaningful simulations will require an equilbiration period of order $\mathcal{O}(r_\text{max}/c)$ before collecting data.

@@ -13,7 +13,7 @@
 The collection of formulas and algorithms in this thesis provide a mathematical foundation upon which one can implement a simulation tool. This section gives some details on the \textbf{Qu}antum \textbf{E}lectromagnetics \textbf{S}imulation \textbf{T}oolbox (\QuEST{}) reference implementation~\cite{github}. Written in C++, \QuEST{} has minimal external dependencies, using only the Boost Multiarray and Program Options libraries~\cite{boost}, the Eigen linear algebra library~\cite{eigen}, and FFTW~\cite{FFTW}.
 
 As a scientific endeavor, \QuEST{} largely emphasizes reproducibility, ease of extension, and execution speed.
-Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experiments, thus the main functionality of \QuEST{} resides within a library of independently-constructed objects that interface with eachother.
+Reproducibility demands modularity to allow well-tested pieces to combine in a recordable manner reminiscent of experiments, thus the main functionality of \QuEST{} resides within a library of independently-constructed objects that interface with each other.
 These objects have appropriate constructors to set the parameters of the simulation and slot together to build an executable.
 For example, to isolate the ODE solver's behavior from the tricky numerics of the propagation code, the ODE solver only requires the definition of a right-hand side (an RHS) (see \cref{sec:quest descriptions}).
 Coding an RHS with a well-known solution, such as $f'(x) = - \lambda f(x)$, can validate the numerics of the integration step independent of the propagation calculations.
@@ -38,7 +38,7 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
   \item[\texttt{UniformLagrangeSet}] Tool to evaluate Lagrange polynomials and their derivatives.
     Upon construction, each instance allocates a workspace table (to avoid reallocation overhead) to contain the evaluated interpolants and their derivatives.
     This object uses the definition of Lagrange polynomials and logarithmic derivatives, $\dv{x} \log f(x) = f'(x)/f(x)$, to efficiently fill each column (the interpolant and two derivatives) of the table simultaneously.
-  \item[\texttt{TransformPair}] Struct to manage FFTW plans (pointers). Constructed with a \lstinline!forward! and \lstinline!backward! plan and automatically deallocates both in its destructor to avoid memory leaks.
+  \item[\texttt{TransformPair}] Struct to manage FFTW plans (pointers). Constructed with a \lstinline!forward! and \lstinline!backward! plan and automatically de-allocates both in its destructor to avoid memory leaks.
   \item[\texttt{Interaction}] Abstract base-class to provide an interface for calculating an interaction for each \lstinline!QuantumDot! in an array.
     Each \lstinline!Interaction! contains a shared pointer to a \lstinline!std::vector<QuantumDot>! and allocates a complex-valued Eigen row-vector (once, to avoid reallocation overhead) upon construction.
     This row-vector serves as a workspace in which to place interaction values in the \lstinline!evaluate! method before returning.
