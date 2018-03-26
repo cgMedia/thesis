@@ -3,7 +3,7 @@
 Here we present a series of numerically-solved systems to illustrate the utility of the method in investigating acoustic phenomena.
 We perform simulations of one- and two-particle/pulse systems to determine the principal particle-field and particle-particle interactions, followed by simulations of larger assemblages of spheres to investigate group phenomena and effects in systems without symmetry.
 Unless otherwise stated, \cref{table:sim parameters} gives the simulation parameters for each of the following simulations; as our interests lie in hydrodynamic applications, we use material parameters characteristic of water to define our external fluid medium.
-Similarly, we consider here the case of gas-filled \bubbles~\cite{Blomley2001}, and therefore set their density much smaller than that of the exterior medium. 
+Similarly, we consider here the case of gas-filled \bubbles~\cite{Blomley2001}, and therefore set their density much smaller than that of the exterior medium.
 The acoustic pulses lie in the ultrasonic regime, and the chosen frequency of \SI{20}{\mega\hertz} corresponds to that of typical applications in acoustic microscopy.
 
 \begin{table}
@@ -40,13 +40,13 @@ Note that the regime considered here produces no net transfer of momentum betwee
   \centering
   \conditionalFigureInput{figures/acoustic_trapping.tex}
   \caption{\label{fig:planar_confinement}
-  (Color online) Confinement of non-interacting spheres to planes; identical counter-propagating pulses ($f_0 = \SI{20}{\mega\hertz}$, $\sigma = \SI{23.8}{\micro\second}$) initially displaced along $\vu{z}$ tend to align objects in $\nabla P = \vb{0}$ planes at $\lambda/2$ intervals.
+  Confinement of non-interacting spheres to planes; identical counter-propagating pulses ($f_0 = \SI{20}{\mega\hertz}$, $\sigma = \SI{23.8}{\micro\second}$) initially displaced along $\vu{z}$ tend to align objects in $\nabla P = \vb{0}$ planes at $\lambda/2$ intervals.
     Here, we have sampled the field and trajectories every 30 timesteps and smoothed the resulting data with a 16-sample windowed average.
   }
 \end{figure}
 
-\Cref{fig:planar_confinement} depicts smoothed results of 128 trajectories corresponding to single \bubbles\ initially spaced along $\vu{z}$ and excited by identical counter-propagating pulses. 
-By taking the width of each pulse much greater than the radius of each \bubble, the two pulses reproduce the effects of interfering standing waves. 
+\Cref{fig:planar_confinement} depicts smoothed results of 128 trajectories corresponding to single \bubbles\ initially spaced along $\vu{z}$ and excited by identical counter-propagating pulses.
+By taking the width of each pulse much greater than the radius of each \bubble, the two pulses reproduce the effects of interfering standing waves.
 The confinement occurs at $\nabla P = \vb{0}$ (nodal) planes where the net force on each \bubble\ vanishes.
 The half-wavelength associated with the dominant pulse frequency gives the separation between neighboring planes.
 
@@ -62,7 +62,7 @@ In addition, the application of multiple pulses serves to confine \bubbles\ to h
   \centering
   \conditionalFigureInput{figures/dipole_field.tex}
   \caption{
-    \label{fig:dipole field}(Color online)
+    \label{fig:dipole field}
     Calculated isopotential contours near a lone \bubble.
     Red and blue colorations represent regions of positive and negative potential.
     The motion of each \bubble\ through the background medium serves primarily to produce a dipolar field of velocity potential with $\vb{v}_s$ serving as the sphere's dipole moment.
@@ -75,7 +75,7 @@ In addition, the application of multiple pulses serves to confine \bubbles\ to h
   \centering
   \conditionalFigureInput{figures/scaling.tex}
   \caption{
-    \label{fig:double scaling}(Color online)
+    \label{fig:double scaling}
     Scaling behavior of two \bubbles\ arranged perpendicularly to an incident pulse for various radii and initial separations.
     The (\redTriangle, \blueCircle) symbols on each axis denote data associated with that axis.
     The \redTriangle\ follow a regression of $\Delta \abs{\vb{v}}_\text{d} = \num{0.250754} d_{12}^{-3.00077}$, and the \blueCircle\ follow $\Delta\abs{\vb{v}_\text{max}}_\text{r} = \num{3.13328e-5} a_0^{2.99814}$.
@@ -87,7 +87,7 @@ In addition, the application of multiple pulses serves to confine \bubbles\ to h
   \centering
   \includegraphics[width=0.5\columnwidth]{figures/3d_isosurface.png}
   \caption{
-    \label{fig:isosurface}(Color online) 
+    \label{fig:isosurface}
     Isosurfaces of velocity potential (arb.~units) calculated by evaluating the $\hat{\mathcal{S}}$ and $\hat{\mathcal{D}}$ terms in \cref{eq:reduced Kirchoff-Helmholtz} for a $N = 16$ particle simulation.
     Red, blue, and yellow surfaces denote regions of positive, negative, and zero potential respectively, with holes appearing due to intersections with the bounding box.
     Rendered with VisIt\cite{VisIt}.
@@ -101,7 +101,7 @@ To quantify the effects of scattering, we first decouple scattering forces from 
 \end{equation}
 In principle, describing quantities found from a complete simulation as a function of initial separation could obfuscate scaling data considerably; forces arising from scattering could alter the geometry of the system.
 In practice, however, the perpendicular configuration used here gives scattering forces that only influence the motion along $\vb{k}$.
-Consequently, $\Delta\vb{v} \propto \vb{z}$ and the \bubbles' initial separation remains a good estimator of scaling behavior. 
+Consequently, $\Delta\vb{v} \propto \vb{z}$ and the \bubbles' initial separation remains a good estimator of scaling behavior.
 We see in \cref{fig:double scaling} that the radii data scale as $a_k^3$ and the
 separation data exhibit strong $\abs{\vb{d}_{12}}^{-3}$ scaling, again
 indicating a dominant dipolar interaction between \bubbles\ as shown by Ilinskii \etal\ in 2007~\cite{Ilinskii2007} and predicted by \cref{eq:dipole}.
@@ -122,7 +122,7 @@ We note from \cref{fig:hull change} a greater tendency for random clouds to expa
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/hull_percents.tex}
-  \caption{\label{fig:hull change}(Color online)
+  \caption{\label{fig:hull change}
     Fractional change in the volume of 20 randomly-initialized \bubble\ clouds subject to the same incident pulse, smoothed with a 128-sample moving average.
     Positive and negative values denote expansion and contraction. $\sigma = \SI{1.5}{\centi\meter}$.
   }

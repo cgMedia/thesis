@@ -14,7 +14,7 @@ This chapter summarizes the main findings of each of these parts and offers some
 
 In \cref{ch:bubbles} we presented a computational analysis of acoustically-driven microsphere systems.
 By considering only small \bubbles{} we cast the problem in terms of an incompressible fluid where velocity potentials describe pressure distributions.
-Acoustic radiation incident on the system scatters from rigid spherical objects leading to pressure variations over the objects' surfaces; this variation necessarily sets the objects into motion, leading to further potential/pressure perturbations within the system.
+Acoustic radiation incident on the system scatters from rigid spherical objects, leading to pressure variations over the objects' surfaces; this variation necessarily sets the objects into motion, leading to further potential/pressure perturbations within the system.
 By expressing the velocity potential on the surface of each \bubble{} in terms of spherical harmonics, we obtain a matrix equation relating the velocity of each \bubble{} to the potential on every other \bubble{}.
 From this, we compute the net force on every body which we then integrate numerically, noting that directly integrating the force causes numerical instabilities due to an atypical acceleration-dependent force.
 To remedy this, we note that this force serves only to impede the motion of each \bubble{}, thus we treat it as an additional mass term.
@@ -32,7 +32,7 @@ The integral equation methodology of \cref{ch:quantum dots} has an implicit $\ma
 In practice, this limits simulations to several tens of thousands of particles.
 To overcome this bottleneck, \cref{ch:accelerator} develops a FFT-based acceleration scheme that exploits the translational invariance of the radiation kernel to greatly reduce the spatial complexity of the calculation.
 Moreover, our acceleration scheme retains a strong-form integral formulation and makes no assumptions about the underlying computational basis functions to effect propagation.
-We give prelimniary results that depict the accuracy and speed of the method and demonstrate that we can recover fields under the action of an arbitrary linear operator to the precision of the underlying machine.
+We give preliminary results that depict the accuracy and speed of the method and demonstrate that we can recover fields under the action of an arbitrary linear operator to the precision of the underlying machine.
 
 \section{Discussion}
 
@@ -69,7 +69,7 @@ On the other hand, \cref{eq:llg} detremines the trajectory of an electromagnetic
 \begin{equation}
   \vb{M}(t) = m_x(t) \vu{x} + m_y(t) \vu{y} + m_z(t) \vu{z}.
 \end{equation}
-As \QuEST{} accommodates histories of any numeric type (scalar or tensor, real or complex) through careful templating, building a propagator for \cref{eq:llg} does not present much difficulty aside from some extra index tracking.
+\QuEST{} accommodates histories of any numeric type (scalar or tensor, real or complex) through careful templating, and so building a propagator for \cref{eq:llg} does not present much difficulty aside from some extra index tracking.
 \Cref{eq:llg} also has an implicit normalization condition, however, in that
 \begin{equation}
   \dv{\abs{\vb{M}}}{t} = 0.
