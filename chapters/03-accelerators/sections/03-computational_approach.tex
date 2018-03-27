@@ -12,13 +12,44 @@
   }
 \end{figure}
 
-To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\mathcal{G}^{(k)}$ as a sum of near- and far-field contributions.
+To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\mathcal{F}^{(k)}$ as a sum of near- and far-field contributions.
 The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' so as to avoid incurring unreasonable approximation error between adjacent basis functions.
 Sources beyond this threshold, however, interact via auxiliary basis functions taken to reside at the vertices of a regular Cartesian grid.
-These auxiliary sources recover $\mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}$ at large distances and impose a Toeplitz structure on the resulting interaction matrix.
-This structure, then, lends itself to efficient $\mathcal{O}(N_s \log N_s)$ diagonalization through FFTs. 
+These auxiliary sources recover $\mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}$ at large distances and have two computatoinal advantages:
+\begin{inparaenum}[(i)]
+  \item they compress the interaction matrix by representing sources within the same spatial region in terms of the same auxiliary set.
+  \item They impose a Toeplitz structure on the resulting interaction matrix that lends itself to efficient diagonalization through application of an FFT.
+\end{inparaenum}
+One iteration of our algorithm, then, proceeds as follows:
+\begin{enumerate}
+  \item At timestep $m$ project each of the $\vb{s}_\ell(\vb{r}) \mathcal{A}^\qty(m)_\ell$ onto the auxiliary sources.
+    Aside from discretization/sampling criteria, the $\mathfrak{F}$ and $g(\vb{r}, t)$ operators do not affect these projections, thus the distribution of auxiliary sources, $\vb{P}_\text{aux}(\vb{r}, t)$, mimics the distribution of $\vb{P}(\vb{r}, t)$ at large distances.
+  \item Effect the convolution in \cref{eq:propagator} between auxiliary sources.
+    Having imposed a regular structure on $\vb{P}_\text{aux}(\vb{r}, t)$, we may efficiently diagonalize the matrix representing this (discrete) convolution with (up to 4D) blocked FFTs.
+    Note that the algorithm thus far has essentially calculated the potential, $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$, at every $\vb{r}_i$ in the grid.
+  \item To recover the total field under the action of $\mathfrak{F}$, project the potential on each $\vb{r}_i$ back onto the $\vb{s}_\ell(\vb{r})$ with a collection of specialized projection matrices that depend on the particular derivatives contained inside $\mathfrak{F}$.
+  \item To correct for large approximation errors incurred for $\vb{s}_\ell(\vb{r})$ within the same spatial neighborhood, calculate a pairwise field contribution for the basis functions within a prescribed distance threshold of each other.
+    This calculation removes the contribution of steps 1-3 for these $\vb{s}_\ell(\vb{r})$ pairs and replaces it with \cref{eq:z elements}.
+\end{enumerate}
+Mathematically,  $\mathcal{F}^\qty(m - m') \approx \mathcal{F}^\qty(m-m')_\text{FFT} + \mathcal{F}^\qty(m-m')_\text{direct}$ where
+\begin{subequations}
+  \begin{align}
+    \mathcal{F}^\qty(m-m')_\text{FFT} &= \sum_{\tau = 0}^{\tau_\text{max}} \Lambda_\mathfrak{F}^\qty(\tau) \mathcal{G}^\qty(m - m' - \tau) \Lambda^\dagger \\
+    \qty(\mathcal{F}^\qty(m-m')_\text{direct})_{\ell\ell'} &= \begin{cases}
+      \qty(\mathcal{F}^\qty(m-m') - \mathcal{F}^\qty(m-m')_\text{FFT})_{\ell\ell'} & R^\text{grid}_{\ell\ell'} \leqslant \gamma \\
+      0 & \text{otherwise},
+    \end{cases}
+  \end{align}
+\end{subequations}
+the $\Lambda$ matrices represent the (sparse) projections to and from the grid, and $R^\text{grid}_{\ell\ell'}$ gives the minmium distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$, i.e.
+\begin{equation}
+  R^\text{grid}_{\ell\ell'} = \min_{u \in C_\ell,\; u' \in C_{\ell'}} \norm{\vb{r}_u - \vb{r}_{u'}}_\infty.
+\end{equation}
 
-\subsubsection{Potential evaluation: $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$}
+
+Instead of transfering the spatial derivatives onto the $\vb{s}_\ell(\vb{r})$ or the temporal derivatives onto $\mathcal{G}$,  this decompsition of $\mathcal{F}^\qty(m - m')$ computes the entirety of $\mathfrak{F}$
+
+\subsubsection{Expansion matrices}
 
 \begin{figure}
   \centering
