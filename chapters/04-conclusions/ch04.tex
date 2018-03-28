@@ -38,20 +38,65 @@ We give preliminary results that depict the accuracy and speed of the method and
 
 \subsection{Advanced dissipators}
 
+Designed to provide a semblance of spontaneous emission within a semiclassical framework, the two-level dissipator in \cref{eq:dissipator} works to remove internal energy from each \qd{} system and return it to the ground state.
+A semiclassical radiation model will never fully describe spontaneous emission due to the lack of a quantized electromagnetic field, but more robust operators that couple the dissipation terms of multiple \qds{} together may more accurately model cooperative phenomena such as four-wave mixing or superradiance. 
+To derive the structure of one such advanced dissipator, consider first a two-\qd{} system with particles $A$ and $B$.
+Without rigorous derivation, a coupled dissipator evolves the particles according to
+\begin{equation}
+  \dv{\hat{\rho}}{t} = \frac{-i}{\hbar} \commutator{\hat{\mathcal{H}}_a^0 + \hat{\mathcal{H}}_b^0}{\hat{\rho}} + \sum_{\shortstack{$\scriptstyle m \in \qty{A, B}$\\$\scriptstyle n \in \qty{A, B}$}} \frac{\gamma_{mn}}{2} \qty(2 \hat{\sigma}_m^- \hat{\rho} \hat{\sigma}_n^+ - \hat{\sigma}_m^+ \hat{\sigma}_n^- \hat{\rho} - \hat{\rho} \hat{\sigma}_m^+ \hat{\sigma}_n^-).
+\end{equation}
+Assuming $\hat{\rho} \approx \outerprod{\hat{\rho}_A}{\hat{\rho}_B}$ and tracing over $B$ to remove its degrees of freedom,
+\begin{equation}
+  \begin{aligned}
+    \dv{\hat{\rho}_A}{t} =& \frac{-i}{\hbar} \commutator{\hat{\mathcal{H}}_A^0}{\hat{\rho}_A} + \hat{\mathcal{D}}_{AA} + \hat{\mathcal{D}}_{AB}
+  \end{aligned}
+  \label{eq:advanced dissipator liouville}
+\end{equation}
+where
+\begin{subequations}
+  \begin{align}
+    \hat{\mathcal{D}}_{AA} &= \gamma_{AA} \mqty(-\rho_{11}^A & -\rho_{10}^A/2 \\ -\rho_{01}^A/2 & \rho_{11}^A) \\
+    \hat{\mathcal{D}}_{AB} &= \frac{\gamma_{AB}}{2} \mqty(-\rho_{10}^A\rho_{01}^B - \rho_{10}^B \rho_{01}^A & \rho_{11}^A\rho_{10}^B - \rho_{10}^B\rho_{00}^A \\ \rho_{01}^B\rho_{11}^A - \rho_{00}^A\rho_{01}^B & \rho_{01}^B \rho_{10}^A + \rho_{01}^A \rho_{10}^B) \\
+    \gamma_{mn} &= \frac{4}{3}\omega^3 \abs{\vb{d}}^2 \qty\Big(J_0(r_{mn}) + P_2(\cos \theta_{mn}) J_2(r_{mn}))
+  \end{align}
+  \label{eq:cross matrices}
+\end{subequations}
+Finally, $J_\ell$ and $P_\ell$ denote the Bessel function and Legendre polynomial of order $\ell$, respectively.
+Note that the first two terms on the right side of \cref{eq:advanced dissipator liouville} give the evolution equation defined in \cref{ch:quantum dots}.
+The additional $\hat{\mathcal{D}}_{AB}$ dissipator, then, has terms proportional to the product of $A$ and $B$'s coherences/off-diagonal terms with a long-range inverse-$r$ scaling due to the $J_0$ Bessel function.
+These terms afford a mechanism for $A$ and $B$ to influence each other's dynamics more directly than through a radiation field alone.
+
+In a many-particle system, \cref{eq:advanced dissipator liouville} expands to include  pairwise dissipators that perturb the evolution of every particle due to the assumption of a rank-deficient $\hat{\rho}$.
+Thus,
+\begin{equation}
+  \dv{\hat\rho_m}{t} = \frac{-i}{\hbar} \commutator{\hat{\mathcal{H}}_m^0}{\hat{\rho}_m} + \sum_{n} \gamma_{mn} \hat{\mathcal{D}}_{mn}.
+  \label{eq:coupled liouville}
+\end{equation}
+Evaluating \cref{eq:coupled liouville} for each of $N$ then scales as $\mathcal{O}(N^2)$, making it infeasible to use in large simulations.
+Fortunately, the kernel-agnostic nature of \QuEST{} makes it relatively straightforward to FFT-accelerated interactions of the form in \cref{eq:cross matrices}.
+
 \subsection{Micromagnetics}
 
 The Landau-Lifshitz-Gilbert (LLG) equation,
 \begin{equation}
-  \dv{\vb{M}}{t} = -\gamma_0 \vb{M} \cp \qty(\vb{H} - \eta \dv{\vb{M}}{t}),
+  \dv{\vb{M}}{t} = -\gamma' \vb{M} \cp \vb{H} - \lambda \vb{M} \cp \vb{M} \cp \vb{H}
   \label{eq:llg}
 \end{equation}
+where
+\begin{subequations}
+\begin{align}
+  \gamma' = \frac{\gamma_0}{1 + \gamma^2 \eta^2 M_s^2} \\
+  \lambda = \frac{\gamma_0^2 \eta}{1 + \gamma^2 \eta^2  M_s^2}
+\end{align}
+\end{subequations}
 details the evolution of magnetization, $\vb{M}$, in response to an applied magnetic field, $\vb{H}$~\cite{Aharoni2000}.
-Here, $\gamma_0$ denotes the gyromagnetic ratio
+In these equations, $\gamma_0$ denotes the electron gyromagnetic ratio
 \begin{equation}
   \gamma_0 = \frac{g \abs{e}}{2 m_e c},
   \label{eq:gyro}
 \end{equation}
-$\eta$ represents a phenomenological decay constant, and $g$, $e$, $m_e$, \& $c$ stand for the Land\'e $g$-factor, elementary charge, electron mass, and speed of light, respectively.
+$\eta$ represents a material-depnedent damping parametre, and $g$, $e$, $m_e$, \& $c$ stand for the Land\'e $g$-factor, elementary charge, electron mass, and speed of light, respectively.
+Simulating the evolution of the Landau-Lifshitz-Gilbert equation at the level of individual particles stands ready to offer novel perspectives into spintronics or other mesoscale systems.
 
 \subsubsection{Technical details}
 
