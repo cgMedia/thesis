@@ -24,7 +24,7 @@ This also motivates using the approximation to calculate interactions involving 
 
 \begin{figure}
   \centering
-  \input{figures/1d_moments}
+  \conditionalFigureInput{figures/1d_moments}
   \caption{\label{fig:1d moments} Polynomial interpolation of $g(x - x_\text{src})$ near $x_\text{obs}$.
     Here, the green curve represents the actual $g(x - x_\text{src})$ and the dashed black line its approximation.
     Evaluating the $m^\text{th}$-order approximation requires samples of the signal at $m + 1$ grid points surrounding $x_\text{obs}$.
@@ -33,7 +33,7 @@ This also motivates using the approximation to calculate interactions involving 
 
 \begin{figure}
   \centering
-  \input{figures/grid_spacing_error}
+  \conditionalFigureInput{figures/grid_spacing_error}
   \caption{\label{fig:grid convergence} $\ell_2$ error calculation of $g(\vb{r} - \vb{r}') = e^{i k \abs{\vb{r} - \vb{r}'}}/{\abs{\vb{r} - \vb{r}'}}$ for expansion orders zero through four.
     For each of the points above, a source and observation box separated by $\Delta \vb{r} = 10\lambda \vu{x} + 10 \lambda \vu{y} + 10 \lambda \vu{z}$ each contain 64 randomly placed points, thus the points within each box all map to identical nodes in the auxiliary grid.
     The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(h^{m + 1})$.

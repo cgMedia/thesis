@@ -2,19 +2,21 @@
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
-  \hspace{1cm}
-  \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
-  \caption{\label{fig:matrix structure} The interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
-    While we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
-    Points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
-    Such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
+  \ifmakeplots
+    \includegraphics[width=0.4\textwidth]{figures/dist_mat_unsorted}
+    \hspace{1cm}
+    \includegraphics[width=0.4\textwidth]{figures/dist_mat_sorted}
+  \fi
+  \caption{\label{fig:matrix structure} the interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
+    while we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
+    points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical toeplitz substructure (right).
+    such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
   }
 \end{figure}
 
 \begin{figure}
   \centering
-  \input{figures/aim_terminology.tex}
+  \conditionalFigureInput{figures/aim_terminology.tex}
   \caption{\label{fig:aim terminology} Illustration of the grid structure and terminology.
     All of the sources within a box (shown as the central shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box} = \floor{\vb{r}/s}$.
   }
@@ -67,7 +69,7 @@ Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to 
 
 \begin{figure}
   \centering
-  \input{figures/nf_pair.tex}
+  \conditionalFigureInput{figures/nf_pair.tex}
   \caption{\label{fig:nearfield criterion}Illustration of the nearfield criterion for a third order expansion ($\gamma = 2$).
     The dashed line indicates the complete nearfield of the box associated with \textcolor{cbblue}{$\vb{r}_0$}---i.e. all boxes that have an expansion point within $\Delta s$ of the expansion around \textcolor{cbblue}{$\vb{r}_0$}.
     Consequently, all of the $\vb{s}_\ell(\vb{r})$ within the central dark blue square have a pairwise interaction with the $\vb{s}_{\ell'}(\vb{r})$ inside the dashed box.
@@ -132,5 +134,3 @@ The evaluation of $\mathcal{F}_\text{FFT}^\qty(m-m') \mathcal{A}$
 
 Instead of transfering the $\mathfrak{F}$ operator onto the spatiotemporal basis functions, the decompositon of $\mathcal{F}^\qty(m-m')$ in \cref{eq:decomposition elements} maintains the strong form of the integral relation in \cref{eq:propagator} and makes no assumptions about the underlying discretization.
 Practically, this facilitates long-wavelnegth or extremely dense systems where $\vb{s}_\ell(\vb{r}) = \vb{d}_\ell \delta(\vb{r}-\vb{r}_\ell)$.
-
-

@@ -98,39 +98,41 @@ Moreover, this dynamical localization effect features oscillations which suggest
 
 \begin{figure*}
   \centering
-  \subfloat{
-    \begin{tikzpicture}
-      \node (spacer) at (-1.4, 0) {};
-      \begin{axis}[
-        hide axis,
-        scale only axis,
-        height=0pt,
-        width=0pt,
-        colormap/viridis,
-        colorbar horizontal,
-        point meta min=0.32,
-        point meta max=0.40,
-        colorbar style={
-          width=0.6180339887\textwidth,
-          xtick={0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40},
-          xticklabels={$\leqslant 0.32$, $0.33$, $0.34$, $0.35$, $0.36$, $0.37$, $0.38$, $0.39$, $0.40 \leqslant$},
-        }
-      ]
-      \addplot [draw=none] coordinates {(0,2)};
-      \end{axis}
-    \end{tikzpicture}
-  } \\
-  \subfloat{
-    \begin{tikzpicture}[>=Latex]
-      \node[] (tube0) at (0,-1) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_0.png}};
-      \node[] (tube1) at (0,-3) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_1.png}};
-      \node[] (tube2) at (0,-5) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_2.png}};
-      \node[] (tube3) at (0,-7) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_3.png}};
+  \ifmakeplots
+    \subfloat{
+      \begin{tikzpicture}
+        \node (spacer) at (-1.4, 0) {};
+        \begin{axis}[
+          hide axis,
+          scale only axis,
+          height=0pt,
+          width=0pt,
+          colormap/viridis,
+          colorbar horizontal,
+          point meta min=0.32,
+          point meta max=0.40,
+          colorbar style={
+            width=0.6180339887\textwidth,
+            xtick={0.32, 0.33, 0.34, 0.35, 0.36, 0.37, 0.38, 0.39, 0.40},
+            xticklabels={$\leqslant 0.32$, $0.33$, $0.34$, $0.35$, $0.36$, $0.37$, $0.38$, $0.39$, $0.40 \leqslant$},
+          }
+        ]
+        \addplot [draw=none] coordinates {(0,2)};
+        \end{axis}
+      \end{tikzpicture}
+    } \\
+    \subfloat{
+      \begin{tikzpicture}[>=Latex]
+        \node[] (tube0) at (0,-1) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_0.png}};
+        \node[] (tube1) at (0,-3) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_1.png}};
+        \node[] (tube2) at (0,-5) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_2.png}};
+        \node[] (tube3) at (0,-7) {\includegraphics[width=0.95\textwidth]{figures/tube/tube_print_3.png}};
 
-      \draw[->,thick] ($(tube0.west) - (0.3,0)$) -- ($(tube3.west) - (0.3,0)$) node[midway,fill=white, rotate=90] {Time};
-      \draw[->,thick] ($(tube3.south east) - (3,0.3)$) -- ($(tube3.south east) - (0,0.3)$) node[midway,fill=white] {$\vu{k}$};
-    \end{tikzpicture}
-  }
+        \draw[->,thick] ($(tube0.west) - (0.3,0)$) -- ($(tube3.west) - (0.3,0)$) node[midway,fill=white, rotate=90] {Time};
+        \draw[->,thick] ($(tube3.south east) - (3,0.3)$) -- ($(tube3.south east) - (0,0.3)$) node[midway,fill=white] {$\vu{k}$};
+      \end{tikzpicture}
+    }
+  \fi
   \caption{\label{fig:tubes}
     Coloration of $\abs{\tilde{\rho}_{01}}$ as an indicator of $\abs{\vb{\tilde{P}}}$ at $t_1 = \SI{-0.05}{\pico\second}$, $t_2 = \SI{0}{\pico\second}$, $t_3 = \SI{0.05}{\pico\second}$, and $t_4 = \SI{0.10}{\pico\second}$ relative to the peak of a \SI{1}{\pico\second}-wide pulse.
     \num{10000} \qds{} randomly distributed throughout a $\SI{0.2}{\micro\meter} \text{ (radius)} \times \SI{4}{\micro\meter}$ cylinder oriented along $\vb{k}_L$ demonstrate near-field the effects of \cref{fig:density stats} as distinct, outlying bright/dark \qds{}.
@@ -150,26 +152,7 @@ We note these geometries produce a much weaker effect than their fully three dim
 
 \begin{figure}
   \centering
-  \begin{tikzpicture}[>=latex]
-    \begin{axis}[
-        xtick scale label code/.code={$\cdot \lambda$},
-        enlargelimits=false,
-        axis equal image,
-        colormap/viridis,
-        colorbar horizontal,
-        point meta min=0.46,
-        point meta max=0.47,
-        colorbar style={
-          xtick={0.461, 0.463, 0.465, 0.467, 0.469},
-          xticklabels={$\leqslant 0.461$, 0.463, 0.465, 0.467, $0.469 \leqslant$},
-          at={(0,1.5)},
-          anchor=north west,
-        }
-      ]
-      \addplot graphics [xmin=0,xmax=3,ymin=0,ymax=1] {figures/wide_plate.png};
-      \draw[->, white, thick] (axis cs:2.25,0.8) -- (axis cs:2.75,0.8) node[at end, anchor=west] (A) {$\vu{k}$};
-    \end{axis}
-  \end{tikzpicture}
+  \conditionalFigureInput{figures/planar}
   \caption{\label{fig:wide plate}
     Coloration of $\abs{\tilde{\rho}_{01}}$ for \num{10000} \qds{} arranged in a finite planar geometry (in units of $\lambda$).
     The slab displays a prominent polarization pattern \SI{1.25}{\pico\second} after the peak of a \SI{1}{\pico\second} pulse.

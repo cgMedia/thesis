@@ -1,0 +1,20 @@
+\begin{tikzpicture}[>=latex]
+  \begin{axis}[
+      xtick scale label code/.code={$\cdot \lambda$},
+      enlargelimits=false,
+      axis equal image,
+      colormap/viridis,
+      colorbar horizontal,
+      point meta min=0.46,
+      point meta max=0.47,
+      colorbar style={
+        xtick={0.461, 0.463, 0.465, 0.467, 0.469},
+        xticklabels={$\leqslant 0.461$, 0.463, 0.465, 0.467, $0.469 \leqslant$},
+        at={(0,1.5)},
+        anchor=north west,
+      }
+    ]
+    \addplot graphics [xmin=0,xmax=3,ymin=0,ymax=1] {figures/wide_plate.png};
+    \draw[->, white, thick] (axis cs:2.25,0.8) -- (axis cs:2.75,0.8) node[at end, anchor=west] (A) {$\vu{k}$};
+  \end{axis}
+\end{tikzpicture}
