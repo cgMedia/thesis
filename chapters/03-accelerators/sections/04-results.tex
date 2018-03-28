@@ -38,7 +38,6 @@ This also motivates using the approximation to calculate interactions involving 
   }
 \end{figure}
 
-
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/potential_timing.tex}
@@ -47,5 +46,15 @@ This also motivates using the approximation to calculate interactions involving 
     We employ a first order expansion (in space) onto the auxiliary grid and a fifth order Lagrange basis set in time.
     The output of the \textsc{fft + nearfield} calculation reproduces that of the \textsc{direct} calculation to approximately five decimal places (the \textsc{fft only} simulation does not calculate any portion of $\mathcal{F}_\text{direct}$ so as to benchmark the inter-grid propagation).
     From top to bottom in the legend, the three simulations follow $t_1(n) = \num{2.10086e-5} n^{2.073}$, $t_2(n)=\num{1.36362e-3} n^{1.385}$, and $t_3(n) \num{2.10896e-4} n^{1.169}$ regressions, respectively.
+  }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/fast_slow_comparison.tex}
+  \caption{\label{fig:qd fast comparison}Comparison of a Maxwell-Bloch \qd{} simulation with direct (red) and FFT-accelerated (blue) propagation strategies.
+    Here, we show the off-diagonal matrix elements of 25 random \qds{} (out of 1024) as a function of time.
+    The \qds{} experience an incident $\pi$-pulse and their interactions induce significant secondary oscillations (see the second-to-last row).
+    The FFT-accelerated algorithm developed here readily captures these effects, making it eminently suitable for large-scale \qd{} simulations.
   }
 \end{figure}
