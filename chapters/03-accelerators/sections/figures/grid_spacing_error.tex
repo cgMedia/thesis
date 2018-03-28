@@ -50,7 +50,7 @@ Spacing             	Order0            	Order1              	Order2             
     xtick={0.02, 0.05, 0.10, 0.20},
     xticklabels={$0.02\lambda$, $0.05\lambda$, $0.10\lambda$, $0.20\lambda$},
     minor x tick num=4,
-    xlabel={Grid spacing, $h$},
+    xlabel={Grid spacing, $s$},
     ylabel={$\ell_2$ error}
   ]
     \addplot table [only marks, x=Spacing, y=Order0] {grid_spacing.dat};
@@ -60,19 +60,19 @@ Spacing             	Order0            	Order1              	Order2             
     \addplot table [only marks, x=Spacing, y=Order4] {grid_spacing.dat};
 
     \addplot+[no marks, domain=.02:.2] {62.2728*x^0.96213};
-    \addlegendentry{$62.27 h^{0.96}$}
+    \addlegendentry{$62.27 s^{0.96}$}
 
     \addplot+[no marks, domain=.02:.2] {64.5777*x^1.87467};
-    \addlegendentry{$64.57 h^{1.87}$}
+    \addlegendentry{$64.57 s^{1.87}$}
 
     \addplot+[no marks, domain=.02:.2] {202.84*x^3.13828};
-    \addlegendentry{$202.8 h^{3.13}$}
+    \addlegendentry{$202.8 s^{3.13}$}
 
     \addplot+[no marks, domain=.02:.2] {231.444*x^3.91366};
-    \addlegendentry{$231.4 h^{3.91}$}
+    \addlegendentry{$231.4 s^{3.91}$}
 
     \addplot+[no marks, domain=.02:.2] {538.388*x^5.22565};
-    \addlegendentry{$538.3 h^{5.22}$}
+    \addlegendentry{$538.3 s^{5.22}$}
 
   \end{loglogaxis}
 \end{tikzpicture}

@@ -1,7 +1,5 @@
 \section{Results}
 
-\subsection{Spatial error analysis}
-
 Consider two point particles located at $x_\text{src}$ and $x_\text{obs}$.
 A time-independent Green's function, $g(x_\text{obs} - x_\text{src})$, describes the interaction between the two particles and we wish to construct a polynomial approximation of $g(x - x_\text{src})$ for $x$ in the vicinity of $x_\text{obs}$ as in \cref{fig:1d moments}.
 
@@ -40,10 +38,14 @@ This also motivates using the approximation to calculate interactions involving 
   }
 \end{figure}
 
-\subsection{Timing measurements}
 
-
-
-\subsection{Quantum Dots}
-
-As an application 
+\begin{figure}
+  \centering
+  \conditionalFigureInput{figures/potential_timing.tex}
+  \caption{\label{fig:timing}Simulation runtime vs.\ number of spatial basis functions for several system sizes. 
+    Each simulation evaluates the retarded potentail between $n$ spatial basis functions for 1024 timesteps.
+    We employ a first order expansion (in space) onto the auxiliary grid and a fifth order Lagrange basis set in time.
+    The output of the \textsc{fft + nearfield} calculation reproduces that of the \textsc{direct} calculation to approximately five decimal places (the \textsc{fft only} simulation does not calculate any portion of $\mathcal{F}_\text{direct}$ so as to benchmark the inter-grid propagation).
+    From top to bottom in the legend, the three simulations follow $t_1(n) = \num{2.10086e-5} n^{2.073}$, $t_2(n)=\num{1.36362e-3} n^{1.385}$, and $t_3(n) \num{2.10896e-4} n^{1.169}$ regressions, respectively.
+  }
+\end{figure}
