@@ -1,4 +1,4 @@
-\subsection{Auxiliary grids}
+\section{Computational approach}
 
 \begin{figure}
   \centering
@@ -22,7 +22,7 @@
 
 To effect a sub-quadratic calculation of \cref{eq:mot}, we approximate $\mathcal{F}^{(k)}$ as a sum of near- and far-field contributions.
 The near-field matrix elements follow directly from \cref{eq:z elements}---sources within a prescribed distance threshold interact ``directly'' so as to avoid incurring unreasonable approximation error between adjacent basis functions.
-Sources beyond this threshold, however, interact via auxiliary basis functions taken to reside at the vertices of a regular Cartesian grid.
+Sources beyond this threshold, however, interact via auxiliary spatial basis functions taken to reside at the vertices of a regular Cartesian grid.
 These auxiliary sources recover $\mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}$ at large distances and have two computational advantages:
 \begin{inparaenum}[(i)]
   \item they compress the interaction matrix by representing sources within the same spatial region in terms of the same auxiliary set (\cref{fig:aim terminology}) and
@@ -33,17 +33,18 @@ One iteration of our algorithm, then, proceeds as follows:
   \item At timestep $m$ project each of the $\vb{s}_\ell(\vb{r}) \mathcal{A}^\qty(m)_\ell$ onto the auxiliary sources.
     Aside from discretization/sampling criteria, the operators in \cref{eq:propagator} do not affect these projections, thus the distribution of auxiliary sources, $\vb{P}_\text{aux}(\vb{r}, t)$, mimics the distribution of $\vb{P}(\vb{r}, t)$ at large distances.
   \item Effect the convolution in \cref{eq:propagator} between auxiliary sources.
-    Having imposed a regular structure on $\vb{P}_\text{aux}(\vb{r}, t)$, we may efficiently diagonalize the matrix representing this (discrete) convolution with (up to 4D) blocked FFTs.
+    Having imposed a regular structure on $\vb{P}_\text{aux}(\vb{r}, t)$, we may efficiently diagonalize the matrix representing this (discrete) convolution with (up to four-dimensional) blocked FFTs.
     Note that the algorithm thus far has essentially evaluated the potential, $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$, at $t = m \, \Delta t$ at every point $\vb{u}$ in the grid.
   \item Recover the total field under the action of $\mathfrak{F}$ by projecting the potential on each $\vb{u}$ back onto the $\vb{s}_\ell(\vb{r})$.
     These projections make use of specialized projection matrices that depend on the particular derivatives contained inside $\mathfrak{F}$.
-  \item Correct large approximation errors incurred in the projections for $\vb{s}_\ell(\vb{r})$ within the same spatial neighborhood by calculating a pairwise field contribution for the basis functions within a prescribed distance threshold of each other.
-    This calculation removes the contribution of steps 1-3 for these $\vb{s}_\ell(\vb{r})$ pairs and replaces it with \cref{eq:z elements}.
+  \item Subtract the fields determined by steps 1-3 for pairs of spatial basis functions within a prescribed idstance threshold and replace it with \cref{eq:z elements}.
+    The auxiliary grid approximations only remain accurate at large distances, thus this step corrects large approximation errors that occur between adjacent $\vb{s}_\ell(\vb{r})$.
 \end{enumerate}
 Mathematically,
 \begin{equation}
   \begin{aligned}
-    \mathcal{F}^\qty(m - m') \approx \mathcal{F}^\qty(m-m')_\text{direct} + \mathcal{F}^\qty(m-m')_\text{FFT}
+    \mathcal{F}^\qty(m - m') & \approx \mathcal{F}^\qty(m-m')_\text{direct} + \Lambda_\mathfrak{F} \mqty(\partial_t^0 \mathcal{G}^\qty(m-m') \\ \partial_t^1 \mathcal{G}^\qty(m-m') \\ \partial_t^2 \mathcal{G}^\qty(m-m') \\ \vdots) \Lambda^\dagger \\
+                             & \equiv \mathcal{F}^\qty(m-m')_\text{direct} + \mathcal{F}^\qty(m-m')_\text{FFT}
     \end{aligned}
   \label{eq:f decomposition}
 \end{equation}
@@ -54,11 +55,11 @@ where
       \mathcal{F}^\qty(m-m')_{\ell\ell'}  - \mathcal{F}^\qty(m-m',\tau)_{\text{FFT},\ell\ell} & R_{\ell\ell'} \leqslant \gamma \\
       0 & \text{otherwise},
     \end{cases} \\
-    \mathcal{F}^\qty(m-m')_\text{FFT} &=  \Lambda_\mathfrak{F}^\qty(\tau) \mathcal{G}^\qty(m - m' - \tau) \Lambda^\dagger.
+    \mathcal{G}^\qty(m-m')_{ab} &= \left< \vb{u}_a(\vb{r})\delta\qty\big(t - (m-m')\, \Delta t), g(\vb{r}, t) \ast \vb{u}_{b}(\vb{r})T(t) \right>
   \end{align}
   \label{eq:decomposition elements}
 \end{subequations}
-The $\Lambda$ matrices in \cref{eq:decomposition elements} denote the (sparse) projections to and from the grid (detailed below), and the sum on $\tau$ facilitates a polynomial weighting to recover temporal derivatives in $\mathfrak{F}$.
+The $\Lambda$ matrices in \cref{eq:f decomposition} denote the (sparse) projections to and from the grid (detailed in \cref{sec:expansion matrices}), and $\vb{u}(\vb{r})$ indicates an auxiliary basis function on the spatial grid.
 Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to control the accuracy of the simulation and $R^\text{grid}_{\ell\ell'}$ gives the minmium distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$ (\cref{fig:nearfield criterion}), i.e.
 \begin{equation}
   R^\text{grid}_{\ell\ell'} = \min\!\qty{\norm{\vb{u} - \vb{u}'}_\infty \, | \, \vb{u} \in C_\ell, \, \vb{u}' \in C_{\ell'}}.
@@ -82,7 +83,7 @@ Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to 
   }
 \end{figure}
 
-\subsubsection{Expansion matrices}
+\subsubsection{\label{sec:expansion matrices}Expansion matrices}
 
 We represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints , i.e.
 \begin{equation}

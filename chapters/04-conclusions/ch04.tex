@@ -64,7 +64,7 @@ where
 Finally, $J_\ell$ and $P_\ell$ denote the Bessel function and Legendre polynomial of order $\ell$, respectively.
 Note that the first two terms on the right side of \cref{eq:advanced dissipator liouville} give the evolution equation defined in \cref{ch:quantum dots}.
 The additional $\hat{\mathcal{D}}_{AB}$ dissipator, then, has terms proportional to the product of $A$ and $B$'s coherences/off-diagonal terms with a long-range inverse-$r$ scaling due to the $J_0$ Bessel function.
-These terms afford a mechanism for $A$ and $B$ to influence each other's dynamics more directly than through a radiation field alone.
+These terms afford a mechanism for $A$ and $B$ to influence each other's dynamics more directly than through an intermediate radiation field alone.
 
 In a many-particle system, \cref{eq:advanced dissipator liouville} expands to include  pairwise dissipators that perturb the evolution of every particle due to the assumption of a rank-deficient $\hat{\rho}$.
 Thus,
@@ -73,7 +73,7 @@ Thus,
   \label{eq:coupled liouville}
 \end{equation}
 Evaluating \cref{eq:coupled liouville} for each of $N$ then scales as $\mathcal{O}(N^2)$, making it infeasible to use in large simulations.
-Fortunately, the kernel-agnostic nature of \QuEST{} makes it relatively straightforward to FFT-accelerated interactions of the form in \cref{eq:cross matrices}.
+Fortunately, the kernel-agnostic nature of \QuEST{} makes it relatively straightforward to develop FFT-accelerated interactions of the form in \cref{eq:cross matrices} alongside those used to describe electromagnetic fields.
 
 \subsection{Micromagnetics}
 
