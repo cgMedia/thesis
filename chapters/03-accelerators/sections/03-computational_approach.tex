@@ -17,8 +17,8 @@
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/aim_terminology.tex}
-  \caption{\label{fig:aim terminology} Illustration of the grid structure and terminology.
-    All of the sources within a box (shown as the central shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box} = \floor{\vb{r}/s}$.
+  \caption{\label{fig:aim terminology} Illustration of the grid structure and related terminology.
+    All of the sources within a box (shown as the central shaded square) map to the same set of expansion points (shown as open circles) indexed relative to $\vb{r}_\text{box}$.
   }
 \end{figure}
 
@@ -61,8 +61,8 @@ where
   \end{align}
   \label{eq:decomposition elements}
 \end{subequations}
-The $\Lambda$ matrices in \cref{eq:f decomposition} denote the (sparse) projections to and from the grid (detailed in \cref{sec:expansion matrices}), and $\vb{u}(\vb{r})$ indicates an auxiliary basis function on the spatial grid.
-Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to control the accuracy of the simulation and $R^\text{grid}_{\ell\ell'}$ gives the minmium distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$ (\cref{fig:nearfield criterion}), i.e.
+The $\Lambda$ matrices in \cref{eq:f decomposition} denote the (sparse) projections to and from the grid (detailed in \cref{sec:expansion matrices}), and $\vb{u}_a(\vb{r})$ indicates an auxiliary basis function on the spatial grid indexed by $a$.
+Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to control the accuracy of the simulation and $R_{\ell\ell'}$ gives the minmium distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$ (\cref{fig:nearfield criterion}) via
 \begin{equation}
   R^\text{grid}_{\ell\ell'} = \min\!\qty{\norm{\vb{u} - \vb{u}'}_\infty \, | \, \vb{u} \in C_\ell, \, \vb{u}' \in C_{\ell'}}.
 \end{equation}
@@ -87,7 +87,7 @@ Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to 
 
 \subsubsection{\label{sec:expansion matrices}Expansion matrices}
 
-We represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints , i.e.
+We represent the primary $\vb{s}_\ell(\vb{r})$ basis functions as a weighted sum of $\delta$-functions on the surrounding gridpoints, thus $\vb{u}_a(\vb{r}) \propto \delta(\vb{r} - \vb{r}_a)$ and
 \begin{equation}
   \psi_\ell(\vb{r}) \approx \sum_{\vb{u} \in C_\ell} \Lambda_{\ell\vb{u}}^\dagger \delta(\vb{r} - \vb{u}).
   \label{eq:grid linear combination}
@@ -130,7 +130,24 @@ We interpret this as as differentiating the underlying polynomial that interpola
 
 \subsubsection{Complexity}
 
-The evaluation of $\mathcal{F}_\text{FFT}^\qty(m-m') \mathcal{A}$
+We have largely designed this acceleration algorithm to accommodate time-domain propagators within a rotating-wave/envelope-tracking framework.
+Such systems notably have decoupled length and time scales; downshifting a narrow-band signal to baseband (in time) affords very efficient temporal discretizations due to an assumed carrier signal.
+No such trick works for the spatial properties, however, due to the space/time coupling in $g(\vb{r}, t)$ and need to preserve interference phenomena throughout space\footnote{Because of this, rotating-wave systems share a large number of similarities with their fully frequency-domain counterparts.}.
+As such, $g(\vb{r}, t)$ can impose a high spatial frequency on fields radiating from artificially low-frequency sources.
+Consequently, the both the primary and auxiliary spatial basis functions require a discretization on the order of this spatial frequency to accurately sample fields.
+The calculation of \cref{eq:f decomposition}, then, remains the dominant factor in the complexity of our algorithm, though it performs significantly better than a pairwise interaction between all of the $\vb{s}_{\ell}(\vb{r})$.
+Projecting sources to/from the auxiliary grid (i.e. right-multiplying by $\Lambda_\mathfrak{F}$ or $\Lambda^\dagger$) necessarily require $\mathcal{O}(N_s)$ operations per timestep as each $\vb{s}_\ell(\vb{r})$ maps to a fixed number $\vb{u}_a(\vb{r})$ auxiliary functions, independent of $N_s$.
+Similarly, for uniformly-dense volume-filling geometries, a volume proportional to $\gamma^3$ contains a fixed number of $\vb{s}_\ell(\vb{r})$ independent of $N_s$, ergo the calculation of $\mathcal{F}_\text{direct}^\qty(m-m') \mathcal{A}^\qty(m')$ also requires $\mathcal{O}(N_s)$ operations.
+Thus, the potential evaluation between auxiliary functions---multiplying by $\mathcal{G}^\qty(m-m')$ and its derivatives---dominates the overall complexity of the calculation.
+By storing a diagonal, $\vb{k}$-space representation of these matrices (requiring storage proportional only to the number of grid points, $N_\text{grid}$, not its square), each timestep in the algorithm requires an $\mathcal{O}(N_\text{grid} \log N_\text{grid})$ forward FFT to equivalently transform the auxiliary source distribution, an $\mathcal{O}(N_\text{grid})$ elementwise product to effect the ``convolution'', and a backward $\mathcal{O}(N_\text{grid} \log N_\text{grid})$ to restore the potential in $\vb{r}$- (not $\vb{k}$-) space.
+Similar Toeplitz diagonalization strategies also work in time (see~\cite[section D]{Yilmaz2004}) though this provides almost no benefit in rotating-frame systems due to the relatively small number of timesteps required for radiation to traverse the system.
 
-Instead of transfering the $\mathfrak{F}$ operator onto the spatiotemporal basis functions, the decompositon of $\mathcal{F}^\qty(m-m')$ in \cref{eq:decomposition elements} maintains the strong form of the integral relation in \cref{eq:propagator} and makes no assumptions about the underlying discretization.
-Practically, this facilitates long-wavelnegth or extremely dense systems where $\vb{s}_\ell(\vb{r}) = \vb{d}_\ell \delta(\vb{r}-\vb{r}_\ell)$.
+Finally, we note that transfering the spatial derivatives in $\mathfrak{F}$ onto the ``receiving'' projection matrices, $\Lambda_\mathfrak{F}$, results in a modest acceleration for tensorial propagators such as that of the electric field integral equation,
+\begin{equation}
+  \mathfrak{F} = \partial_t^2 -c^2 \grad \grad \boldsymbol{\cdot}.
+\end{equation}
+Instead of projecting both $\vb{s}_\ell(\vb{r})$ and $\div{\vb{s}_\ell(\vb{r})}$ onto the auxiliary grid and propagating them with the relatively expensive $\mathcal{G}$ multiplication and instead reconstructs all spatially-varying quantities from the potential sampled on the auxiliary grid.
+(A similar method reconstructs time derivatives from the history of potential samples on the auxiliary grid, though this requires a discrete convolution with several weighted $\Lambda_\mathfrak{F}$ matrices.)
+
+Moreover, this decomposition maintains the strong form of the integral relation in \cref{eq:propagator} and makes no assumptions of differentiability in the underlying $\vb{s}_\ell(\vb{r})$ discretization.
+
