@@ -9,7 +9,7 @@
   \fi
   \caption{\label{fig:matrix structure} the interaction matrix for $g(\vb{r}, t) = \abs{\vb{r}}^{-1}$ between points randomly distributed throughout a unit cube appears to have very little structure (left).
     while we cannot fully order the points in three dimensions, we \emph{can} permute the matrix so as to give points within the same neighborhood adjacent indices.
-    points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical toeplitz substructure (right).
+    points ordered thusly produce a diagonally-dominant interaction matrix with a hierarchical Toeplitz substructure (right).
     such structures indicate portions of the matrix have very accurate low-rank approximations that offer the possibility of significant compression.
   }
 \end{figure}
@@ -39,7 +39,7 @@ One iteration of our algorithm, then, proceeds as follows:
     Note that the algorithm thus far has essentially evaluated the potential, $g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)$, at $t = m \, \Delta t$ at every point $\vb{u}$ in the grid.
   \item Recover the total field under the action of $\mathfrak{F}$ by projecting the potential on each $\vb{u}$ back onto the $\vb{s}_\ell(\vb{r})$.
     These projections make use of specialized projection matrices that depend on the particular derivatives contained inside $\mathfrak{F}$.
-  \item Subtract the fields determined by steps 1-3 for pairs of spatial basis functions within a prescribed idstance threshold and replace it with \cref{eq:z elements}.
+  \item Subtract the fields determined by steps 1-3 for pairs of spatial basis functions within a prescribed distance threshold and replace it with \cref{eq:z elements}.
     The auxiliary grid approximations only remain accurate at large distances, thus this step corrects large approximation errors that occur between adjacent $\vb{s}_\ell(\vb{r})$.
 \end{enumerate}
 Mathematically,
@@ -62,7 +62,7 @@ where
   \label{eq:decomposition elements}
 \end{subequations}
 The $\Lambda$ matrices in \cref{eq:f decomposition} denote the (sparse) projections to and from the grid (detailed in \cref{sec:expansion matrices}), and $\vb{u}_a(\vb{r})$ indicates an auxiliary basis function on the spatial grid indexed by $a$.
-Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to control the accuracy of the simulation and $R_{\ell\ell'}$ gives the minmium distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$ (\cref{fig:nearfield criterion}) via
+Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to control the accuracy of the simulation and $R_{\ell\ell'}$ gives the minimum distance (in integral units of the grid spacing) between the expansion regions enclosing $\vb{s}_\ell(\vb{r})$ and $\vb{s}_{\ell'}(\vb{r})$ (\cref{fig:nearfield criterion}) via
 \begin{equation}
   R^\text{grid}_{\ell\ell'} = \min\!\qty{\norm{\vb{u} - \vb{u}'}_\infty \, | \, \vb{u} \in C_\ell, \, \vb{u}' \in C_{\ell'}}.
 \end{equation}
@@ -116,8 +116,8 @@ $\vb{u} \in C_\ell$, and $\vb{m}$ denotes the multi-index $\vb{m} = \qty{m_x, m_
 With an infinite precision calculation, the choice of $\vb{r}_0 = x_0 \vu{x} + y_0 \vu{y} + z_0 \vu{z}$ merely defines an origin for the polynomial expansion system.
 To minimize numerical issues, we choose $\vb{r}_0$ at the center of $\vb{s}_\ell(\vb{r})$.
 
-As $\Lambda^\dagger$ arises purely as a function of space with no time component, differentiating \cref{eq:moment matching} with respect to $x$, $y$, or $z$ can also recover spatial derivatives occuring in $\mathfrak{F}$.
-We interpret this as as differentiating the underlying polynomial that interpolates the potential between gridpoints at the location of $\vb{s}_\ell(\vb{r})$, thus the differentiation proceedure removes the high-order moments in \cref{eq:q vector}.
+As $\Lambda^\dagger$ arises purely as a function of space with no time component, differentiating \cref{eq:moment matching} with respect to $x$, $y$, or $z$ can also recover spatial derivatives occurring in $\mathfrak{F}$.
+We interpret this as as differentiating the underlying polynomial that interpolates the potential between gridpoints at the location of $\vb{s}_\ell(\vb{r})$, thus the differentiation procedure removes the high-order moments in \cref{eq:q vector}.
 
 \begin{figure}
   \centering
@@ -142,7 +142,7 @@ Thus, the potential evaluation between auxiliary functions---multiplying by $\ma
 By storing a diagonal, $\vb{k}$-space representation of these matrices (requiring storage proportional only to the number of grid points, $N_\text{grid}$, not its square), each timestep in the algorithm requires an $\mathcal{O}(N_\text{grid} \log N_\text{grid})$ forward FFT to equivalently transform the auxiliary source distribution, an $\mathcal{O}(N_\text{grid})$ elementwise product to effect the ``convolution'', and a backward $\mathcal{O}(N_\text{grid} \log N_\text{grid})$ to restore the potential in $\vb{r}$- (not $\vb{k}$-) space.
 Similar Toeplitz diagonalization strategies also work in time (see~\cite[section D]{Yilmaz2004}) though this provides almost no benefit in rotating-frame systems due to the relatively small number of timesteps required for radiation to traverse the system.
 
-Finally, we note that transfering the spatial derivatives in $\mathfrak{F}$ onto the ``receiving'' projection matrices, $\Lambda_\mathfrak{F}$, results in a modest acceleration for tensorial propagators such as that of the electric field integral equation,
+Finally, we note that transferring the spatial derivatives in $\mathfrak{F}$ onto the ``receiving'' projection matrices, $\Lambda_\mathfrak{F}$, results in a modest acceleration for tensorial propagators such as that of the electric field integral equation,
 \begin{equation}
   \mathfrak{F} = \partial_t^2 -c^2 \grad \grad \boldsymbol{\cdot}.
 \end{equation}

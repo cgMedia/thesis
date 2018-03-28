@@ -18,7 +18,7 @@ To numerically evaluate \cref{eq:propagator}, we discretize $\vb{P}(\vb{r}, t)$ 
 \end{equation}
 where $\Delta t$ denotes a fixed time interval chosen to accurately sample the dynamics of the physical quantities involved.
 Furthermore, we require both $\vb{s}_\ell(\vb{r})$ and $T(t)$ to have finite support and that $T(t)$ obey (discrete) causality (i.e. $T(t) = 0$ if $t \not \in \qty[-\Delta t, T_\text{max}]$).
-Here, we consider $\delta$-functions and shifted Lagrange polynomials for the $\vb{s}_\ell(\vb{r})$ and $T(t$), respectively, though this analysis readily extends to accommodate any simliar set of functions.
+Here, we consider $\delta$-functions and shifted Lagrange polynomials for the $\vb{s}_\ell(\vb{r})$ and $T(t$), respectively, though this analysis readily extends to accommodate any similar set of functions.
 
 Substituting \cref{eq:discretization} into \cref{eq:propagator} and projecting the resulting field onto the same set of $\vb{s}_\ell(\vb{r})$ produces an $(N_s \times N_s)$-block matrix equation of the form
 \begin{equation}
