@@ -1,6 +1,7 @@
 \section{Formulation}
 
-We wish to calculate the the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator, $\mathfrak{F}\qty{\cdot}$, in both space and time, presumably alongside/in response to an incident field, $\mathbf{E}_\text{inc}$.
+We wish to calculate the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator, $\mathfrak{F}\qty{\cdot}$.
+These fields exist throughout space and time alongside/in response to an incident field, $\mathbf{E}_\text{inc}$.
 Formally, we may write the total field everywhere as
 \begin{equation}
   \begin{aligned}
@@ -16,10 +17,16 @@ To numerically evaluate \cref{eq:propagator}, we discretize $\vb{P}(\vb{r}, t)$ 
   \vb{P}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t)
   \label{eq:discretization}
 \end{equation}
-where $\Delta t$ denotes a fixed time interval chosen to accurately oversample $\omega_\text{max}$---the highest frequency in $\vb{P}$.
+where $\Delta t$ denotes a fixed time interval chosen to accurately sample the dynamics of the physical quantities involved.
+Furthermore, we require both $\vb{s}_\ell(\vb{r})$ and $T(t)$ to have finite support and that $T(t)$ obey (discrete) causality (i.e. $T(t) = 0$ if $t \not \in \qty[-\Delta t, T_\text{max}]$).
+Here, we consider $\delta$-functions and shifted Lagrange polynomials for the $\vb{s}_\ell(\vb{r})$ and $T(t$), respectively, though this analysis readily extends to accommodate any simliar set of functions.
+
 Substituting \cref{eq:discretization} into \cref{eq:propagator} and projecting the resulting field onto the same set of $\vb{s}_\ell(\vb{r})$ produces an $(N_s \times N_s)$-block matrix equation of the form
 \begin{equation}
-  \mathcal{E}^{(m)} = \mathcal{E}_\text{inc}^{(m)} + \sum_{m'= 0}^m \mathcal{F}^{(m - m')} \boldsymbol{\cdot} \mathcal{A}^{(m')}
+  \begin{aligned}
+    \mathcal{E}^{(m)} &= \mathcal{E}_\text{inc}^{(m)} + \sum_{m'= 0}^m \mathcal{F}^{(m - m')} \boldsymbol{\cdot} \mathcal{A}^{(m')} \\
+                      &\equiv \mathcal{E}_\text{inc}^\qty(m) + \mathcal{E}_\text{rad}^\qty(m)
+  \end{aligned}
   \label{eq:mot}
 \end{equation}
 where

@@ -23,8 +23,8 @@ This process---particularly evaluating the integrand---becomes vastly more compl
 \end{equation}
 Causality imposed by the propagation operators only requires $\tau_j > 0$, thus \cref{eq:delay rhs} can relate a derivative to quantities arbitrarily far back in time, often between the discrete $t_i$/known solution values.
 Further problems arise when $\tau_j < \Delta t$; in such cases, the unknown $x(t_i)$ depends on an unknown $x(t_i - \tau_j)$ which depends on an unknown $x(t_i - 2 \tau_j)$ etc., at least one of which lies ``ahead'' of the last known quantity, $x(t_{i-1})$.
-While adjusting the timestep to require $t_j \geqslant \Delta t$ makes the system perfectly causal, it also makes the timestep prohibitively small for dense systems.
-These constraints automatically exclude (or at least \emph{severely} limit the utility of) popular ODE algorithms and packages---the difficulty of reevaluating interactions prohibits variable-timestep integrators and integrators that require midpoint evaluations (such as the popular RK4 method) cannot accommodate small retardation factors without an exceptionally small $\Delta t$.
+While adjusting the timestep to require $\tau_j \geqslant \Delta t$ makes the system perfectly causal, it also makes the timestep prohibitively small for dense systems.
+These constraints automatically exclude (or at least \emph{severely} limit the utility of) popular ODE algorithms and packages---the difficulty of re-evaluating interactions prohibits variable-timestep integrators and integrators that require midpoint evaluations (such as the popular RK4 method) cannot accommodate small retardation factors without an exceptionally small $\Delta t$.
 Instead, we turn to the exponentially-fitted predictor/corrector algorithm detailed in~\cite{Glaser2009}.
 As a multistep method, the predictor/corrector does not require any function evaluations outside of those on the fixed timepoints, thus any causal interpolation scheme facilitates evaluating approximate versions of all the $x(t - \tau_j)$ via
 \begin{equation}
@@ -33,7 +33,7 @@ As a multistep method, the predictor/corrector does not require any function eva
 \end{equation}
 (The particular interpolation scheme determines the $w_\ell$.)
 For $\tau_j < \Delta t$, \cref{eq:interpolation} suggests $x(t_i - \tau_j)$ becomes a function of $x(t_i)$.
-Ordinarily, this would cause problems thought the predictor step of the algorithm ensures an approximate $x(t_i)$ exists before any interpolation.
+Ordinarily, this would cause problems though the predictor step of the algorithm ensures an approximate $x(t_i)$ exists before any interpolation.
 The corrector step then works to correct this approximation in a convergent way, reincorporating adjacent sources as a total solution evolves.
   
 \begin{figure}[]
@@ -42,7 +42,7 @@ The corrector step then works to correct this approximation in a convergent way,
   \caption{\label{fig:retardation problem} Illustration of the ``retardation problem'' in solving coupled delay differential equations.
     If $\partial_t x_\bullet(t) = f\qty\big(\textcolor[RGB]{228,26,28}{x_\bullet}(t - \abs{\vb{r}_{\bullet \textcolor[RGB]{228,26,28}{\bullet}}}) + \textcolor[RGB]{55,126,184}{x_\bullet}(t - \abs{\vb{r}_{\bullet \textcolor[RGB]{55,126,184}{\bullet}}}))$ then determining $\textcolor[RGB]{228,26,28}{x_\bullet}(t - \abs{\vb{r}_{\bullet \textcolor[RGB]{228,26,28}{\bullet}}})$ and $\textcolor[RGB]{55,126,184}{x_\bullet}(t - \abs{\vb{r}_{\bullet \textcolor[RGB]{55,126,184}{\bullet}}})$ requires some sort of interpolation scheme.
     Evaluating $\partial_t x_\bullet(t)$ in hopes of obtaining $x_\bullet(t)$ therefore requires knowledge of $\textcolor[RGB]{228,26,28}{x_\bullet}(t)$.
-    The converse holds as well, however; evaluating $\partial_t \textcolor[RGB]{228,26,28}{x_\bullet}(t)$ requires knowledge of $x_\bullet(t)$ which poses problems in evaluating the derivatives simultaneously.
+    The converse holds as well;-- evaluating $\partial_t \textcolor[RGB]{228,26,28}{x_\bullet}(t)$ requires knowledge of $x_\bullet(t)$ which poses problems in evaluating the derivatives simultaneously.
     The predictor step of the integrator overcomes this issue by providing a stable extrapolation of past quantities to provide a guess value of $x_\bullet(t)$ and $\textcolor[RGB]{228,26,28}{x_\bullet}(t)$.
   }
 \end{figure}
@@ -84,7 +84,7 @@ If $x(t)$ and $\partial_t x(t)$ have known values at equidistant points $t_0, t_
   x(t_W) \leftarrow \sum_{j = 0}^{W - 1} p_j x(t_j) + p_{j + W} \, \partial_t x(t_j).
   \label{eq:predictor}
 \end{equation}
-Inserting \cref{eq:exponential approximation} into \label{eq:predictor} gives the matrix equation
+Inserting \cref{eq:exponential approximation} into \cref{eq:predictor} gives the matrix equation
 \begin{equation}
   A \vb{p} = \vb{b}
   \label{eq:predictor vector}
