@@ -81,7 +81,9 @@ Finally, $\tau_\text{max}$ and $\gamma$ serve as adjustable input parameters to 
   \conditionalFigureInput{figures/nf_correction}
   \caption{\label{fig:nearfield correction}Illustration of nearfield corrections between close boxes.
     Expansions $A$ and $B$ overlap, but only box $B$ lies in the nearfield of box $C$.
-    Consequently, we must track the $BC$ interaction (dashed line) independently of the FFT-based convolution so as to remove its high-error contribution to the total field.
+    The grid-based propagation strategy only remains accurate for distant source/observer pairs.
+    To avoid incurring undue error, we remove the interaction ``through the grid'' between the $BC$ pair (red line) and replace it with a more accurate ``direct'' interaction (dashed blue line).
+    The $AC$ pair requires no such treatment as they have well-separated expansion regions.
   }
 \end{figure}
 

@@ -44,7 +44,8 @@
 \fill[cbblue] (-1.2, 0.2) node (B) {} circle (0.05);
 \fill[cbblue] (4.55, 0.525) node (dest) {} circle (0.05);
 
-\draw[thick, ->, cbblue, dashed, opacity=0.8] (A) -- (0, 0.97) -- (4, 0.97) -- (4.5, 0.47);
+\draw[thick, ->, cbred, opacity=0.8] (A) -- (0, 0.97) -- (4, 0.97) -- (4.5, 0.47);
+\draw[thick, ->, cbblue, dashed] (A) -- (dest);
 \draw[thick, ->, cbblue] (B) -- (0, 1.03) -- (4, 1.03) -- (4.5, 0.53);
 
 \draw[cbblue, thick, decorate,decoration={brace,amplitude=10}] (-3.1,2.1) -- (0.1, 2.1) node [midway, above, yshift=4] {Expansion $A$};

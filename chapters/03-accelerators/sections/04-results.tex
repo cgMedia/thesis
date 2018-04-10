@@ -1,5 +1,7 @@
 \section{Results}
 
+\subsection{Convergence}
+
 Consider two point particles located at $x_\text{src}$ and $x_\text{obs}$.
 A time-independent Green's function, $g(x_\text{obs} - x_\text{src})$, describes the interaction between the two particles and we wish to construct a polynomial approximation of $g(x - x_\text{src})$ for $x$ in the vicinity of $x_\text{obs}$ as in \cref{fig:1d moments}.
 
@@ -9,16 +11,16 @@ Such a coordinate system defines the Vandermonde linear equation $\sum_{j}V_{ij}
 \begin{subequations}
   \begin{align}
     V_{ij} &= (x_p^\text{min} + i)^j \\
-    g_i &= g\qty((x_0 - x_\text{src}) + h(x_p^\text{min} + i))
+    g_i &= g\qty((x_0 - x_\text{src}) + (x_p^\text{min} + i)\, \Delta s)
   \end{align}
 \end{subequations}
 and $0 \leqslant i, j \leqslant M$.
 Approximating $g(x - x_\text{src})$ at $x_\text{obs}$ then becomes a matter of evaluating this polynomial at $x_p = \qty(x_\text{obs} - x_0)/h$, i.e.
 \begin{equation}
-  g(x_\text{obs} - x_\text{src}) \approx \sum_{i = 0}^{M} w_i \qty(\frac{x_\text{obs} - x_0}{h})^i.
+  g(x_\text{obs} - x_\text{src}) \approx \sum_{i = 0}^{M} w_i \qty(\frac{x_\text{obs} - x_0}{\Delta s})^i.
 \end{equation}
-Accordingly, the polynomial approximation to $g(x_\text{obs} - x_\text{src})$ contains terms of order $\mathcal{O}(h^{-M})$ and we can expect the approximation error to scale as $\mathcal{O}(h^{-(M + 1)})$ as demonstrated in \cref{fig:grid convergence}.
-This also motivates using the approximation to calculate interactions involving differential operators; applying an $n^\text{th}$-order derivative reduces the polynomial order by $n$, thus the error scales like $\mathcal{O}(h^{-(M + 1) + n})$.
+Accordingly, the polynomial approximation to $g(x_\text{obs} - x_\text{src})$ contains terms of order $\mathcal{O}(h^{-M})$ and we can expect the approximation error to scale as $\mathcal{O}(\Delta s^{-(M + 1)})$ as demonstrated in \cref{fig:grid convergence}.
+This also motivates using the approximation to calculate interactions involving differential operators; applying an $n^\text{th}$-order derivative reduces the polynomial order by $n$, thus the error scales like $\mathcal{O}(\Delta s^{-(M + 1) + n})$.
 
 \begin{figure}
   \centering
@@ -34,20 +36,49 @@ This also motivates using the approximation to calculate interactions involving 
   \conditionalFigureInput{figures/grid_spacing_error}
   \caption{\label{fig:grid convergence} $\ell_2$ error calculation of $g(\vb{r} - \vb{r}') = e^{i k \abs{\vb{r} - \vb{r}'}}/{\abs{\vb{r} - \vb{r}'}}$ for expansion orders zero through four.
     For each of the points above, a source and observation box separated by $\Delta \vb{r} = 10\lambda \vu{x} + 10 \lambda \vu{y} + 10 \lambda \vu{z}$ each contain 64 randomly placed points, thus the points within each box all map to identical nodes in the auxiliary grid.
-    The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(h^{m + 1})$.
+    The moment-matching expansion scheme dictates that the overall error for an expansion of order $m$ scales as $\mathcal{O}(\Delta s^{m + 1})$.
   }
 \end{figure}
+
+\subsection{Timing}
+
+Having demonstrated the convergence properties of the accelerated algorithm, we now examine its computational efficiency.
+As a representative simulation, we discretize using $\delta$-functions in space and tesselate the same arrangement of basis functions throughout each box of a cubic grid.
+This ensures a predictable, volume-filling geometry that captures the major features of the \qd{} systems we wish to investigate.
+We use a first-order expansion to project to/from the grid and a fifth-order Lagrange basis in time, and the simulation runs for 1024 timesteps, and take $\gamma = 1$ (implying expansions separated by at most one box require a nearfield correction).
+Finally, each source has a prescribed Gaussian amplitude of width $1024 \, \Delta t/12$ and centered about $1024 \, \Delta t/2$.
+These parmaeters give a relative error of $\sim \num{1e-6}$ in the full \textsc{fft + nearfield} calculation when compared with an analytic calculation.
+The FFT-accelerated simulation outpaces the direct field calculation near $N_s = \num{400}$.
+
 
 \begin{figure}
   \centering
   \conditionalFigureInput{figures/potential_timing.tex}
-  \caption{\label{fig:timing}Simulation runtime vs.\ number of spatial basis functions for several system sizes. 
-    Each simulation evaluates the retarded potentail between $n$ spatial basis functions for 1024 timesteps.
-    We employ a first order expansion (in space) onto the auxiliary grid and a fifth order Lagrange basis set in time.
-    The output of the \textsc{fft + nearfield} calculation reproduces that of the \textsc{direct} calculation to approximately five decimal places (the \textsc{fft only} simulation does not calculate any portion of $\mathcal{F}_\text{direct}$ so as to benchmark the inter-grid propagation).
-    From top to bottom in the legend, the three simulations follow $t_1(n) = \num{2.10086e-5} n^{2.073}$, $t_2(n)=\num{1.36362e-3} n^{1.385}$, and $t_3(n) \num{2.10896e-4} n^{1.169}$ regressions, respectively.
+  \caption{\label{fig:timing}Time to evaluate retarded potential vs.\ number of spatial basis functions for several system sizes. 
+    Simulated on an Intel(R) Core(TM) i5-4690K CPU @ \SI{3.50}{\giga\hertz}.
   }
 \end{figure}
+
+\begin{table}
+  \centering
+  \begin{tabular}{lrr}
+    Simulation               & Regression                          & $r^2$ \\ \hline
+    \textsc{direct}          & $t(n) = \num{2.10086e-5} n^{2.073}$ & 0.999946 \\
+    \textsc{fft + nearfield} & $t(n) = \num{1.36362e-3} n^{1.385}$ & 0.999590 \\
+    \textsc{fft only}        & $t(n) = \num{2.10896e-4} n^{1.169}$ & 0.999577
+  \end{tabular}
+  \caption{\label{table:timing regressions}Power-law regressions and their coefficeints of determination ($r^2$) for the data in \cref{fig:timing}.
+    Here, $t$ denotes the walltime of the simulation (in seconds) and $n$ the number of spatial basis functions.
+  }
+\end{table}
+
+\subsection{Maxwell-Bloch}
+
+Finally, as a pragmatic test of our algorithm, we revisit a sample radiating \qd{} system like those detailed in \cref{ch:quanatum dots}.
+We consider a random arrangement of 1024 \qds{} within a \SI{0.2}{\micro\meter} cube.
+The \qds{} have a resonant transition energy of \SI{1500}{\milli\eV} (thus $\omega_\text{max} = \SI{1500}{\milli\eV}/\hbar$) and a dipole moment of $\vb{d} = \SI{10}{\elementarycharge\bohr} \vu{z}$ where \si{\elementarycharge} and \si{\bohr} denote the electron charge and Bohr radius, respectively.
+We employ a rotating-wave framework so as to take $\Delta t = 50 \omega_\text{max}$, and we use $\Delta s = c/(10 \omega_\text{max})$ for our auxiliary grid spacing.
+\Cref{fig:qd fast comparison} shows the evolution of the off-diagonal matrix elements for 25 randomly sampled \qds{} with both a fully-direct and FFT-accelerated calculation.
 
 \begin{figure}
   \centering
