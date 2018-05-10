@@ -107,4 +107,45 @@ In such systems, the Chebyshev approximation becomes a tensor polynomial, and th
   \end{align}
 \end{subequations}
 with an implied summation over the bound indices $i'$, $j'$, $k'$ and $\lambda$, $\mu$, $\nu$.
-\QuEST{} makes use of the Tensor Algebra Compiler (taco)~\cite{taco} to generate the equivalent source expression for \cref{eq:mondo tensor}.
+\QuEST{} makes use of the Tensor Algebra Compiler (taco)~\cite{taco} to generate the equivalent source-expression for \cref{eq:mondo tensor} with dense tensors (\cref{csrc}).
+\begin{lstlisting}[language=C, caption={C-source expression for \cref{eq:mondo tensor}.}, label=csrc]
+for (int32_t boxeval = 0; boxeval < num_boxes; boxeval++) {
+  double tbox = norm;
+  for (int32_t ialphas = 0; ialphas < size; ialphas++) {
+    int32_t pcoef2 = boxeval * size + ialphas;
+    double ti = tbox * alphas_[ialphas];
+    for (int32_t lambdachebS = 0; lambdachebS < size; lambdachebS++) {
+      int32_t pchebS2 = ialphas * size + lambdachebS;
+      int32_t peval2 = boxeval * size + lambdachebS;
+      double tlambda = ti;
+      double tlambda0 = chebS[pchebS2];
+      for (int32_t jalphas = 0; jalphas < size; jalphas++) {
+        int32_t pcoef3 = pcoef2 * size + jalphas;
+        double tj = tlambda * alphas_[jalphas];
+        double tj0 = tlambda0;
+        for (int32_t muchebS = 0; muchebS < size; muchebS++) {
+          int32_t pchebS20 = jalphas * size + muchebS;
+          int32_t peval3 = peval2 * size + muchebS;
+          double tmu = tj;
+          double tmu0 = tj0;
+          double tmu1 = chebS[pchebS20];
+          for (int32_t kalphas = 0; kalphas < size; kalphas++) {
+            int32_t pcoef4 = pcoef3 * size + kalphas;
+            double tk = tmu * alphas_[kalphas] * tmu0 * tmu1;
+            for (int32_t nuchebS = 0; nuchebS < size; nuchebS++) {
+              int32_t pchebS21 = kalphas * size + nuchebS;
+              int32_t peval4 = peval3 * size + nuchebS;
+              double tnu = tk * chebS[pchebS21];
+              for (int32_t dimeval = 0; dimeval < 3; dimeval++) {
+                int32_t peval5 = peval4 * 3 + dimeval;
+                int32_t pcoef5 = pcoef4 * 3 + dimeval;
+                coef[pcoef5] = coef[pcoef5] + tnu * eval[peval5];
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+\end{lstlisting}

@@ -19,8 +19,7 @@ For example, to isolate the ODE solver's behavior from the tricky numerics of th
 Coding an RHS with a well-known solution, such as $f'(x) = - \lambda f(x)$, can validate the numerics of the integration step independent of the propagation calculations.
 
 Similarly, making \QuEST{} easy to extend necessitates encapsulating mathematical statements as tightly as possible with these objects.
-As the project grows to encapsulate new phenomena/models, only the pieces that directly represent the mathematics need to change and not how they fit into the rest of the simulation framework.
-
+As the project grows to encapsulate new phenomena/models, only the pieces that directly represent the mathematics need to change, not how they fit into the rest of the simulation framework.
 Unfortunately, these factors often lead to seemingly-unintelligible code. What follows contains a brief discussion of the major pieces of \QuEST{} and why I designed them the way I did.
 
 \section{\label{sec:quest descriptions}Descriptions}
