@@ -228,7 +228,7 @@
 \posttitle{\\[\baselineskip]\end{center}}
 \preauthor{\begin{center}By\\[\baselineskip]}
 \postauthor{\end{center}}
-\predate{\vfill\begin{center}\msu@titleintro\msu@thesistype\\[\baselineskip]Submitted to\\Michigan State University\\in partial fulfillment of the requirements\\for the degree of\\[\baselineskip]\msu@fieldofstudy~\msu@fieldseparator~\msu@degree\\[\baselineskip]}
+\predate{\vfill\begin{center}\msu@titleintro\msu@thesistype\\[\baselineskip]Submitted to\\Michigan State University\\in partial fulfillment of the requirements\\for the degree of\\[\baselineskip]\msu@fieldofstudy~\msu@fieldseparator~\msu@degree\\Electrical Engineering~\msu@fieldseparator~Dual Doctorate\\[\baselineskip]}
 
 % set up the chapter titles
 \chapterstyle{thatcher}
@@ -368,11 +368,11 @@
 \renewenvironment{abstract}{%
    \chapter*{\abstractname}
    \thispagestyle{empty}
-   \plainbreak{-.5} % changed 2016/06/08 after complaints
+   \plainbreak{-1} % changed 2016/06/08 after complaints
     \begin{center}
     	\MakeUppercase{\thetitle}\plainbreak{1}By\plainbreak{1}\theauthor
  	\end{center}
-	\plainbreak{-.5} % changed 2016/06/08 after complaints
+  \plainbreak{0} % changed 2016/06/08 after complaints
     \DoubleSpacing
    }{\par}
 
