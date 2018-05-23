@@ -228,7 +228,7 @@
 \posttitle{\\[\baselineskip]\end{center}}
 \preauthor{\begin{center}By\\[\baselineskip]}
 \postauthor{\end{center}}
-\predate{\vfill\begin{center}\msu@titleintro\msu@thesistype\\[\baselineskip]Submitted to\\Michigan State University\\in partial fulfillment of the requirements\\for the degree of\\[\baselineskip]\msu@fieldofstudy~\msu@fieldseparator~\msu@degree\\Electrical Engineering~\msu@fieldseparator~Dual Doctorate\\[\baselineskip]}
+\predate{\vfill\begin{center}\msu@titleintro\msu@thesistype\\[\baselineskip]Submitted to\\Michigan State University\\in partial fulfillment of the requirements\\for the degree of\\[\baselineskip]\msu@fieldofstudy~\msu@fieldseparator~\msu@degree\\Electrical Engineering~\msu@fieldseparator~Dual Degree\\[\baselineskip]}
 
 % set up the chapter titles
 \chapterstyle{thatcher}
