@@ -6,8 +6,7 @@
   \centering
   \conditionalFigureInput{figures/hierarchy}
   \caption{\label{fig:hierarchy}Hierarchy of the major pieces of \QuEST{}.
-    While a true class diagram would depict the inheritance relationships of the objects that comprise the \QuEST{} library, 
-  These blocks \emph{roughly} indicate the interdependence of the program pieces that form \QuEST{}, akin to a class hierarchy (though avid software developers should not take this literally).}
+    While a true class diagram would depict the inheritance relationships of the objects that comprise the \QuEST{} library, these blocks \emph{roughly} indicate the interdependence of the abstract program pieces that form \QuEST{}, akin to a class hierarchy (though avid software developers should not take this literally).}
 \end{figure}
 
 The collection of formulas and algorithms in this thesis provide a mathematical foundation upon which one can implement a simulation tool. This section gives some details on \texttt{v0.2.1} of the \textbf{Qu}antum \textbf{E}lectromagnetics \textbf{S}imulation \textbf{T}oolbox (\QuEST{}) reference implementation, available at \cite{QuESTimpl}. Written in C++, \QuEST{} has minimal external dependencies, using only the Boost Multiarray and Program Options libraries~\cite{boost}, the Eigen linear algebra library~\cite{eigen}, and FFTW~\cite{FFTW}.
@@ -22,7 +21,7 @@ Similarly, making \QuEST{} easy to extend necessitates encapsulating mathematica
 As the project grows to encapsulate new phenomena/models, only the pieces that directly represent the mathematics need to change, not how they fit into the rest of the simulation framework.
 Unfortunately, these factors often lead to seemingly-unintelligible code. What follows contains a brief discussion of the major pieces of \QuEST{} and why I designed them the way I did.
 
-\section{\label{sec:quest descriptions}Descriptions}
+\section{\label{sec:quest descriptions}Class and Typedef Descriptions}
 
 \begin{description}
   \item[\texttt{cmplx}] An alias for \lstinline!std::complex<double>! with an identical bit structure to FFTW's \lstinline!fftw_complex! type (hence the use of \lstinline!static_cast! when interfacing with FFTW).
@@ -46,7 +45,7 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
       \item[\texttt{PulseInteraction}] Calculates and returns $\vb{d} \cdot \vb{E}_\text{inc}/\hbar$ at the location of each \lstinline!QuantumDot! at a specified time.
       \item[\texttt{DirectInteraction}] (subclass of \lstinline!HistoryInteraction!)
         Calculates and returns $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ at the location of each \lstinline!QuantumDot! (where $\vb{E}_\text{rad}$ depends on the history of every other \lstinline!QuantumDot! due to retardation effects).
-        This object stores the space/time interaction matrix elements between each \lstinline!QuantumDot! directly, assuming reciprocity and no self interactions (effectively the lower triangle of the matrix).
+        This object stores the spacetime interaction matrix elements between each \lstinline!QuantumDot! directly, assuming reciprocity and no self interactions (effectively the lower triangle of the matrix).
         Uses Lagrange interpolation to calculate quantities ``between'' timesteps as well as temporal derivatives.
       \item[\texttt{AIMInteraction}] (subclass of \lstinline!HistoryInteraction!)
         Calculates $\vb{d} \cdot \vb{E}_\text{rad}/\hbar$ between well-separated sources (so as to avoid incurring undue approximation error).
