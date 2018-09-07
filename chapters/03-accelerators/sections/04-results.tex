@@ -5,9 +5,9 @@
 Consider two point particles located at $x_\text{src}$ and $x_\text{obs}$.
 A time-independent Green's function, $g(x_\text{obs} - x_\text{src})$, describes the interaction between the two particles and we wish to construct a polynomial approximation of $g(x - x_\text{src})$ for $x$ in the vicinity of $x_\text{obs}$ as in \cref{fig:1d moments}.
 
-To construct an interpolation polynomial over the expansion region of order $M$, we define a polynomial coordinate $x_p$ in units of $h$ such that $x_p^\text{min} \leqslant x_p \leqslant x_p^\text{min} + M$ where $x_p^\text{min} \equiv -\floor*{M/2}$.
+To construct an interpolation polynomial over the expansion region of order $M$, we define a polynomial co\"ordinate $x_p$ in units of $h$ such that $x_p^\text{min} \leqslant x_p \leqslant x_p^\text{min} + M$ where $x_p^\text{min} \equiv -\floor*{M/2}$.
 Consequently, the expansion points about $x_\text{obs}$ correspond to $x_p \in \{-\floor*{M/2}$, $-\floor*{M/2} + 1$, $-\floor*{M/2} + 2$, $\ldots\}$ with the \nth{0} order expansion point, $x_0$, equivalent to $x_p = 0$.
-Such a coordinate system defines the Vandermonde linear equation $\sum_{j}V_{ij} w_j = g_i$ for the weights of an interpolating polynomial\footnote{In principle this analysis works equally well in the original $(x_\text{src}, x_\text{obs})$ coordinate system. The polynomial coordinate has three advantages, however: it indexes the expansion points ``logically'' from left to right, $x_p^\text{min} \in \mathbb{Z}$ and thus the Vandermonde matrix has infinite precision, and it makes the interpolation error in terms of $h$ explicit.}~\cite{NumericalRecipes} where
+Such a co\"ordinate system defines the Vandermonde linear equation $\sum_{j}V_{ij} w_j = g_i$ for the weights of an interpolating polynomial\footnote{In principle this analysis works equally well in the original $(x_\text{src}, x_\text{obs})$ co\"ordinate system. The polynomial co\"ordinate has three advantages, however: it indexes the expansion points ``logically'' from left to right, $x_p^\text{min} \in \mathbb{Z}$ and thus the Vandermonde matrix has infinite precision, and it makes the interpolation error in terms of $h$ explicit.}~\cite{NumericalRecipes} where
 \begin{subequations}
   \begin{align}
     V_{ij} &= (x_p^\text{min} + i)^j \\

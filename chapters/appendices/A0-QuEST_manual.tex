@@ -32,7 +32,7 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
     Also provides a method to calculate the right-hand side of \cref{eq:rotating liouville} given an input density matrix and electric field.
     Because these right-hand sides have instance-dependent parameters (transition frequency, $T_1$ and $T_2$, etc.), \lstinline!std::bind! produces the appropriate functors for constructing \lstinline!Integrator::RHS! instances.
   \item[\texttt{Pulse}] Mathematical description of a Gaussian pulse.
-    Provides a method to evaluate a pulse at a given spacetime coordinate, as well as methods to read/record \lstinline!Pulse! objects from/to a file.
+    Provides a method to evaluate a pulse at a given spacetime co\"ordinate, as well as methods to read/record \lstinline!Pulse! objects from/to a file.
   \item[\texttt{UniformLagrangeSet}] Tool to evaluate Lagrange polynomials and their derivatives.
     Upon construction, each instance allocates a workspace table (to avoid reallocation overhead) to contain the evaluated interpolants and their derivatives.
     This object uses the definition of Lagrange polynomials and logarithmic derivatives, $\dv{x} \log f(x) = f'(x)/f(x)$, to efficiently fill each column (the interpolant and two derivatives) of the table simultaneously.
@@ -55,7 +55,7 @@ Unfortunately, these factors often lead to seemingly-unintelligible code. What f
         This keeps the indexing correct as later calls to \lstinline!evaluate! depend on the results of previous calculations.
         \begin{description}
           \item[\texttt{Grid}] Class to construct and manage a representation of the auxiliary AIM grid.
-            Provides methods to convert between grid coordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid coordinates to a single integer index starting at zero), and spatial coordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued coordinates in three-dimensional space).
+            Provides methods to convert between grid co\"ordinates ($n_x$, $n_y$, and $n_z$ integers that index a node in the grid), a grid index (linearization of the grid co\"ordinates to a single integer index starting at zero), and spatial co\"ordinates ($\vb{r} = x \vu{x} + y \vu{y} + z \vu{z}$ real-valued co\"ordinates in three-dimensional space).
           \item[\texttt{ExpansionFunction}] Complicated black magic sorcery. Stay away.
           \item[\texttt{ExpansionTable}] Table of dimension [number of sources][number of points each source expands into] containing the thirteen ($\partial_0$, $\partial_x$, \ldots, $\partial_{yz}$, $\partial_{zz}$) expansion weights relating each source to its immediate (i.e. not trivially zero) auxiliary grid points.
           \item[\texttt{LeastSquaresExpansionSolver}] Utility class to build and solve the least-squares system in \cref{eq:moment matching}.
