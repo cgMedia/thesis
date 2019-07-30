@@ -145,6 +145,7 @@
 \newif\ifmsu@plaintoc\msu@plaintoctrue % make this the default to see what the reaction is
 \newif\ifmsu@colonintoc\msu@colonintocfalse
 \newif\ifmsu@hyperloaded\msu@hyperloadedfalse
+\DeclareOption{WD}{\gdef\msu@degree{Doctor of Wizardry}}
 \DeclareOption{PhD}{\gdef\msu@degree{Doctor of Philosophy}}
 \DeclareOption{DEd}{\gdef\msu@degree{Doctor of Education}}
 \DeclareOption{DMA}{\gdef\msu@degree{Doctor of Musical Arts}}

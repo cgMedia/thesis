@@ -1,17 +1,17 @@
 \section{Problem statement}
 
-We wish to calculate the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator, $\mathfrak{F}\qty{\cdot}$.
+We wish to calculate the field radiated from a distribution of time-dependent sources under the action of an arbitrary (linear) differential operator, $\mathfrak{L}(\nabla, \partial_t)\qty{\cdot}$.
 These fields exist throughout space and time alongside/in response to an incident field, $\mathbf{E}_\text{inc}$.
 Formally, we may write the total field everywhere as
 \begin{equation}
   \begin{aligned}
-    \vb{E}(\vb{r}, t) & = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{\siint g(\vb{r} - \vb{r}', t - t') \vb{P}(\vb{r}', t') \dd[1]{t'} \dd[3]{\vb{r}'}} \\
-                      & \equiv \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
+    \vb{E}(\vb{r}, t) & = \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{L}\qty{\siint g(\vb{r} - \vb{r}', t - t') \vb{P}(\vb{r}', t') \dd[1]{t'} \dd[3]{\vb{r}'}} \\
+                      & \equiv \vb{E}_\text{inc}(\vb{r}, t) + \mathfrak{L}\qty{g(\vb{r}, t) \ast \vb{P}(\vb{r}, t)}
     \end{aligned}
   \label{eq:propagator}
 \end{equation}
 where $g(\vb{r}, t)$ denotes a propagation potential (most commonly the retarded potential, $g(\vb{r}, t) = \delta(t - \abs{\vb{r}}/c)/\abs{\vb{r}}$).
-To numerically evaluate \cref{eq:propagator}, we discretize $\vb{P}(\vb{r}, t)$ with separable space/time basis functions such that 
+To numerically evaluate \cref{eq:propagator}, we discretize $\vb{P}(\vb{r}, t)$ with separable space/time basis functions such that
 \begin{equation}
   \vb{P}(\vb{r}, t) \approx \sum_{\ell = 0}^{N_s - 1} \sum_{m = 0}^{N_t - 1} \mathcal{A}_\ell^{(m)} \vb{s}_\ell(\vb{r}) T(t - m \, \Delta t)
   \label{eq:discretization}
@@ -32,7 +32,7 @@ where
   \begin{align}
     \mathcal{E}^{(m)}_\ell &= \langle \vb{s}_\ell(\vb{r}), \vb{E}(\vb{r}, m \, \Delta t) \rangle \label{eq:f elements}\\
     \mathcal{E}^{(m)}_{\text{inc},\ell} &= \langle \vb{s}_\ell(\vb{r}), \vb{E}_\text{inc}(\vb{r}, m \, \Delta t) \rangle \label{eq:l elements}\\
-    \mathcal{F}^{(k)}_{\ell\ell'} &= \big\langle \vb{s}_\ell(\vb{r}), \mathfrak{F}\qty{g(\vb{r}, t) \ast \vb{s}_{\ell'}(\vb{r}) T(k \, \Delta t)} \big\rangle \label{eq:z elements}.
+    \mathcal{F}^{(k)}_{\ell\ell'} &= \big\langle \vb{s}_\ell(\vb{r}), \mathfrak{L}\qty{g(\vb{r}, t) \ast \vb{s}_{\ell'}(\vb{r}) T(k \, \Delta t)} \big\rangle \label{eq:z elements}.
   \end{align}
 \end{subequations}
 From this, it immediately becomes apparent that \cref{eq:z elements} bottlenecks the field calculation due to the $\mathcal{O}(N_s^2)$ complexity of the inner product.

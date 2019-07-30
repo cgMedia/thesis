@@ -14,7 +14,7 @@ If we concern ourselves only with electric dipole transitions in a resonant (or 
   \dv{\hat{\rho}}{t} = \frac{-i}{\hbar}\commutator{\hat{\mathcal{H}}(t)}{\hat{\rho}} - \hat{\mathcal{D}}\qty[\hat{\rho}].
   \label{eq:liouville}
 \end{equation}
-As we wish to investigate two-level systems, $\hat{\rho}(t)$ contains three unique unknowns ($\rho_{00}$ and the real and imaginary parts of $\rho_{01}$) that describe point on the Bloch sphere (\cref{fig:bloch sphere}), $\hat{\mathcal{H}}(t)$ represents a local Hamiltonian that governs the internal two-level structure of the \qd{}, as well as its interaction with an external electromagnetic field, and $\hat{\mathcal{D}}$ provides dissipation terms that account for emission effects phenomenologically.
+As we wish to investigate two-level systems, $\hat{\rho}(t)$ contains three unique unknowns ($\rho_{00}$ and the real and imaginary parts of $\rho_{01}$) that describe a point on the Bloch sphere (\cref{fig:bloch sphere}), $\hat{\mathcal{H}}(t)$ represents a local Hamiltonian that governs the internal two-level structure of the \qd{}, as well as its interaction with an external electromagnetic field, and $\hat{\mathcal{D}}$ provides dissipation terms that account for emission effects phenomenologically.
 Formally,
 \begin{subequations}
   \begin{align}
@@ -33,7 +33,7 @@ where $\vb{E}_L(\vb{r}, t)$ describes an incident laser field, $\vb{P}(\vb{r}, t
 \begin{equation}
     \mathfrak{F}\{\vb{P}(\vb{r}, t)\} \equiv
     \frac{-1}{4\pi \epsilon} \int_{}
-      \left(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \frac{\partial_t^2 \vb{P}(\vb{r}', t_R)}{c^2 \abs{\vb{r}-\vb{r}'}} + 
+      \left(\tensor{\mathrm{I}} -  \outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \frac{\partial_t^2 \vb{P}(\vb{r}', t_R)}{c^2 \abs{\vb{r}-\vb{r}'}} +
       \left(\tensor{\mathrm{I}} - 3\outerprod{\bar{\vb{r}}}{\bar{\vb{r}}} \right) \cdot \qty(
         \frac{\partial_t   \vb{P}(\vb{r}', t_R)}{c \abs{\vb{r}-\vb{r}'}^2} +
         \frac{             \vb{P}(\vb{r}', t_R)}{  \abs{\vb{r}-\vb{r}'}^3}
@@ -55,7 +55,7 @@ By introducing $\tilde{\rho} = \hat{U} \hat{\rho} \hat{U}^\dagger$ where $\hat{U
   \label{eq:rotating liouville}
 \end{equation}
 which will contain only terms proportional to $e^{i (\omega_0 \pm \omega_L) t}$ if $\vb{E}(t) \sim \tilde{\vb{E}}(t)\cos(\omega_L t)$.
-Consequently, we ignore the high-frequency quantities under the assumption that such terms will integrate to zero in solving \cref{eq:rotating liouville} over appreciable timescales~\cite{Allen1975}. 
+Consequently, we ignore the high-frequency quantities under the assumption that such terms will integrate to zero in solving \cref{eq:rotating liouville} over appreciable timescales~\cite{Allen1975}.
 Because the system no longer contains any optical frequencies, one can then construct efficient numerical strategies for solving \cref{eq:rotating liouville}.
 
 Due to the quantum mechanical transitions at play in producing secondary radiation, we may assume similarly monochromatic radiated fields.
